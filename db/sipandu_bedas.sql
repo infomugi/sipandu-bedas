@@ -10,6 +10,11 @@
 -- ============================================================
 
 -- Drop tables if they exist (PostgreSQL cascade handles foreign keys)
+DROP TABLE IF EXISTS notifikasi CASCADE;
+DROP TABLE IF EXISTS pesan CASCADE;
+DROP TABLE IF EXISTS posyandu_assesment CASCADE;
+DROP TABLE IF EXISTS pengajuan_rujukan CASCADE;
+DROP TABLE IF EXISTS pengajuan_assesment CASCADE;
 DROP TABLE IF EXISTS pengajuan_spm CASCADE;
 DROP TABLE IF EXISTS spm_trantibum CASCADE;
 DROP TABLE IF EXISTS spm_sosial CASCADE;
@@ -68,7 +73,17 @@ CREATE TYPE pu_type AS ENUM ('sanitasi_septic_tank', 'mck_umum', 'sarana_air_ber
 CREATE TYPE sosial_type AS ENUM ('penyandang_disabilitas', 'lansia', 'anak_terlantar', 'tuna_sosial', 'korban_bencana');
 CREATE TYPE trantibum_type AS ENUM ('kebakaran', 'kdrt_asusila', 'bencana_alam', 'narkoba_premanisme', 'illegal_logging_fishing');
 CREATE TYPE spm_type AS ENUM ('kesehatan', 'pendidikan', 'perumahan', 'pekerjaan_umum', 'sosial', 'trantibum');
-CREATE TYPE status_pengajuan_type AS ENUM ('menunggu_verifikasi', 'diterima', 'diproses_dinas', 'selesai', 'ditolak');
+CREATE TYPE status_pengajuan_type AS ENUM (
+    'menunggu_validasi_desa',
+    'menunggu_assesment',
+    'menunggu_rtl_desa',
+    'selesai_di_desa',
+    'menunggu_validasi_kecamatan',
+    'menunggu_validasi_kabupaten',
+    'menunggu_rtl_dinas',
+    'selesai_di_dinas',
+    'ditolak'
+);
 
 -- ============================================================
 -- 2. AUTOMATION: TIMESTAMP UPDATE TRIGGER
@@ -88,7 +103,7 @@ $$ LANGUAGE plpgsql;
 
 -- 1. users
 CREATE TABLE users (
-    id                BIGSERIAL PRIMARY KEY,
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nama_lengkap      VARCHAR(150) NOT NULL,
     nik               CHAR(16) NOT NULL UNIQUE,
     email             VARCHAR(150) UNIQUE,
@@ -104,16 +119,20 @@ CREATE TABLE users (
     is_active         SMALLINT NOT NULL DEFAULT 1,
     email_verified_at TIMESTAMP NULL,
     remember_token    VARCHAR(100) NULL,
-    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE users IS 'Akun kader posyandu, admin desa, dan dinas';
 
 -- 2. keluarga
 CREATE TABLE keluarga (
-    id                   BIGSERIAL PRIMARY KEY,
+    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     no_kk                CHAR(16) NOT NULL UNIQUE,
-    kader_id             BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    kader_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
     alamat_lengkap       TEXT NOT NULL,
     rt                   VARCHAR(10) NOT NULL,
     rw                   VARCHAR(10) NOT NULL,
@@ -126,15 +145,19 @@ CREATE TABLE keluarga (
     estimasi_pendapatan  pendapatan_type NULL,
     tgl_pendaftaran      DATE NOT NULL,
     is_aktif             SMALLINT NOT NULL DEFAULT 1,
-    created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON TABLE keluarga IS 'Data Kartu Keluarga yang dibina kader posyandu';
 
 -- 3. anggota_keluarga
 CREATE TABLE anggota_keluarga (
-    id                  BIGSERIAL PRIMARY KEY,
-    keluarga_id         BIGINT NOT NULL REFERENCES keluarga(id) ON DELETE CASCADE,
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NOT NULL REFERENCES keluarga(id) ON DELETE CASCADE,
     nik                 CHAR(16) NOT NULL UNIQUE,
     nama_lengkap        VARCHAR(150) NOT NULL,
     jenis_kelamin       gender_type NOT NULL,
@@ -146,29 +169,40 @@ CREATE TABLE anggota_keluarga (
     pekerjaan           VARCHAR(150) NULL,
     foto_ktp            VARCHAR(255) NULL,
     is_aktif            SMALLINT NOT NULL DEFAULT 1,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
     created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 4. kunjungan_posyandu
 CREATE TABLE kunjungan_posyandu (
-    id            BIGSERIAL PRIMARY KEY,
-    keluarga_id   BIGINT NOT NULL REFERENCES keluarga(id) ON DELETE CASCADE,
-    kader_id      BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-    tgl_kunjungan DATE NOT NULL,
-    bulan         SMALLINT NOT NULL,
-    tahun         SMALLINT NOT NULL,
-    catatan       TEXT NULL,
-    created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NOT NULL REFERENCES keluarga(id) ON DELETE CASCADE,
+    kader_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    tgl_kunjungan    DATE NOT NULL,
+    bulan            SMALLINT NOT NULL,
+    tahun            SMALLINT NOT NULL,
+    catatan          TEXT NULL,
+    no_hp_pendaftar  VARCHAR(20) NULL,
+    foto_kk          VARCHAR(255) NULL,
+    foto_warga       VARCHAR(255) NULL,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 5. spm_kesehatan
 CREATE TABLE spm_kesehatan (
-    id                    BIGSERIAL PRIMARY KEY,
-    keluarga_id           BIGINT NOT NULL REFERENCES keluarga(id),
-    anggota_id            BIGINT NOT NULL REFERENCES anggota_keluarga(id),
-    kader_id              BIGINT NOT NULL REFERENCES users(id),
+    id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NOT NULL REFERENCES keluarga(id),
+    anggota_id UUID NOT NULL REFERENCES anggota_keluarga(id),
+    kader_id UUID NOT NULL REFERENCES users(id),
     tgl_pelayanan         DATE NOT NULL,
     jenis_sasaran         sasaran_type NOT NULL,
     berat_badan           DECIMAL(5,2) NULL,
@@ -179,21 +213,28 @@ CREATE TABLE spm_kesehatan (
     terima_obat_cacing    SMALLINT NULL DEFAULT 0,
     usia_kehamilan_mgg    SMALLINT NULL,
     tekanan_darah         VARCHAR(20) NULL,
+    lingkar_kepala_cm     DECIMAL(4,2) NULL,
     lingkar_lengan_cm     DECIMAL(4,2) NULL,
     catatan_tindak_lanjut TEXT NULL,
     ajukan_bantuan        SMALLINT NOT NULL DEFAULT 0,
     latitude              DECIMAL(10,7) NULL,
     longitude             DECIMAL(11,7) NULL,
+    status_pengajuan      status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
+    catatan_verifikator   TEXT NULL,
+    created_by            UUID NULL REFERENCES users(id),
+    updated_by            UUID NULL REFERENCES users(id),
+    deleted_at            TIMESTAMP NULL,
+    deleted_by            UUID NULL REFERENCES users(id),
     created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 6. spm_pendidikan
 CREATE TABLE spm_pendidikan (
-    id                  BIGSERIAL PRIMARY KEY,
-    keluarga_id         BIGINT NOT NULL REFERENCES keluarga(id),
-    anggota_id          BIGINT NOT NULL REFERENCES anggota_keluarga(id),
-    kader_id            BIGINT NOT NULL REFERENCES users(id),
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NOT NULL REFERENCES keluarga(id),
+    anggota_id UUID NOT NULL REFERENCES anggota_keluarga(id),
+    kader_id UUID NOT NULL REFERENCES users(id),
     tgl_pengajuan       DATE NOT NULL,
     jenjang_pendidikan  jenjang_pendidikan_type NOT NULL,
     kelas               VARCHAR(10) NULL,
@@ -203,17 +244,21 @@ CREATE TABLE spm_pendidikan (
     file_bukti          VARCHAR(255) NULL,
     latitude            DECIMAL(10,7) NULL,
     longitude           DECIMAL(11,7) NULL,
-    status_pengajuan    status_pengajuan_type NOT NULL DEFAULT 'menunggu_verifikasi',
+    status_pengajuan    status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
     catatan_verifikator TEXT NULL,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
     created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 7. spm_perumahan
 CREATE TABLE spm_perumahan (
-    id                           BIGSERIAL PRIMARY KEY,
-    keluarga_id                  BIGINT NOT NULL REFERENCES keluarga(id),
-    kader_id                     BIGINT NOT NULL REFERENCES users(id),
+    id                           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NOT NULL REFERENCES keluarga(id),
+    kader_id UUID NOT NULL REFERENCES users(id),
     tgl_pengajuan                DATE NOT NULL,
     latitude                     DECIMAL(10,7) NULL,
     longitude                    DECIMAL(11,7) NULL,
@@ -229,17 +274,21 @@ CREATE TABLE spm_perumahan (
     jenis_dinding                dinding_type NULL,
     jenis_lantai                 lantai_type NULL,
     pernyataan_belum_pernah_terima SMALLINT NOT NULL DEFAULT 0,
-    status_pengajuan             status_pengajuan_type NOT NULL DEFAULT 'menunggu_verifikasi',
+    status_pengajuan             status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
     catatan_verifikator          TEXT NULL,
-    created_at                   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at                   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 8. spm_pu
 CREATE TABLE spm_pu (
-    id                    BIGSERIAL PRIMARY KEY,
-    keluarga_id           BIGINT NOT NULL REFERENCES keluarga(id),
-    kader_id              BIGINT NOT NULL REFERENCES users(id),
+    id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NOT NULL REFERENCES keluarga(id),
+    kader_id UUID NOT NULL REFERENCES users(id),
     tgl_pengajuan         DATE NOT NULL,
     jenis_kebutuhan       pu_type NOT NULL,
     detail_lokasi         TEXT NOT NULL,
@@ -247,17 +296,21 @@ CREATE TABLE spm_pu (
     longitude             DECIMAL(11,7) NULL,
     estimasi_dimensi      VARCHAR(200) NULL,
     file_surat_permohonan VARCHAR(255) NULL,
-    status_pengajuan      status_pengajuan_type NOT NULL DEFAULT 'menunggu_verifikasi',
+    status_pengajuan      status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
     catatan_verifikator   TEXT NULL,
-    created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 9. spm_sosial
 CREATE TABLE spm_sosial (
-    id                     BIGSERIAL PRIMARY KEY,
-    keluarga_id            BIGINT NULL REFERENCES keluarga(id),
-    kader_id               BIGINT NOT NULL REFERENCES users(id),
+    id                     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    keluarga_id UUID NULL REFERENCES keluarga(id),
+    kader_id UUID NOT NULL REFERENCES users(id),
     tgl_pengajuan          DATE NOT NULL,
     kategori_sasaran       sosial_type NOT NULL,
     nik_sasaran            CHAR(16) NULL,
@@ -268,16 +321,20 @@ CREATE TABLE spm_sosial (
     longitude              DECIMAL(11,7) NULL,
     file_identitas_sasaran VARCHAR(255) NULL,
     file_sk_desa           VARCHAR(255) NULL,
-    status_pengajuan       status_pengajuan_type NOT NULL DEFAULT 'menunggu_verifikasi',
+    status_pengajuan       status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
     catatan_verifikator    TEXT NULL,
-    created_at             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 10. spm_trantibum
 CREATE TABLE spm_trantibum (
-    id                  BIGSERIAL PRIMARY KEY,
-    kader_id            BIGINT NOT NULL REFERENCES users(id),
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    kader_id UUID NOT NULL REFERENCES users(id),
     tgl_pengajuan       DATE NOT NULL,
     waktu_kejadian      TIMESTAMP NULL,
     kategori_laporan    trantibum_type NOT NULL,
@@ -290,25 +347,121 @@ CREATE TABLE spm_trantibum (
     file_ktp_pelapor    VARCHAR(255) NULL,
     estimasi_korban     SMALLINT NULL,
     estimasi_kerugian   BIGINT NULL,
-    status_pengajuan    status_pengajuan_type NOT NULL DEFAULT 'menunggu_verifikasi',
+    status_pengajuan    status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
     catatan_verifikator TEXT NULL,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
     created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 11. pengajuan_spm
 CREATE TABLE pengajuan_spm (
-    id             BIGSERIAL PRIMARY KEY,
-    kader_id       BIGINT NOT NULL REFERENCES users(id),
-    keluarga_id    BIGINT NULL REFERENCES keluarga(id),
+    id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    kader_id UUID NOT NULL REFERENCES users(id),
+    keluarga_id UUID NULL REFERENCES keluarga(id),
     jenis_spm      spm_type NOT NULL,
-    ref_id         BIGINT NOT NULL,
-    status         status_pengajuan_type NOT NULL DEFAULT 'menunggu_verifikasi',
+    ref_id UUID NOT NULL,
+    status         status_pengajuan_type NOT NULL DEFAULT 'menunggu_validasi_desa',
     kode_pengajuan VARCHAR(30) UNIQUE,
     catatan        TEXT NULL,
-    updated_by     BIGINT NULL,
-    created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 11a. pengajuan_assesment
+CREATE TABLE pengajuan_assesment (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pengajuan_id UUID NOT NULL REFERENCES pengajuan_spm(id) ON DELETE CASCADE,
+    foto_kk VARCHAR(255),
+    foto_rumah VARCHAR(255),
+    latitude VARCHAR(50),
+    longitude VARCHAR(50),
+    deskripsi_assesment TEXT,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 11b. pengajuan_rujukan
+CREATE TABLE pengajuan_rujukan (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pengajuan_id UUID NOT NULL REFERENCES pengajuan_spm(id) ON DELETE CASCADE,
+    no_surat_pengantar VARCHAR(100),
+    file_surat_pengantar VARCHAR(255),
+    tgl_upload TIMESTAMP,
+    validasi_kecamatan SMALLINT DEFAULT 0, -- 0=Menunggu, 1=Valid
+    validasi_kabupaten SMALLINT DEFAULT 0, -- 0=Menunggu, 1=Valid
+    tindak_lanjut_dinas TEXT,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 12. posyandu_assesment
+CREATE TABLE posyandu_assesment (
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    kader_id UUID NOT NULL REFERENCES users(id),
+    tgl_assesment     DATE NOT NULL DEFAULT CURRENT_DATE,
+    meja_1_pendaftaran SMALLINT NOT NULL DEFAULT 1,
+    meja_2_penimbangan SMALLINT NOT NULL DEFAULT 1,
+    meja_3_pencatatan  SMALLINT NOT NULL DEFAULT 1,
+    meja_4_penyuluhan  SMALLINT NOT NULL DEFAULT 1,
+    meja_5_pelayanan   SMALLINT NOT NULL DEFAULT 1,
+    alat_timbangan_ok  SMALLINT NOT NULL DEFAULT 1,
+    alat_ukur_tinggi_ok SMALLINT NOT NULL DEFAULT 1,
+    stok_vitamin_a     SMALLINT NOT NULL DEFAULT 1,
+    stok_obat_cacing   SMALLINT NOT NULL DEFAULT 1,
+    catatan_kendala    TEXT NULL,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 13. pesan (Messaging)
+CREATE TABLE pesan (
+    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pengirim_id UUID NOT NULL REFERENCES users(id),
+    penerima_id UUID NOT NULL REFERENCES users(id),
+    isi_pesan     TEXT NOT NULL,
+    is_read       SMALLINT NOT NULL DEFAULT 0,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 14. notifikasi
+CREATE TABLE notifikasi (
+    id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id),
+    judul         VARCHAR(150) NOT NULL,
+    pesan         TEXT NOT NULL,
+    link          VARCHAR(255) NULL,
+    is_read       SMALLINT NOT NULL DEFAULT 0,
+    created_by UUID NULL REFERENCES users(id),
+    updated_by UUID NULL REFERENCES users(id),
+    deleted_at          TIMESTAMP NULL,
+    deleted_by UUID NULL REFERENCES users(id),
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ============================================================
@@ -326,12 +479,17 @@ CREATE TRIGGER trg_spm_pu_timestamp BEFORE UPDATE ON spm_pu FOR EACH ROW EXECUTE
 CREATE TRIGGER trg_spm_sosial_timestamp BEFORE UPDATE ON spm_sosial FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 CREATE TRIGGER trg_spm_trantibum_timestamp BEFORE UPDATE ON spm_trantibum FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 CREATE TRIGGER trg_pengajuan_spm_timestamp BEFORE UPDATE ON pengajuan_spm FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+CREATE TRIGGER trg_pengajuan_assesment_timestamp BEFORE UPDATE ON pengajuan_assesment FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+CREATE TRIGGER trg_pengajuan_rujukan_timestamp BEFORE UPDATE ON pengajuan_rujukan FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+CREATE TRIGGER trg_posyandu_assesment_timestamp BEFORE UPDATE ON posyandu_assesment FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+CREATE TRIGGER trg_pesan_timestamp BEFORE UPDATE ON pesan FOR EACH ROW EXECUTE FUNCTION update_timestamp();
+CREATE TRIGGER trg_notifikasi_timestamp BEFORE UPDATE ON notifikasi FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 
 -- Trigger for Generated Column-like behavior for kode_pengajuan (since PG 12 STORED has limitations with expressions based on current time)
 CREATE OR REPLACE FUNCTION generate_kode_pengajuan()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.kode_pengajuan = UPPER(SUBSTRING(NEW.jenis_spm::text, 1, 3)) || LPAD(NEW.id::text, 6, '0') || EXTRACT(YEAR FROM CURRENT_TIMESTAMP);
+    NEW.kode_pengajuan = UPPER(SUBSTRING(NEW.jenis_spm::text, 1, 3)) || SUBSTRING(REPLACE(NEW.id::text, '-', ''), 1, 6) || EXTRACT(YEAR FROM CURRENT_TIMESTAMP);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -376,32 +534,9 @@ JOIN anggota_keluarga a ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_
 LEFT JOIN anggota_keluarga an ON an.keluarga_id = k.id
 LEFT JOIN kunjungan_posyandu kj ON kj.keluarga_id = k.id
 LEFT JOIN pengajuan_spm p ON p.keluarga_id = k.id
-WHERE k.is_aktif = 1
+WHERE k.is_aktif = 1 AND k.deleted_at IS NULL
 GROUP BY
     k.id, k.no_kk, k.rt, k.rw, k.desa, k.kecamatan,
     k.status_kesejahteraan, k.status_asuransi, k.pekerjaan_kk,
     k.estimasi_pendapatan, a.nik, a.nama_lengkap;
 
--- ============================================================
--- 7. SAMPLE DATA
--- ============================================================
-
-INSERT INTO users (nama_lengkap, nik, email, no_hp, password, rw, rt, role) VALUES
-('HANSAH DARMAWAN',       '3204320305940004', 'hansah@rw11.id',       '081234567890', '$2y$10$placeholder_hash_hansah', '11', '3',  'kader'),
-('SITI RAHAYU',           '3204320601900011', 'siti@rw11.id',         '081298765432', '$2y$10$placeholder_hash_siti',   '11', '5',  'kader'),
-('ADMIN DESA RANCAMANYAR','3204320701850001', 'admin@rancamanyar.id', '022123456',    '$2y$10$placeholder_hash_admin',  NULL, NULL, 'admin_desa');
-
-INSERT INTO keluarga
-    (no_kk, kader_id, alamat_lengkap, rt, rw, status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran)
-VALUES
-('3204320305940004', 1, 'Kp. Rancamanyar RT 03 RW 11 No. 12', '3', '11', 'pra_sejahtera', 'bpjs_pbi',    'Buruh Tani', 'lt_1jt', '2025-01-15'),
-('3204320432030594', 1, 'Kp. Rancamanyar RT 05 RW 11 No. 7',  '5', '11', 'sejahtera_1',   'bpjs_mandiri', 'Pedagang',  '1_3jt',  '2025-02-20');
-
-INSERT INTO anggota_keluarga
-    (keluarga_id, nik, nama_lengkap, jenis_kelamin, tanggal_lahir, status_keluarga)
-VALUES
-(1, '3204320305940004', 'HANSAH DARMAWAN', 'L', '1994-03-05', 'kepala_keluarga'),
-(1, '3204326001980002', 'ATANG LESTARI',   'P', '1998-01-06', 'istri'),
-(1, '3204310501230001', 'SUSI',            'P', '2023-05-01', 'anak'),
-(1, '3204322508210002', 'BUDI',            'L', '2021-06-25', 'anak'),
-(2, '3504320305940111', 'ATANG OKTAVIANA', 'L', '1990-03-05', 'kepala_keluarga');

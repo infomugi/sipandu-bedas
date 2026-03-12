@@ -43,7 +43,7 @@ app.post('/api/auth/login', async (req, res) => {
         const { nik, password } = req.body;
         if (!nik || !password) return err(res, 'NIK dan password wajib diisi', 400);
         const { rows } = await pool.query(
-            'SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, desa, kecamatan, foto_profil, is_active FROM users WHERE nik = $1',
+            'SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, desa, kecamatan, foto_profil, is_active FROM users WHERE nik = $1 AND deleted_at IS NULL',
             [nik]
         );
         if (rows.length === 0) return err(res, 'NIK tidak ditemukan', 401);
@@ -56,13 +56,13 @@ app.post('/api/auth/login', async (req, res) => {
 // POST /api/auth/register
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role } = req.body;
+        const { nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role, created_by } = req.body;
         if (!nama_lengkap || !nik || !password || !no_hp) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
-            `INSERT INTO users (nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id, nama_lengkap, nik, role`,
+            `INSERT INTO users (nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id, nama_lengkap, nik, role`,
             [nama_lengkap, nik, email, no_hp, password, rw, rt,
-             desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG', role || 'kader']
+             desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG', role || 'kader', created_by]
         );
         ok(res, rows[0], 201);
     } catch (e) {
@@ -98,12 +98,12 @@ app.get('/api/dashboard', async (req, res) => {
         const tahun = now.getFullYear();
 
         const [keluarga, kunjungan, pengajuan, spmBulanIni] = await Promise.all([
-            pool.query('SELECT COUNT(*) FROM keluarga WHERE kader_id=$1 AND is_aktif=1', [kader_id]),
-            pool.query('SELECT COUNT(*) FROM kunjungan_posyandu WHERE kader_id=$1 AND bulan=$2 AND tahun=$3', [kader_id, bulan, tahun]),
-            pool.query('SELECT COUNT(*) FROM pengajuan_spm WHERE kader_id=$1 AND status=\'menunggu_verifikasi\'', [kader_id]),
+            pool.query('SELECT COUNT(*) FROM keluarga WHERE kader_id=$1 AND is_aktif=1 AND deleted_at IS NULL', [kader_id]),
+            pool.query('SELECT COUNT(*) FROM kunjungan_posyandu WHERE kader_id=$1 AND bulan=$2 AND tahun=$3 AND deleted_at IS NULL', [kader_id, bulan, tahun]),
+            pool.query('SELECT COUNT(*) FROM pengajuan_spm WHERE kader_id=$1 AND status=\'menunggu_validasi_desa\' AND deleted_at IS NULL', [kader_id]),
             pool.query(
                 `SELECT jenis_spm, COUNT(*) AS total FROM pengajuan_spm
-                 WHERE kader_id=$1 AND EXTRACT(MONTH FROM created_at)=$2 AND EXTRACT(YEAR FROM created_at)=$3
+                 WHERE kader_id=$1 AND EXTRACT(MONTH FROM created_at)=$2 AND EXTRACT(YEAR FROM created_at)=$3 AND deleted_at IS NULL
                  GROUP BY jenis_spm`, [kader_id, bulan, tahun]
             )
         ]);
@@ -129,10 +129,10 @@ app.get('/api/keluarga', async (req, res) => {
             SELECT k.*, a.nama_lengkap AS nama_kepala_keluarga, a.nik AS nik_kepala_keluarga,
                    COUNT(DISTINCT an.id) AS jumlah_anggota, MAX(kj.tgl_kunjungan) AS kunjungan_terakhir
             FROM keluarga k
-            LEFT JOIN anggota_keluarga a  ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga'
-            LEFT JOIN anggota_keluarga an ON an.keluarga_id = k.id
-            LEFT JOIN kunjungan_posyandu kj ON kj.keluarga_id = k.id
-            WHERE k.is_aktif = 1`;
+            LEFT JOIN anggota_keluarga a  ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga' AND a.deleted_at IS NULL
+            LEFT JOIN anggota_keluarga an ON an.keluarga_id = k.id AND an.deleted_at IS NULL
+            LEFT JOIN kunjungan_posyandu kj ON kj.keluarga_id = k.id AND kj.deleted_at IS NULL
+            WHERE k.is_aktif = 1 AND k.deleted_at IS NULL`;
         const params = [];
         if (kader_id) { params.push(kader_id); query += ` AND k.kader_id = $${params.length}`; }
         if (search) {
@@ -148,9 +148,9 @@ app.get('/api/keluarga', async (req, res) => {
 // GET /api/keluarga/:id  (detail + anggota)
 app.get('/api/keluarga/:id', async (req, res) => {
     try {
-        const { rows: kRows } = await pool.query('SELECT * FROM keluarga WHERE id=$1 AND is_aktif=1', [req.params.id]);
+        const { rows: kRows } = await pool.query('SELECT * FROM keluarga WHERE id=$1 AND is_aktif=1 AND deleted_at IS NULL', [req.params.id]);
         if (!kRows.length) return err(res, 'Keluarga tidak ditemukan', 404);
-        const { rows: aRows } = await pool.query('SELECT * FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 ORDER BY status_keluarga', [req.params.id]);
+        const { rows: aRows } = await pool.query('SELECT * FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga', [req.params.id]);
         ok(res, { ...kRows[0], anggota: aRows });
     } catch (e) { err(res, e.message); }
 });
@@ -159,16 +159,16 @@ app.get('/api/keluarga/:id', async (req, res) => {
 app.post('/api/keluarga', async (req, res) => {
     try {
         const { no_kk, kader_id, alamat_lengkap, rt, rw, desa, kecamatan, kabupaten,
-                status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran } = req.body;
+                status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran, created_by } = req.body;
         if (!no_kk || !kader_id || !tgl_pendaftaran) return err(res, 'no_kk, kader_id, tgl_pendaftaran wajib', 400);
         const { rows } = await pool.query(
             `INSERT INTO keluarga (no_kk, kader_id, alamat_lengkap, rt, rw, desa, kecamatan, kabupaten,
-             status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
+             status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING id`,
             [no_kk, kader_id, alamat_lengkap, rt, rw,
              desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG',
              status_kesejahteraan || 'pra_sejahtera', status_asuransi || 'tidak_memiliki',
-             pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran]
+             pekerjaan_kk, estimasi_pendapatan, tgl_pendaftaran, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Keluarga berhasil ditambahkan' }, 201);
     } catch (e) {
@@ -180,11 +180,11 @@ app.post('/api/keluarga', async (req, res) => {
 // PUT /api/keluarga/:id
 app.put('/api/keluarga/:id', async (req, res) => {
     try {
-        const { alamat_lengkap, rt, rw, status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan } = req.body;
+        const { alamat_lengkap, rt, rw, status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, updated_by } = req.body;
         const result = await pool.query(
             `UPDATE keluarga SET alamat_lengkap=$1, rt=$2, rw=$3, status_kesejahteraan=$4,
-             status_asuransi=$5, pekerjaan_kk=$6, estimasi_pendapatan=$7 WHERE id=$8`,
-            [alamat_lengkap, rt, rw, status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, req.params.id]
+             status_asuransi=$5, pekerjaan_kk=$6, estimasi_pendapatan=$7, updated_by=$8 WHERE id=$9 AND deleted_at IS NULL`,
+            [alamat_lengkap, rt, rw, status_kesejahteraan, status_asuransi, pekerjaan_kk, estimasi_pendapatan, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Keluarga tidak ditemukan', 404);
         ok(res, { message: 'Keluarga diperbarui' });
@@ -194,9 +194,10 @@ app.put('/api/keluarga/:id', async (req, res) => {
 // DELETE /api/keluarga/:id  (soft delete)
 app.delete('/api/keluarga/:id', async (req, res) => {
     try {
-        const result = await pool.query('UPDATE keluarga SET is_aktif=0 WHERE id=$1', [req.params.id]);
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE keluarga SET is_aktif=0, deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
         if (!result.rowCount) return err(res, 'Keluarga tidak ditemukan', 404);
-        ok(res, { message: 'Keluarga dinonaktifkan' });
+        ok(res, { message: 'Keluarga dinonaktifkan (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -219,7 +220,7 @@ app.get('/api/keluarga/:keluarga_id/anggota', async (req, res) => {
                WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir)) >= 60 THEN 'lansia'
                ELSE 'umum'
              END AS kategori_posyandu
-             FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 ORDER BY status_keluarga`,
+             FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga`,
             [req.params.keluarga_id]
         );
         ok(res, rows);
@@ -230,14 +231,14 @@ app.get('/api/keluarga/:keluarga_id/anggota', async (req, res) => {
 app.post('/api/anggota', async (req, res) => {
     try {
         const { keluarga_id, nik, nama_lengkap, jenis_kelamin, tanggal_lahir, tempat_lahir,
-                status_keluarga, status_asuransi, pendidikan_terakhir, pekerjaan } = req.body;
+                status_keluarga, status_asuransi, pendidikan_terakhir, pekerjaan, created_by } = req.body;
         if (!keluarga_id || !nik || !nama_lengkap || !jenis_kelamin || !tanggal_lahir) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO anggota_keluarga (keluarga_id, nik, nama_lengkap, jenis_kelamin, tanggal_lahir,
-             tempat_lahir, status_keluarga, status_asuransi, pendidikan_terakhir, pekerjaan)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id`,
+             tempat_lahir, status_keluarga, status_asuransi, pendidikan_terakhir, pekerjaan, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id`,
             [keluarga_id, nik, nama_lengkap, jenis_kelamin, tanggal_lahir,
-             tempat_lahir, status_keluarga || 'anak', status_asuransi, pendidikan_terakhir, pekerjaan]
+             tempat_lahir, status_keluarga || 'anak', status_asuransi, pendidikan_terakhir, pekerjaan, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Anggota ditambahkan' }, 201);
     } catch (e) {
@@ -250,12 +251,12 @@ app.post('/api/anggota', async (req, res) => {
 app.put('/api/anggota/:id', async (req, res) => {
     try {
         const { nama_lengkap, jenis_kelamin, tanggal_lahir, status_keluarga,
-                status_asuransi, pendidikan_terakhir, pekerjaan, is_aktif } = req.body;
+                status_asuransi, pendidikan_terakhir, pekerjaan, is_aktif, updated_by } = req.body;
         const result = await pool.query(
             `UPDATE anggota_keluarga SET nama_lengkap=$1, jenis_kelamin=$2, tanggal_lahir=$3,
-             status_keluarga=$4, status_asuransi=$5, pendidikan_terakhir=$6, pekerjaan=$7, is_aktif=$8 WHERE id=$9`,
+             status_keluarga=$4, status_asuransi=$5, pendidikan_terakhir=$6, pekerjaan=$7, is_aktif=$8, updated_by=$9 WHERE id=$10 AND deleted_at IS NULL`,
             [nama_lengkap, jenis_kelamin, tanggal_lahir, status_keluarga,
-             status_asuransi, pendidikan_terakhir, pekerjaan, is_aktif ?? 1, req.params.id]
+             status_asuransi, pendidikan_terakhir, pekerjaan, is_aktif ?? 1, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Anggota tidak ditemukan', 404);
         ok(res, { message: 'Anggota diperbarui' });
@@ -265,9 +266,10 @@ app.put('/api/anggota/:id', async (req, res) => {
 // DELETE /api/anggota/:id  (soft delete)
 app.delete('/api/anggota/:id', async (req, res) => {
     try {
-        const result = await pool.query('UPDATE anggota_keluarga SET is_aktif=0 WHERE id=$1', [req.params.id]);
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE anggota_keluarga SET is_aktif=0, deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
         if (!result.rowCount) return err(res, 'Anggota tidak ditemukan', 404);
-        ok(res, { message: 'Anggota dinonaktifkan' });
+        ok(res, { message: 'Anggota dinonaktifkan (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -303,13 +305,13 @@ app.get('/api/kunjungan/:id', async (req, res) => {
 // POST /api/kunjungan
 app.post('/api/kunjungan', async (req, res) => {
     try {
-        const { keluarga_id, kader_id, tgl_kunjungan, catatan } = req.body;
+        const { keluarga_id, kader_id, tgl_kunjungan, catatan, no_hp_pendaftar, foto_kk, foto_warga, created_by } = req.body;
         if (!keluarga_id || !kader_id || !tgl_kunjungan) return err(res, 'Field wajib tidak lengkap', 400);
         const d = new Date(tgl_kunjungan);
         const { rows } = await pool.query(
-            `INSERT INTO kunjungan_posyandu (keluarga_id, kader_id, tgl_kunjungan, bulan, tahun, catatan)
-             VALUES ($1,$2,$3,$4,$5,$6) RETURNING id`,
-            [keluarga_id, kader_id, tgl_kunjungan, d.getMonth() + 1, d.getFullYear(), catatan]
+            `INSERT INTO kunjungan_posyandu (keluarga_id, kader_id, tgl_kunjungan, bulan, tahun, catatan, no_hp_pendaftar, foto_kk, foto_warga, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id`,
+            [keluarga_id, kader_id, tgl_kunjungan, d.getMonth() + 1, d.getFullYear(), catatan, no_hp_pendaftar, foto_kk, foto_warga, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Kunjungan dicatat' }, 201);
     } catch (e) { err(res, e.message); }
@@ -324,7 +326,7 @@ app.get('/api/spm/kesehatan', async (req, res) => {
     try {
         const { keluarga_id, jenis_sasaran, kader_id } = req.query;
         let q = `SELECT sk.*, a.nama_lengkap AS nama_anggota FROM spm_kesehatan sk
-                 JOIN anggota_keluarga a ON a.id=sk.anggota_id WHERE 1=1`;
+                 JOIN anggota_keluarga a ON a.id=sk.anggota_id WHERE sk.deleted_at IS NULL`;
         const p = [];
         if (keluarga_id)   { p.push(keluarga_id);   q += ` AND sk.keluarga_id=$${p.length}`; }
         if (jenis_sasaran) { p.push(jenis_sasaran);  q += ` AND sk.jenis_sasaran=$${p.length}`; }
@@ -348,21 +350,56 @@ app.get('/api/spm/kesehatan/:id', async (req, res) => {
 app.post('/api/spm/kesehatan', async (req, res) => {
     try {
         const { keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran,
-                berat_badan, tinggi_badan, status_kms, jenis_imunisasi, terima_vitamin_a,
+                berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a,
                 terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm,
-                catatan_tindak_lanjut, ajukan_bantuan, latitude, longitude } = req.body;
+                catatan_tindak_lanjut, ajukan_bantuan, latitude, longitude, created_by } = req.body;
         if (!keluarga_id || !anggota_id || !kader_id || !tgl_pelayanan || !jenis_sasaran) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_kesehatan (keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran,
-             berat_badan, tinggi_badan, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing,
-             usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, latitude, longitude)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING id`,
+             berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing,
+             usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, latitude, longitude, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20) RETURNING id`,
             [keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran,
-             berat_badan, tinggi_badan, status_kms, jenis_imunisasi, terima_vitamin_a || 0,
+             berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a || 0,
              terima_obat_cacing || 0, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm,
-             catatan_tindak_lanjut, ajukan_bantuan || 0, latitude, longitude]
+             catatan_tindak_lanjut, ajukan_bantuan || 0, latitude, longitude, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Data SPM Kesehatan disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// GET /api/spm/kesehatan/:id
+app.get('/api/spm/kesehatan/:id', async (req, res) => {
+    try {
+        const { rows } = await pool.query(
+            'SELECT sk.*, a.nama_lengkap AS nama_anggota FROM spm_kesehatan sk JOIN anggota_keluarga a ON a.id=sk.anggota_id WHERE sk.id=$1 AND sk.deleted_at IS NULL',
+            [req.params.id]
+        );
+        if (!rows.length) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, rows[0]);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/spm/kesehatan/:id
+app.put('/api/spm/kesehatan/:id', async (req, res) => {
+    try {
+        const { berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, updated_by } = req.body;
+        const result = await pool.query(
+            `UPDATE spm_kesehatan SET berat_badan=$1, tinggi_badan=$2, lingkar_kepala_cm=$3, status_kms=$4, jenis_imunisasi=$5, terima_vitamin_a=$6, terima_obat_cacing=$7, usia_kehamilan_mgg=$8, tekanan_darah=$9, lingkar_lengan_cm=$10, catatan_tindak_lanjut=$11, ajukan_bantuan=$12, updated_by=$13 WHERE id=$14 AND deleted_at IS NULL`,
+            [berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, updated_by, req.params.id]
+        );
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Kesehatan diperbarui' });
+    } catch (e) { err(res, e.message); }
+});
+
+// DELETE /api/spm/kesehatan/:id
+app.delete('/api/spm/kesehatan/:id', async (req, res) => {
+    try {
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE spm_kesehatan SET deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Kesehatan dihapus (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -373,7 +410,7 @@ app.post('/api/spm/kesehatan', async (req, res) => {
 app.get('/api/spm/pendidikan', async (req, res) => {
     try {
         const { kader_id, status_pengajuan } = req.query;
-        let q = 'SELECT sp.*, a.nama_lengkap AS nama_anak FROM spm_pendidikan sp JOIN anggota_keluarga a ON a.id=sp.anggota_id WHERE 1=1';
+        let q = 'SELECT sp.*, a.nama_lengkap AS nama_anak FROM spm_pendidikan sp JOIN anggota_keluarga a ON a.id=sp.anggota_id WHERE sp.deleted_at IS NULL';
         const p = [];
         if (kader_id)        { p.push(kader_id);        q += ` AND sp.kader_id=$${p.length}`; }
         if (status_pengajuan){ p.push(status_pengajuan); q += ` AND sp.status_pengajuan=$${p.length}`; }
@@ -394,16 +431,51 @@ app.get('/api/spm/pendidikan/:id', async (req, res) => {
 app.post('/api/spm/pendidikan', async (req, res) => {
     try {
         const { keluarga_id, anggota_id, kader_id, tgl_pengajuan, jenjang_pendidikan,
-                kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude } = req.body;
+                kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, created_by } = req.body;
         if (!keluarga_id || !anggota_id || !kader_id || !jenjang_pendidikan || !jenis_bantuan || !keterangan_alasan) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_pendidikan (keluarga_id, anggota_id, kader_id, tgl_pengajuan, jenjang_pendidikan,
-             kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id`,
+             kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
             [keluarga_id, anggota_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
-             jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude]
+             jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM Pendidikan disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// GET /api/spm/pendidikan/:id
+app.get('/api/spm/pendidikan/:id', async (req, res) => {
+    try {
+        const { rows } = await pool.query(
+            'SELECT sp.*, a.nama_lengkap AS nama_anak FROM spm_pendidikan sp JOIN anggota_keluarga a ON a.id=sp.anggota_id WHERE sp.id=$1 AND sp.deleted_at IS NULL',
+            [req.params.id]
+        );
+        if (!rows.length) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, rows[0]);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/spm/pendidikan/:id
+app.put('/api/spm/pendidikan/:id', async (req, res) => {
+    try {
+        const { jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, updated_by } = req.body;
+        const result = await pool.query(
+            `UPDATE spm_pendidikan SET jenjang_pendidikan=$1, kelas=$2, nama_institusi=$3, jenis_bantuan=$4, keterangan_alasan=$5, file_bukti=$6, latitude=$7, longitude=$8, updated_by=$9 WHERE id=$10 AND deleted_at IS NULL`,
+            [jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, updated_by, req.params.id]
+        );
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Pendidikan diperbarui' });
+    } catch (e) { err(res, e.message); }
+});
+
+// DELETE /api/spm/pendidikan/:id
+app.delete('/api/spm/pendidikan/:id', async (req, res) => {
+    try {
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE spm_pendidikan SET deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Pendidikan dihapus (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -414,7 +486,7 @@ app.post('/api/spm/pendidikan', async (req, res) => {
 app.get('/api/spm/perumahan', async (req, res) => {
     try {
         const { kader_id, status_pengajuan } = req.query;
-        let q = 'SELECT * FROM spm_perumahan WHERE 1=1';
+        let q = 'SELECT * FROM spm_perumahan WHERE deleted_at IS NULL';
         const p = [];
         if (kader_id)         { p.push(kader_id);        q += ` AND kader_id=$${p.length}`; }
         if (status_pengajuan) { p.push(status_pengajuan); q += ` AND status_pengajuan=$${p.length}`; }
@@ -436,17 +508,49 @@ app.post('/api/spm/perumahan', async (req, res) => {
     try {
         const { keluarga_id, kader_id, tgl_pengajuan, latitude, longitude,
                 status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai,
-                pernyataan_belum_pernah_terima, file_ktp, file_kk } = req.body;
+                pernyataan_belum_pernah_terima, file_ktp, file_kk, created_by } = req.body;
         if (!keluarga_id || !kader_id) return err(res, 'keluarga_id dan kader_id wajib', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_perumahan (keluarga_id, kader_id, tgl_pengajuan, latitude, longitude,
-             status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, file_ktp, file_kk)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id`,
+             status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, file_ktp, file_kk, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
             [keluarga_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
              latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding,
-             jenis_lantai, pernyataan_belum_pernah_terima || 0, file_ktp, file_kk]
+             jenis_lantai, pernyataan_belum_pernah_terima || 0, file_ktp, file_kk, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM Perumahan disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// GET /api/spm/perumahan/:id
+app.get('/api/spm/perumahan/:id', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM spm_perumahan WHERE id=$1 AND deleted_at IS NULL', [req.params.id]);
+        if (!rows.length) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, rows[0]);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/spm/perumahan/:id
+app.put('/api/spm/perumahan/:id', async (req, res) => {
+    try {
+        const { latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, file_ktp, file_kk, updated_by } = req.body;
+        const result = await pool.query(
+            `UPDATE spm_perumahan SET latitude=$1, longitude=$2, status_kepemilikan_lahan=$3, jenis_atap=$4, jenis_dinding=$5, jenis_lantai=$6, pernyataan_belum_pernah_terima=$7, file_ktp=$8, file_kk=$9, updated_by=$10 WHERE id=$11 AND deleted_at IS NULL`,
+            [latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima || 0, file_ktp, file_kk, updated_by, req.params.id]
+        );
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Perumahan diperbarui' });
+    } catch (e) { err(res, e.message); }
+});
+
+// DELETE /api/spm/perumahan/:id
+app.delete('/api/spm/perumahan/:id', async (req, res) => {
+    try {
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE spm_perumahan SET deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Perumahan dihapus (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -457,7 +561,7 @@ app.post('/api/spm/perumahan', async (req, res) => {
 app.get('/api/spm/pu', async (req, res) => {
     try {
         const { kader_id, status_pengajuan } = req.query;
-        let q = 'SELECT * FROM spm_pu WHERE 1=1';
+        let q = 'SELECT * FROM spm_pu WHERE deleted_at IS NULL';
         const p = [];
         if (kader_id)         { p.push(kader_id);        q += ` AND kader_id=$${p.length}`; }
         if (status_pengajuan) { p.push(status_pengajuan); q += ` AND status_pengajuan=$${p.length}`; }
@@ -478,15 +582,47 @@ app.get('/api/spm/pu/:id', async (req, res) => {
 app.post('/api/spm/pu', async (req, res) => {
     try {
         const { keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan,
-                detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan } = req.body;
+                detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by } = req.body;
         if (!keluarga_id || !kader_id || !jenis_kebutuhan || !detail_lokasi) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
-            `INSERT INTO spm_pu (keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`,
+            `INSERT INTO spm_pu (keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id`,
             [keluarga_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
-             jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan]
+             jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM PU disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// GET /api/spm/pu/:id
+app.get('/api/spm/pu/:id', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM spm_pu WHERE id=$1 AND deleted_at IS NULL', [req.params.id]);
+        if (!rows.length) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, rows[0]);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/spm/pu/:id
+app.put('/api/spm/pu/:id', async (req, res) => {
+    try {
+        const { jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, updated_by } = req.body;
+        const result = await pool.query(
+            `UPDATE spm_pu SET jenis_kebutuhan=$1, detail_lokasi=$2, latitude=$3, longitude=$4, estimasi_dimensi=$5, file_surat_permohonan=$6, updated_by=$7 WHERE id=$8 AND deleted_at IS NULL`,
+            [jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, updated_by, req.params.id]
+        );
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM PU diperbarui' });
+    } catch (e) { err(res, e.message); }
+});
+
+// DELETE /api/spm/pu/:id
+app.delete('/api/spm/pu/:id', async (req, res) => {
+    try {
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE spm_pu SET deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM PU dihapus (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -497,7 +633,7 @@ app.post('/api/spm/pu', async (req, res) => {
 app.get('/api/spm/sosial', async (req, res) => {
     try {
         const { kader_id, status_pengajuan, kategori_sasaran } = req.query;
-        let q = 'SELECT * FROM spm_sosial WHERE 1=1';
+        let q = 'SELECT * FROM spm_sosial WHERE deleted_at IS NULL';
         const p = [];
         if (kader_id)         { p.push(kader_id);         q += ` AND kader_id=$${p.length}`; }
         if (status_pengajuan) { p.push(status_pengajuan);  q += ` AND status_pengajuan=$${p.length}`; }
@@ -510,7 +646,7 @@ app.get('/api/spm/sosial', async (req, res) => {
 
 app.get('/api/spm/sosial/:id', async (req, res) => {
     try {
-        const { rows } = await pool.query('SELECT * FROM spm_sosial WHERE id=$1', [req.params.id]);
+        const { rows } = await pool.query('SELECT * FROM spm_sosial WHERE id=$1 AND deleted_at IS NULL', [req.params.id]);
         if (!rows.length) return err(res, 'Data tidak ditemukan', 404);
         ok(res, rows[0]);
     } catch (e) { err(res, e.message); }
@@ -520,17 +656,40 @@ app.post('/api/spm/sosial', async (req, res) => {
     try {
         const { keluarga_id, kader_id, tgl_pengajuan, kategori_sasaran, nik_sasaran,
                 nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude,
-                file_identitas_sasaran, file_sk_desa } = req.body;
+                file_identitas_sasaran, file_sk_desa, created_by } = req.body;
         if (!kader_id || !kategori_sasaran || !penjelasan_kondisi) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_sosial (keluarga_id, kader_id, tgl_pengajuan, kategori_sasaran, nik_sasaran,
-             nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id`,
+             nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
             [keluarga_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
              kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi,
-             bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa]
+             bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM Sosial disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/spm/sosial/:id
+app.put('/api/spm/sosial/:id', async (req, res) => {
+    try {
+        const { kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, updated_by } = req.body;
+        const result = await pool.query(
+            `UPDATE spm_sosial SET kategori_sasaran=$1, nik_sasaran=$2, nama_sasaran=$3, penjelasan_kondisi=$4, bantuan_mendesak=$5, latitude=$6, longitude=$7, file_identitas_sasaran=$8, file_sk_desa=$9, updated_by=$10 WHERE id=$11 AND deleted_at IS NULL`,
+            [kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, updated_by, req.params.id]
+        );
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Sosial diperbarui' });
+    } catch (e) { err(res, e.message); }
+});
+
+// DELETE /api/spm/sosial/:id
+app.delete('/api/spm/sosial/:id', async (req, res) => {
+    try {
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE spm_sosial SET deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data SPM Sosial dihapus (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -541,7 +700,7 @@ app.post('/api/spm/sosial', async (req, res) => {
 app.get('/api/spm/trantibum', async (req, res) => {
     try {
         const { kader_id, status_pengajuan, kategori_laporan } = req.query;
-        let q = 'SELECT * FROM spm_trantibum WHERE 1=1';
+        let q = 'SELECT * FROM spm_trantibum WHERE deleted_at IS NULL';
         const p = [];
         if (kader_id)         { p.push(kader_id);         q += ` AND kader_id=$${p.length}`; }
         if (status_pengajuan) { p.push(status_pengajuan);  q += ` AND status_pengajuan=$${p.length}`; }
@@ -554,7 +713,7 @@ app.get('/api/spm/trantibum', async (req, res) => {
 
 app.get('/api/spm/trantibum/:id', async (req, res) => {
     try {
-        const { rows } = await pool.query('SELECT * FROM spm_trantibum WHERE id=$1', [req.params.id]);
+        const { rows } = await pool.query('SELECT * FROM spm_trantibum WHERE id=$1 AND deleted_at IS NULL', [req.params.id]);
         if (!rows.length) return err(res, 'Data tidak ditemukan', 404);
         ok(res, rows[0]);
     } catch (e) { err(res, e.message); }
@@ -564,17 +723,40 @@ app.post('/api/spm/trantibum', async (req, res) => {
     try {
         const { kader_id, tgl_pengajuan, waktu_kejadian, kategori_laporan, detail_kejadian,
                 latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor,
-                file_ktp_pelapor, estimasi_korban, estimasi_kerugian } = req.body;
+                file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by } = req.body;
         if (!kader_id || !kategori_laporan || !detail_kejadian) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_trantibum (kader_id, tgl_pengajuan, waktu_kejadian, kategori_laporan, detail_kejadian,
-             latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
+             latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING id`,
             [kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0], waktu_kejadian,
              kategori_laporan, detail_kejadian, latitude, longitude, is_anonim || 0,
-             nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian]
+             nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengaduan Trantibum disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/spm/trantibum/:id
+app.put('/api/spm/trantibum/:id', async (req, res) => {
+    try {
+        const { waktu_kejadian, kategori_laporan, detail_kejadian, latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, updated_by } = req.body;
+        const result = await pool.query(
+            `UPDATE spm_trantibum SET waktu_kejadian=$1, kategori_laporan=$2, detail_kejadian=$3, latitude=$4, longitude=$5, is_anonim=$6, nama_pelapor=$7, no_kontak_pelapor=$8, file_ktp_pelapor=$9, estimasi_korban=$10, estimasi_kerugian=$11, updated_by=$12 WHERE id=$13 AND deleted_at IS NULL`,
+            [waktu_kejadian, kategori_laporan, detail_kejadian, latitude, longitude, is_anonim || 0, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, updated_by, req.params.id]
+        );
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data Trantibum diperbarui' });
+    } catch (e) { err(res, e.message); }
+});
+
+// DELETE /api/spm/trantibum/:id
+app.delete('/api/spm/trantibum/:id', async (req, res) => {
+    try {
+        const { deleted_by } = req.body;
+        const result = await pool.query('UPDATE spm_trantibum SET deleted_at=NOW(), deleted_by=$1 WHERE id=$2', [deleted_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
+        ok(res, { message: 'Data Trantibum dihapus (soft delete)' });
     } catch (e) { err(res, e.message); }
 });
 
@@ -589,9 +771,9 @@ app.get('/api/pengajuan', async (req, res) => {
         let q = `
             SELECT p.*, k.no_kk, a.nama_lengkap AS nama_kepala_keluarga
             FROM pengajuan_spm p
-            LEFT JOIN keluarga k ON k.id = p.keluarga_id
-            LEFT JOIN anggota_keluarga a ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga'
-            WHERE 1=1`;
+            LEFT JOIN keluarga k ON k.id = p.keluarga_id AND k.deleted_at IS NULL
+            LEFT JOIN anggota_keluarga a ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga' AND a.deleted_at IS NULL
+            WHERE p.deleted_at IS NULL`;
         const params = [];
         if (kader_id)  { params.push(kader_id);   q += ` AND p.kader_id=$${params.length}`; }
         if (status)    { params.push(status);       q += ` AND p.status=$${params.length}`; }
@@ -609,9 +791,9 @@ app.get('/api/pengajuan/:id', async (req, res) => {
         const { rows } = await pool.query(
             `SELECT p.*, k.no_kk, a.nama_lengkap AS nama_kepala_keluarga
              FROM pengajuan_spm p
-             LEFT JOIN keluarga k ON k.id = p.keluarga_id
-             LEFT JOIN anggota_keluarga a ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga'
-             WHERE p.id=$1`, [req.params.id]
+             LEFT JOIN keluarga k ON k.id = p.keluarga_id AND k.deleted_at IS NULL
+             LEFT JOIN anggota_keluarga a ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga' AND a.deleted_at IS NULL
+             WHERE p.id=$1 AND p.deleted_at IS NULL`, [req.params.id]
         );
         if (!rows.length) return err(res, 'Pengajuan tidak ditemukan', 404);
         ok(res, rows[0]);
@@ -621,28 +803,113 @@ app.get('/api/pengajuan/:id', async (req, res) => {
 // POST /api/pengajuan
 app.post('/api/pengajuan', async (req, res) => {
     try {
-        const { kader_id, keluarga_id, jenis_spm, ref_id } = req.body;
+        const { kader_id, keluarga_id, jenis_spm, ref_id, created_by } = req.body;
         if (!kader_id || !jenis_spm || !ref_id) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
-            `INSERT INTO pengajuan_spm (kader_id, keluarga_id, jenis_spm, ref_id) VALUES ($1,$2,$3,$4) RETURNING id, kode_pengajuan`,
-            [kader_id, keluarga_id, jenis_spm, ref_id]
+            `INSERT INTO pengajuan_spm (kader_id, keluarga_id, jenis_spm, ref_id, created_by) VALUES ($1,$2,$3,$4,$5) RETURNING id, kode_pengajuan`,
+            [kader_id, keluarga_id, jenis_spm, ref_id, created_by]
         );
         ok(res, { id: rows[0].id, kode_pengajuan: rows[0].kode_pengajuan, message: 'Pengajuan SPM dicatat' }, 201);
     } catch (e) { err(res, e.message); }
 });
 
-// PUT /api/pengajuan/:id/status
-app.put('/api/pengajuan/:id/status', async (req, res) => {
+// PUT /api/pengajuan/:id/validasi-desa
+app.put('/api/pengajuan/:id/validasi-desa', async (req, res) => {
     try {
-        const { status, catatan, updated_by } = req.body;
-        if (!status) return err(res, 'Status wajib diisi', 400);
-        const result = await pool.query(
-            `UPDATE pengajuan_spm SET status=$1, catatan=$2, updated_by=$3 WHERE id=$4`,
-            [status, catatan, updated_by, req.params.id]
-        );
+        const { updated_by } = req.body;
+        const result = await pool.query("UPDATE pengajuan_spm SET status='menunggu_assesment', updated_by=$1 WHERE id=$2 AND deleted_at IS NULL", [updated_by, req.params.id]);
         if (!result.rowCount) return err(res, 'Pengajuan tidak ditemukan', 404);
-        ok(res, { message: 'Status pengajuan diperbarui' });
+        ok(res, { message: 'Pengajuan divalidasi oleh desa, lanjut ke assesment lapangan' });
     } catch (e) { err(res, e.message); }
+});
+
+// POST /api/pengajuan/:id/assesment
+app.post('/api/pengajuan/:id/assesment', async (req, res) => {
+    try {
+        const { foto_kk, foto_rumah, latitude, longitude, deskripsi_assesment, created_by } = req.body;
+        await pool.query('BEGIN');
+        await pool.query(
+            `INSERT INTO pengajuan_assesment (pengajuan_id, foto_kk, foto_rumah, latitude, longitude, deskripsi_assesment, created_by) 
+             VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+            [req.params.id, foto_kk, foto_rumah, latitude, longitude, deskripsi_assesment, created_by]
+        );
+        await pool.query("UPDATE pengajuan_spm SET status='menunggu_rtl_desa', updated_by=$1 WHERE id=$2", [created_by, req.params.id]);
+        await pool.query('COMMIT');
+        ok(res, { message: 'Assesment lapangan berhasil disimpan' });
+    } catch (e) { await pool.query('ROLLBACK'); err(res, e.message); }
+});
+
+// PUT /api/pengajuan/:id/rtl-desa
+app.put('/api/pengajuan/:id/rtl-desa', async (req, res) => {
+    try {
+        const { keputusan, updated_by } = req.body; // 'selesai' atau 'rujuk'
+        if (keputusan === 'selesai') {
+            await pool.query("UPDATE pengajuan_spm SET status='selesai_di_desa', updated_by=$1 WHERE id=$2", [updated_by, req.params.id]);
+            ok(res, { message: 'Pengajuan diselesaikan di tingkat desa' });
+        } else if (keputusan === 'rujuk') {
+            ok(res, { message: 'Silakan upload surat pengantar rujukan' });
+        } else {
+            err(res, 'Keputusan tidak valid', 400);
+        }
+    } catch (e) { err(res, e.message); }
+});
+
+// POST /api/pengajuan/:id/rujukan
+app.post('/api/pengajuan/:id/rujukan', async (req, res) => {
+    try {
+        const { no_surat_pengantar, file_surat_pengantar, created_by } = req.body;
+        await pool.query('BEGIN');
+        await pool.query(
+            `INSERT INTO pengajuan_rujukan (pengajuan_id, no_surat_pengantar, file_surat_pengantar, tgl_upload, created_by) 
+             VALUES ($1,$2,$3,NOW(),$4)`,
+            [req.params.id, no_surat_pengantar, file_surat_pengantar, created_by]
+        );
+        await pool.query("UPDATE pengajuan_spm SET status='menunggu_validasi_kecamatan', updated_by=$1 WHERE id=$2", [created_by, req.params.id]);
+        await pool.query('COMMIT');
+        ok(res, { message: 'Surat rujukan berhasil diupload, menunggu validasi kecamatan' });
+    } catch (e) { await pool.query('ROLLBACK'); err(res, e.message); }
+});
+
+// PUT /api/pengajuan/:id/validasi-kecamatan
+app.put('/api/pengajuan/:id/validasi-kecamatan', async (req, res) => {
+    try {
+        const { updated_by } = req.body;
+        await pool.query('BEGIN');
+        await pool.query("UPDATE pengajuan_rujukan SET validasi_kecamatan=1, updated_by=$1 WHERE pengajuan_id=$2", [updated_by, req.params.id]);
+        await pool.query("UPDATE pengajuan_spm SET status='menunggu_validasi_kabupaten', updated_by=$1 WHERE id=$2", [updated_by, req.params.id]);
+        await pool.query('COMMIT');
+        ok(res, { message: 'Rujukan divalidasi oleh kecamatan' });
+    } catch (e) { await pool.query('ROLLBACK'); err(res, e.message); }
+});
+
+// PUT /api/pengajuan/:id/validasi-kabupaten
+app.put('/api/pengajuan/:id/validasi-kabupaten', async (req, res) => {
+    try {
+        const { updated_by } = req.body;
+        await pool.query('BEGIN');
+        await pool.query("UPDATE pengajuan_rujukan SET validasi_kabupaten=1, updated_by=$1 WHERE pengajuan_id=$2", [updated_by, req.params.id]);
+        await pool.query("UPDATE pengajuan_spm SET status='menunggu_rtl_dinas', updated_by=$1 WHERE id=$2", [updated_by, req.params.id]);
+        await pool.query('COMMIT');
+        ok(res, { message: 'Rujukan divalidasi oleh kabupaten' });
+    } catch (e) { await pool.query('ROLLBACK'); err(res, e.message); }
+});
+
+// PUT /api/pengajuan/:id/rtl-dinas
+app.put('/api/pengajuan/:id/rtl-dinas', async (req, res) => {
+    try {
+        const { tindak_lanjut_dinas, updated_by } = req.body;
+        await pool.query('BEGIN');
+        await pool.query("UPDATE pengajuan_rujukan SET tindak_lanjut_dinas=$2, updated_by=$3 WHERE pengajuan_id=$1", [req.params.id, tindak_lanjut_dinas, updated_by]);
+        const result = await pool.query("UPDATE pengajuan_spm SET status='selesai_di_dinas', updated_by=$2 WHERE id=$1 RETURNING kader_id", [req.params.id, updated_by]);
+        await pool.query('COMMIT');
+        
+        if (result.rowCount) {
+            const kaderId = result.rows[0].kader_id;
+            await pool.query("INSERT INTO notifikasi (user_id, judul, pesan, created_by) VALUES ($1, 'Pengajuan Selesai', 'Pengajuan Anda telah diselesaikan oleh Dinas.', $2)", [kaderId, updated_by]);
+        }
+        
+        ok(res, { message: 'Tindak lanjut dinas selesai, pemberitahuan dikirim ke pelapor' });
+    } catch (e) { await pool.query('ROLLBACK'); err(res, e.message); }
 });
 
 // ============================================================
@@ -720,9 +987,9 @@ app.get('/api/laporan/gizi', async (req, res) => {
                WHEN 'hijau'  THEN 'Normal'
              END AS rekomendasi
              FROM spm_kesehatan sk
-             JOIN anggota_keluarga a ON a.id=sk.anggota_id
-             JOIN keluarga k         ON k.id=sk.keluarga_id
-             WHERE sk.jenis_sasaran='balita'
+             JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
+             JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
+             WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
              AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
              AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
              ${kader_id ? 'AND sk.kader_id=$3' : ''}
@@ -742,9 +1009,9 @@ app.get('/api/laporan/bumil-kek', async (req, res) => {
              sk.tekanan_darah, sk.lingkar_lengan_cm, sk.tgl_pelayanan, k.rt, k.rw,
              CASE WHEN sk.lingkar_lengan_cm < 23.5 THEN 'BERISIKO KEK' ELSE 'Normal' END AS status_kek
              FROM spm_kesehatan sk
-             JOIN anggota_keluarga a ON a.id=sk.anggota_id
-             JOIN keluarga k         ON k.id=sk.keluarga_id
-             WHERE sk.jenis_sasaran='bumil'
+             JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
+             JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
+             WHERE sk.jenis_sasaran='bumil' AND sk.deleted_at IS NULL
              AND sk.tgl_pelayanan >= CURRENT_DATE - INTERVAL '3 months'
              ${kader_id ? 'AND sk.kader_id=$1' : ''}
              ORDER BY sk.lingkar_lengan_cm ASC`, p
@@ -761,7 +1028,7 @@ app.get('/api/laporan/bumil-kek', async (req, res) => {
 app.get('/api/profil/:id', async (req, res) => {
     try {
         const { rows } = await pool.query(
-            'SELECT id, nama_lengkap, nik, email, no_hp, rw, rt, desa, kecamatan, kabupaten, role, foto_profil, created_at FROM users WHERE id=$1',
+            'SELECT id, nama_lengkap, nik, email, no_hp, rw, rt, desa, kecamatan, kabupaten, role, foto_profil, created_at FROM users WHERE id=$1 AND deleted_at IS NULL',
             [req.params.id]
         );
         if (!rows.length) return err(res, 'Profil tidak ditemukan', 404);
@@ -772,10 +1039,10 @@ app.get('/api/profil/:id', async (req, res) => {
 // PUT /api/profil/:id
 app.put('/api/profil/:id', async (req, res) => {
     try {
-        const { nama_lengkap, email, no_hp, rw, rt, desa, kecamatan, kabupaten, foto_profil } = req.body;
+        const { nama_lengkap, email, no_hp, rw, rt, desa, kecamatan, kabupaten, foto_profil, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE users SET nama_lengkap=$1, email=$2, no_hp=$3, rw=$4, rt=$5, desa=$6, kecamatan=$7, kabupaten=$8, foto_profil=$9 WHERE id=$10`,
-            [nama_lengkap, email, no_hp, rw, rt, desa, kecamatan, kabupaten, foto_profil, req.params.id]
+            `UPDATE users SET nama_lengkap=$1, email=$2, no_hp=$3, rw=$4, rt=$5, desa=$6, kecamatan=$7, kabupaten=$8, foto_profil=$9, updated_by=$10 WHERE id=$11 AND deleted_at IS NULL`,
+            [nama_lengkap, email, no_hp, rw, rt, desa, kecamatan, kabupaten, foto_profil, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'User tidak ditemukan', 404);
         ok(res, { message: 'Profil diperbarui' });
@@ -785,18 +1052,105 @@ app.put('/api/profil/:id', async (req, res) => {
 // PUT /api/profil/:id/password
 app.put('/api/profil/:id/password', async (req, res) => {
     try {
-        const { password_lama, password_baru } = req.body;
+        const { password_lama, password_baru, updated_by } = req.body;
         if (!password_lama || !password_baru) return err(res, 'Password lama dan baru wajib diisi', 400);
         // NOTE: Di produksi gunakan bcrypt.compare dan bcrypt.hash
-        const { rows } = await pool.query('SELECT id FROM users WHERE id=$1 AND password=$2', [req.params.id, password_lama]);
+        const { rows } = await pool.query('SELECT id FROM users WHERE id=$1 AND password=$2 AND deleted_at IS NULL', [req.params.id, password_lama]);
         if (!rows.length) return err(res, 'Password lama tidak cocok', 401);
-        await pool.query('UPDATE users SET password=$1 WHERE id=$2', [password_baru, req.params.id]);
+        await pool.query('UPDATE users SET password=$1, updated_by=$2 WHERE id=$3', [password_baru, updated_by, req.params.id]);
         ok(res, { message: 'Password berhasil diperbarui' });
     } catch (e) { err(res, e.message); }
 });
 
 // ============================================================
-// 15. VIEWS & REKAP (ADMIN)
+// 15. ASSESMENT, PESAN & NOTIFIKASI
+// ============================================================
+
+// GET /api/assesment?kader_id=
+app.get('/api/assesment', async (req, res) => {
+    try {
+        const { kader_id } = req.query;
+        let q = 'SELECT * FROM posyandu_assesment WHERE deleted_at IS NULL';
+        const p = [];
+        if (kader_id) { p.push(kader_id); q += ' AND kader_id=$1'; }
+        q += ' ORDER BY tgl_assesment DESC';
+        const { rows } = await pool.query(q, p);
+        ok(res, rows);
+    } catch (e) { err(res, e.message); }
+});
+
+// POST /api/assesment
+app.post('/api/assesment', async (req, res) => {
+    try {
+        const { kader_id, tgl_assesment, meja_1_pendaftaran, meja_2_penimbangan, meja_3_pencatatan,
+                meja_4_penyuluhan, meja_5_pelayanan, alat_timbangan_ok, alat_ukur_tinggi_ok,
+                stok_vitamin_a, stok_obat_cacing, catatan_kendala, created_by } = req.body;
+        if (!kader_id) return err(res, 'kader_id wajib', 400);
+        const { rows } = await pool.query(
+            `INSERT INTO posyandu_assesment (kader_id, tgl_assesment, meja_1_pendaftaran, meja_2_penimbangan,
+             meja_3_pencatatan, meja_4_penyuluhan, meja_5_pelayanan, alat_timbangan_ok, alat_ukur_tinggi_ok,
+             stok_vitamin_a, stok_obat_cacing, catatan_kendala, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
+            [kader_id, tgl_assesment || new Date(), meja_1_pendaftaran || 1, meja_2_penimbangan || 1,
+             meja_3_pencatatan || 1, meja_4_penyuluhan || 1, meja_5_pelayanan || 1, alat_timbangan_ok || 1,
+             alat_ukur_tinggi_ok || 1, stok_vitamin_a || 1, stok_obat_cacing || 1, catatan_kendala, created_by]
+        );
+        ok(res, { id: rows[0].id, message: 'Assesment berhasil disimpan' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// GET /api/pesan?user_id=
+app.get('/api/pesan', async (req, res) => {
+    try {
+        const { user_id } = req.query;
+        if (!user_id) return err(res, 'user_id wajib', 400);
+        const { rows } = await pool.query(
+            `SELECT p.*, u.nama_lengkap AS nama_pengirim FROM pesan p
+             JOIN users u ON u.id = p.pengirim_id AND u.deleted_at IS NULL
+             WHERE (p.penerima_id = $1 OR p.pengirim_id = $1) AND p.deleted_at IS NULL
+             ORDER BY p.created_at DESC`, [user_id]
+        );
+        ok(res, rows);
+    } catch (e) { err(res, e.message); }
+});
+
+// POST /api/pesan
+app.post('/api/pesan', async (req, res) => {
+    try {
+        const { pengirim_id, penerima_id, isi_pesan, created_by } = req.body;
+        if (!pengirim_id || !penerima_id || !isi_pesan) return err(res, 'Field wajib tidak lengkap', 400);
+        const { rows } = await pool.query(
+            'INSERT INTO pesan (pengirim_id, penerima_id, isi_pesan, created_by) VALUES ($1,$2,$3,$4) RETURNING id',
+            [pengirim_id, penerima_id, isi_pesan, created_by]
+        );
+        ok(res, { id: rows[0].id, message: 'Pesan terkirim' }, 201);
+    } catch (e) { err(res, e.message); }
+});
+
+// GET /api/notifikasi?user_id=
+app.get('/api/notifikasi', async (req, res) => {
+    try {
+        const { user_id } = req.query;
+        if (!user_id) return err(res, 'user_id wajib', 400);
+        const { rows } = await pool.query(
+            'SELECT * FROM notifikasi WHERE user_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC', [user_id]
+        );
+        ok(res, rows);
+    } catch (e) { err(res, e.message); }
+});
+
+// PUT /api/notifikasi/:id/read
+app.put('/api/notifikasi/:id/read', async (req, res) => {
+    try {
+        const { updated_by } = req.body;
+        const result = await pool.query('UPDATE notifikasi SET is_read=1, updated_by=$1 WHERE id=$2 AND deleted_at IS NULL', [updated_by, req.params.id]);
+        if (!result.rowCount) return err(res, 'Notifikasi tidak ditemukan', 404);
+        ok(res, { message: 'Notifikasi ditandai sudah dibaca' });
+    } catch (e) { err(res, e.message); }
+});
+
+// ============================================================
+// 16. VIEWS & REKAP (ADMIN)
 // ============================================================
 
 // GET /api/view/keluarga-lengkap?rt=
@@ -813,7 +1167,7 @@ app.get('/api/view/keluarga-lengkap', async (req, res) => {
 // GET /api/users  (admin only)
 app.get('/api/users', async (req, res) => {
     try {
-        const { rows } = await pool.query('SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, is_active, created_at FROM users ORDER BY nama_lengkap');
+        const { rows } = await pool.query("SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, is_active, created_at FROM users WHERE deleted_at IS NULL ORDER BY nama_lengkap");
         ok(res, rows);
     } catch (e) { err(res, e.message); }
 });
@@ -821,7 +1175,8 @@ app.get('/api/users', async (req, res) => {
 // PUT /api/users/:id/toggle-active  (admin)
 app.put('/api/users/:id/toggle-active', async (req, res) => {
     try {
-        const result = await pool.query('UPDATE users SET is_active = CASE WHEN is_active=1 THEN 0 ELSE 1 END WHERE id=$1 RETURNING is_active', [req.params.id]);
+        const { updated_by } = req.body;
+        const result = await pool.query('UPDATE users SET is_active = CASE WHEN is_active=1 THEN 0 ELSE 1 END, updated_by=$1 WHERE id=$2 AND deleted_at IS NULL RETURNING is_active', [updated_by, req.params.id]);
         if (!result.rowCount) return err(res, 'User tidak ditemukan', 404);
         ok(res, { is_active: result.rows[0].is_active });
     } catch (e) { err(res, e.message); }
@@ -842,5 +1197,8 @@ app.listen(PORT, () => {
     console.log('   PENGAJUAN → CRUD /api/pengajuan');
     console.log('   LAPORAN   → GET  /api/laporan/{dashboard|gizi|bumil-kek}');
     console.log('   PROFIL    → GET/PUT /api/profil/:id');
+    console.log('   ASSESMENT → GET/POST /api/assesment');
+    console.log('   PESAN     → GET/POST /api/pesan');
+    console.log('   NOTIFIKASI→ GET/PUT /api/notifikasi');
     console.log('   VIEWS     → GET  /api/view/keluarga-lengkap');
 });

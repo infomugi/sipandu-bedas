@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - RTL Dinas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="antialiased" style="color:#334155;">
+
+<div class="app-container">
+    <div class="view-screen">
+        <!-- Header -->
+        <header class="header-white-nav">
+            <button onclick="location.href='index.html'" class="btn-back" aria-label="Kembali">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div>
+                <h2 class="page-title">Penyelesaian Dinas</h2>
+                <p class="page-subtitle">Tindak Lanjut & Selesai</p>
+            </div>
+        </header>
+
+        <main class="view-content" style="padding:1.25rem;">
+            <!-- Referral Details -->
+            <div class="card" style="margin-bottom:1.5rem;padding:1.5rem;background:#f8fafc;border-style:dashed;">
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+                    <div class="stat-icon" style="background:#064e3b;color:white;width:2.5rem;height:2.5rem;">
+                        <i class="fa-solid fa-building-circle-check"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size:0.875rem;font-weight:800;color:#0f172a;">RUJUKAN TERVERIFIKASI</h4>
+                        <p class="caption-text">Siap untuk ditindaklanjuti</p>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr;gap:0.5rem;">
+                    <p class="caption-text" style="color:#475569;font-weight:600;"><i class="fa-solid fa-hashtag mr-1"></i> No: 460/01/DS (Rancamanyar)</p>
+                    <p class="caption-text" style="color:#475569;font-weight:600;"><i class="fa-solid fa-user mr-1"></i> Sasaran: Atang Oktaviana</p>
+                    <p class="caption-text" style="color:#475569;font-weight:600;"><i class="fa-solid fa-house-chimney mr-1 text-brand-500"></i> SPM Perumahan (Rutilahu)</p>
+                </div>
+            </div>
+
+            <!-- Form Resolution -->
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Rencana Tindak Lanjut Dinas</label>
+                    <p class="caption-text" style="margin-bottom:0.75rem;line-height:1.4;">Input langkah konkret yang dilakukan oleh Dinas untuk menyelesaikan usulan ini.</p>
+                    <textarea class="form-input" style="height:8rem;resize:none;" placeholder="Contoh: Telah dilakukan verifikasi fisik dan usulan masuk dalam anggaran perubahan triwulan II..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Bukti Penyelesaian (Opsional)</label>
+                    <div class="upload-area" onclick="document.getElementById('fileSelesai').click()">
+                        <i class="fa-solid fa-camera" style="color:#94a3b8;"></i>
+                        <span class="caption-text" style="font-weight:700;">Foto Dokumentasi / Berita Acara</span>
+                    </div>
+                    <input type="file" id="fileSelesai" class="step-hidden">
+                </div>
+
+                <div class="info-box info-box-rose" style="margin-top:2rem;margin-bottom:2.5rem;">
+                    <div style="display:flex;gap:0.75rem;">
+                        <i class="fa-solid fa-whatsapp" style="color:#e11d48;font-size:1.125rem;"></i>
+                        <p style="font-size:0.75rem;color:#9f1239;font-weight:600;line-height:1.4;">
+                            Menekan tombol "Selesaikan Laporan" akan mengirimkan pesan konfirmasi otomatis kepada Pelapor melalui WhatsApp.
+                        </p>
+                    </div>
+                </div>
+
+                <button type="button" onclick="location.href='index.html'" class="btn-primary" style="background:linear-gradient(135deg, #0f172a 0%, #334155 100%);box-shadow: 0 4px 14px rgba(15, 23, 42, 0.3);">
+                    <i class="fa-solid fa-circle-check"></i> Selesaikan Laporan
+                </button>
+            </form>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

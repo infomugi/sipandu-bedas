@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - Verifikasi Desa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="antialiased" style="color:#334155;">
+
+<div class="app-container">
+    <div class="view-screen">
+        <!-- Header -->
+        <header class="header-white-nav">
+            <button onclick="location.href='index.html'" class="btn-back" aria-label="Kembali">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div>
+                <h2 class="page-title">Verifikasi Desa</h2>
+                <p class="page-subtitle">Validasi & Rencana Tindak Lanjut</p>
+            </div>
+        </header>
+
+        <main class="view-content" style="padding:1.25rem;">
+            <!-- Tabs -->
+            <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;overflow-x:auto;padding-bottom:0.5rem;">
+                <button class="btn-small" style="background:#059669;color:white;white-space:nowrap;">Semua Laporan</button>
+                <button class="btn-small" style="background:#f1f5f9;color:#64748b;white-space:nowrap;">Validasi RW</button>
+                <button class="btn-small" style="background:#f1f5f9;color:#64748b;white-space:nowrap;">Menunggu RTL</button>
+            </div>
+
+            <!-- List -->
+            <div style="display:flex;flex-direction:column;gap:1rem;">
+                <!-- Item 1: Waiting Validation -->
+                <div class="card">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+                        <span class="chip chip-amber">Menunggu Validasi</span>
+                        <span class="caption-text">Posyandu RW 11</span>
+                    </div>
+                    <h4 style="font-size:0.875rem;font-weight:800;color:#1e293b;margin-bottom:0.25rem;text-transform:uppercase;">Bantuan Rutilahu</h4>
+                    <p class="caption-text" style="margin-bottom:1rem;">Atang Oktaviana · RT 02 RW 11</p>
+                    
+                    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:0.75rem;">
+                        <button class="btn-small" style="background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;">
+                            <i class="fa-solid fa-file-lines"></i> Detail
+                        </button>
+                        <button onclick="openModal('validasi')" class="btn-small" style="background:#10b981;color:white;">
+                            <i class="fa-solid fa-check-circle"></i> Validasi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Item 2: Waiting RTL -->
+                <div class="card" style="background:#f0fdf4;border-color:#d1fae5;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+                        <span class="chip chip-blue">Menunggu RTL Desa</span>
+                        <span class="caption-text">Posyandu RW 08</span>
+                    </div>
+                    <h4 style="font-size:0.875rem;font-weight:800;color:#1e293b;margin-bottom:0.25rem;text-transform:uppercase;">Layanan PMT Balita</h4>
+                    <p class="caption-text" style="margin-bottom:1rem;">Hansah Darmawan · RT 01 RW 08</p>
+                    
+                    <div class="info-box info-box-emerald" style="margin-bottom:1rem;padding:0.75rem;">
+                        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
+                            <i class="fa-solid fa-location-crosshairs" style="color:#059669;font-size:0.75rem;"></i>
+                            <span style="font-size:0.75rem;font-weight:700;color:#064e3b;">Assesment Selesai</span>
+                        </div>
+                        <p style="font-size:0.6875rem;color:#065f46;line-height:1.4;">Dokumen lapangan telah diupload oleh Kader Posyandu.</p>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:0.75rem;">
+                        <button class="btn-small" style="background:white;border:1px solid #d1fae5;color:#059669;">
+                            Assesment
+                        </button>
+                        <button onclick="openModal('rtl')" class="btn-small" style="background:#10b981;color:white;">
+                            Tentukan RTL
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <button onclick="location.href='index.html'" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Beranda</span>
+            </button>
+            <button class="nav-item active">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Verifikasi</span>
+            </button>
+            <button class="nav-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Laporan</span>
+            </button>
+            <button class="nav-item">
+                <i class="fa-solid fa-user-circle"></i>
+                <span>Profil</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modal System (Simplified for compatibility) -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-card">
+            <div id="contentValidasi" class="step-hidden">
+                <div class="stat-icon" style="background:#ecfdf5;color:#059669;margin:0 auto 1.5rem;width:3.5rem;height:3.5rem;font-size:1.5rem;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="page-title" style="margin-bottom:0.5rem;">Validasi Laporan</h3>
+                <p class="caption-text" style="margin-bottom:2rem;line-height:1.5;">Pastikan data pendaftaran warga sudah sesuai dengan dokumen kependudukan.</p>
+                <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                    <button class="btn-primary" onclick="closeModal()">Validasi Sekarang</button>
+                    <button class="btn-ghost" onclick="closeModal()">Tolak Laporan</button>
+                </div>
+            </div>
+
+            <div id="contentRTL" class="step-hidden">
+                <div class="stat-icon" style="background:#eff6ff;color:#2563eb;margin:0 auto 1.5rem;width:3.5rem;height:3.5rem;font-size:1.5rem;">
+                    <i class="fa-solid fa-route"></i>
+                </div>
+                <h3 class="page-title" style="margin-bottom:0.5rem;">Rencana Tindak Lanjut</h3>
+                <p class="caption-text" style="margin-bottom:2rem;line-height:1.5;">Tentukan level penanganan masalah sesuai hasil assesment lapangan.</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                    <div onclick="location.href='index.html'" class="menu-card" style="padding:1rem;">
+                        <div class="menu-icon" style="background:#ecfdf5;color:#059669;width:2.5rem;height:2.5rem;font-size:1rem;">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <span style="font-size:0.625rem;font-weight:800;text-transform:uppercase;">Selesai Desa</span>
+                    </div>
+                    <div onclick="location.href='rujukan-desa.html'" class="menu-card" style="padding:1rem;">
+                        <div class="menu-icon" style="background:#eff6ff;color:#2563eb;width:2.5rem;height:2.5rem;font-size:1rem;">
+                            <i class="fa-solid fa-file-export"></i>
+                        </div>
+                        <span style="font-size:0.625rem;font-weight:800;text-transform:uppercase;">Rujuk Dinas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(type) {
+        document.body.classList.add('modal-open');
+        document.querySelectorAll('.step-hidden').forEach(el => el.style.display = 'none');
+        if(type === 'validasi') document.getElementById('contentValidasi').style.display = 'block';
+        if(type === 'rtl') document.getElementById('contentRTL').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.body.classList.remove('modal-open');
+    }
+
+    // Close on click outside
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if(e.target === this) closeModal();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - Verifikasi Berjenjang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="antialiased" style="color:#334155;">
+
+<div class="app-container">
+    <div class="view-screen">
+        <!-- Header -->
+        <header class="header-white-nav">
+            <button onclick="location.href='index.html'" class="btn-back" aria-label="Kembali">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div>
+                <h2 class="page-title">Verifikasi Rujukan</h2>
+                <p class="page-subtitle">Validasi Berjenjang Kec/Kab</p>
+            </div>
+        </header>
+
+        <main class="view-content" style="padding:1.25rem;">
+            <!-- Stats overview -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
+                <div class="stat-card" style="padding:0.75rem;">
+                    <div class="stat-icon" style="background:#eff6ff;color:#2563eb;width:2rem;height:2rem;font-size:0.875rem;">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <p class="stat-value" style="font-size:1.125rem;">12</p>
+                        <p class="stat-label" style="font-size:0.5rem;">Antrian</p>
+                    </div>
+                </div>
+                <div class="stat-card" style="padding:0.75rem;">
+                    <div class="stat-icon" style="background:#ecfdf5;color:#059669;width:2rem;height:2rem;font-size:0.875rem;">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div>
+                        <p class="stat-value" style="font-size:1.125rem;">48</p>
+                        <p class="stat-label" style="font-size:0.5rem;">Tervalidasi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List of Referrals -->
+            <div class="section-separator">
+                <i class="fa-solid fa-list-ul"></i>
+                <span>Antrian Rujukan Masuk</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+                <!-- Referral Item -->
+                <div class="card">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                        <span class="chip chip-blue">Menunggu Validasi</span>
+                        <span class="caption-text">2 jam lalu</span>
+                    </div>
+                    <div style="display:flex;gap:1rem;margin-bottom:1rem;">
+                        <div class="stat-icon" style="background:#f8fafc;color:#64748b;width:3rem;height:3rem;border-radius:1rem;">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <h4 style="font-size:0.875rem;font-weight:800;color:#1e293b;">SURAT RUJUKAN #460/01/DS</h4>
+                            <p class="caption-text">Desa Rancamanyar · Kec. Baleendah</p>
+                        </div>
+                    </div>
+                    <div class="info-box info-box-blue" style="margin-bottom:1rem;padding:0.75rem;">
+                        <p style="font-size:0.75rem;color:#1e40af;font-weight:600;"><i class="fa-solid fa-user-circle mr-1"></i> Sasaran: Atang Oktaviana</p>
+                        <p style="font-size:0.6875rem;color:#3b82f6;margin-top:0.25rem;">Dibutuhkan tindak lanjut Rutilahu di tingkat Kabupaten.</p>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                        <button class="btn-small" style="background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;">
+                            <i class="fa-solid fa-eye"></i> Lihat Surat
+                        </button>
+                        <button onclick="openModal()" class="btn-small" style="background:#2563eb;color:white;">
+                            <i class="fa-solid fa-shield-check"></i> Validasi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Another Item -->
+                <div class="card">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                        <span class="chip chip-blue">Menunggu Validasi</span>
+                        <span class="caption-text">Kemarin</span>
+                    </div>
+                    <div style="display:flex;gap:1rem;margin-bottom:1rem;">
+                        <div class="stat-icon" style="background:#f8fafc;color:#64748b;width:3rem;height:3rem;border-radius:1rem;">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <h4 style="font-size:0.875rem;font-weight:800;color:#1e293b;">SURAT RUJUKAN #460/15/DS</h4>
+                            <p class="caption-text">Desa Bojong · Kec. Baleendah</p>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                        <button class="btn-small" style="background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;">
+                            <i class="fa-solid fa-eye"></i> Lihat Surat
+                        </button>
+                        <button onclick="openModal()" class="btn-small" style="background:#2563eb;color:white;">
+                            <i class="fa-solid fa-shield-check"></i> Validasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <button onclick="location.href='index.html'" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Beranda</span>
+            </button>
+            <button class="nav-item active">
+                <i class="fa-solid fa-shield-check"></i>
+                <span>Validasi</span>
+            </button>
+            <button class="nav-item">
+                <i class="fa-solid fa-user-circle"></i>
+                <span>Profil</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modal Validasi -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-card">
+            <div class="stat-icon" style="background:#eff6ff;color:#2563eb;margin:0 auto 1.5rem;width:3.5rem;height:3.5rem;font-size:1.5rem;">
+                <i class="fa-solid fa-check-double"></i>
+            </div>
+            <h3 class="page-title" style="margin-bottom:0.5rem;">Validasi Rujukan</h3>
+            <p class="caption-text" style="margin-bottom:2rem;line-height:1.5;">Anda akan memverifikasi bahwa berkas rujukan dari Desa ini sudah lengkap dan layak diproses oleh Dinas terkait.</p>
+            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                <button class="btn-primary" style="background:#2563eb;" onclick="closeModal()">Setujui Rujukan</button>
+                <button class="btn-ghost" onclick="closeModal()">Tolak / Revisi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.body.classList.add('modal-open');
+    }
+    function closeModal() {
+        document.body.classList.remove('modal-open');
+    }
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if(e.target === this) closeModal();
+    });
+</script>
+
+</body>
+</html>
