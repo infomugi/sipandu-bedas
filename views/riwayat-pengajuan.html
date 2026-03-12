@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - Riwayat Pengajuan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' },
+                        surface: '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #e2e8f0; -webkit-tap-highlight-color: transparent; }
+        ::-webkit-scrollbar { display: none; }
+        
+        .app-container {
+            max-width: 414px; margin: 0 auto; background-color: #f8fafc;
+            height: 100vh; position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        @media (min-width: 640px) {
+            .app-container {
+                height: 850px; margin-top: 2rem; margin-bottom: 2rem;
+                border-radius: 40px; border: 12px solid #0f172a; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .view-content {
+            flex: 1; overflow-y: auto; padding-bottom: 80px;
+        }
+
+        .btn-press:active { transform: scale(0.96); }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(241, 245, 249, 0.8); position: absolute; bottom: 0; width: 100%; z-index: 50;
+        }
+
+        /* Status Colors */
+        .status-badge-pending { background: #fef3c7; color: #d97706; }
+        .status-badge-process { background: #e0e7ff; color: #4338ca; }
+        .status-badge-success { background: #d1fae5; color: #059669; }
+        .status-badge-rejected { background: #ffe4e6; color: #e11d48; }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+<div class="app-container">
+
+    <!-- Header Section -->
+    <header class="bg-indigo-600 px-5 pt-12 pb-6 flex items-center justify-between sticky top-0 z-20 shadow-lg text-white">
+        <div>
+            <h2 class="text-lg font-bold">Riwayat Pengajuan</h2>
+            <p class="text-[10px] text-indigo-100 opacity-80">Pantau status usulan 6 Layanan SPM</p>
+        </div>
+    </header>
+
+    <div class="view-content px-5 pt-6">
+
+        <!-- Tabs -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-none">
+            <button class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-full whitespace-nowrap">Semua</button>
+            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap">Diproses</button>
+            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap">Selesai</button>
+            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap">Ditolak</button>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Item 1 -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center">
+                            <i class="fa-solid fa-house-crack"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">SPM Perumahan</p>
+                            <h4 class="text-xs font-bold text-slate-800">Bantuan Rutilahu</h4>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 text-[9px] font-bold rounded-md status-badge-pending">Menunggu Verifikasi</span>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-3 text-[10px] text-slate-500 font-medium space-y-1">
+                    <p><strong class="text-slate-700">Sasaran:</strong> ATANG OKTAVIANA (KK: 32043204...)</p>
+                    <p><strong class="text-slate-700">Tanggal:</strong> 27 Agustus 2025</p>
+                    <p><strong class="text-slate-700">ID Pengajuan:</strong> #PRM-0082</p>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">SPM Pendidikan</p>
+                            <h4 class="text-xs font-bold text-slate-800">Beasiswa Diniyah</h4>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 text-[9px] font-bold rounded-md status-badge-process">Diproses Dinas</span>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-3 text-[10px] text-slate-500 font-medium space-y-1">
+                    <p><strong class="text-slate-700">Sasaran:</strong> Budi (Anak dari HANSAH DARMAWAN)</p>
+                    <p><strong class="text-slate-700">Tanggal:</strong> 20 Agustus 2025</p>
+                    <p><strong class="text-slate-700">ID Pengajuan:</strong> #PDD-0192</p>
+                </div>
+                <div class="mt-3 text-[10px] text-indigo-600 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-circle-info"></i> Berkas sedang diverifikasi oleh Disdik.
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 opacity-75">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">SPM Kesehatan</p>
+                            <h4 class="text-xs font-bold text-slate-800">Bantuan PMT Balita</h4>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 text-[9px] font-bold rounded-md status-badge-success">Selesai Diberikan</span>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-3 text-[10px] text-slate-500 font-medium space-y-1">
+                    <p><strong class="text-slate-700">Sasaran:</strong> Susi (Anak dari ATANG OKTAVIANA)</p>
+                    <p><strong class="text-slate-700">Tanggal:</strong> 15 Agustus 2025</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="glass-nav px-8 py-5 flex justify-between items-center text-slate-400">
+        <button onclick="location.href='index.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
+            <i class="fa-solid fa-house text-xl"></i>
+            <span class="text-[9px] font-bold">Beranda</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-emerald-600 w-16">
+            <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+            <span class="text-[9px] font-bold">Riwayat</span>
+        </button>
+        <button onclick="location.href='laporan.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
+            <i class="fa-solid fa-chart-pie text-xl"></i>
+            <span class="text-[9px] font-bold">Laporan</span>
+        </button>
+        <button onclick="location.href='profil.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
+            <i class="fa-solid fa-user text-xl"></i>
+            <span class="text-[9px] font-bold">Profil</span>
+        </button>
+    </nav>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - Tambah Kunjungan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="antialiased" style="color:#334155;">
+
+<div class="app-container" id="app">
+
+    <!-- Header -->
+    <header class="header-white-nav">
+        <button onclick="location.href='pendaftaran.html'" class="btn-back" aria-label="Kembali">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div>
+            <h2 class="page-title">Tambah Kunjungan</h2>
+            <p class="page-subtitle">No. KK 3204320432030594</p>
+        </div>
+    </header>
+
+    <div class="view-content" style="padding:1.25rem;padding-bottom:2rem;">
+        
+        <div class="form-group" style="margin-top:0;">
+            <label class="form-label">Tanggal Kunjungan</label>
+            <input type="date" class="form-input" value="2025-08-27">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Nomor WhatsApp / Telp</label>
+            <input type="tel" class="form-input" placeholder="No. HP" value="085794234248">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Foto Kartu Keluarga</label>
+            <div class="upload-area success">
+                <i class="fa-solid fa-file-circle-check" style="font-size:1.5rem;color:#10b981;"></i>
+                <p style="font-size:0.75rem;font-weight:600;color:#475569;">Terupload: 1756250103189.jpg</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Foto Warga yang Hadir</label>
+            <div class="upload-area">
+                <i class="fa-solid fa-camera" style="font-size:1.5rem;color:#cbd5e1;"></i>
+                <p style="font-size:0.75rem;font-weight:600;color:#94a3b8;">Ambil Foto / Pilih File</p>
+            </div>
+        </div>
+
+        <button onclick="showModal()" class="btn-primary" style="margin-top:2.5rem;">
+            <i class="fa-solid fa-floppy-disk"></i> Simpan Kunjungan
+        </button>
+    </div>
+
+    <!-- Modal Success -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-card">
+            <div style="width:4rem;height:4rem;border-radius:50%;background:#ecfdf5;color:#059669;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 1rem;border:3px solid #d1fae5;">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:800;color:#0f172a;margin-bottom:0.5rem;">Berhasil!</h3>
+            <p style="font-size:0.8125rem;color:#64748b;font-weight:500;margin-bottom:1.5rem;line-height:1.5;">Data kunjungan berhasil disimpan.</p>
+            <button onclick="closeModal()" class="btn-dark">OK, Kembali</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showModal() {
+        document.getElementById('app').classList.add('modal-open');
+    }
+    function closeModal() {
+        document.getElementById('app').classList.remove('modal-open');
+        location.href = 'pendaftaran.html';
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="antialiased" style="color:#334155;">
+
+<div class="app-container">
+
+    <!-- Header Section -->
+    <header class="header-white" style="padding-top:2.75rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+            <div style="width:2.75rem;height:2.75rem;border-radius:50%;overflow:hidden;border:2px solid #d1fae5;flex-shrink:0;">
+                <img src="https://i.pravatar.cc/150?img=47" alt="Profile" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div>
+                <p style="font-size:0.8125rem;font-weight:700;color:#0f172a;">HANSAH DARMAWAN</p>
+                <div style="display:flex;align-items:center;gap:0.25rem;margin-top:0.125rem;">
+                    <i class="fa-solid fa-location-dot" style="font-size:0.5625rem;color:#10b981;"></i>
+                    <p style="font-size:0.6875rem;color:#94a3b8;font-weight:500;">Posyandu RW 11 · Rancamanyar · Baleendah</p>
+                </div>
+            </div>
+        </div>
+        <button onclick="location.href='login.html'" class="btn-small" style="background:#fff1f2;color:#e11d48;">
+            <i class="fa-solid fa-right-from-bracket" style="font-size:0.625rem;"></i> Keluar
+        </button>
+    </header>
+
+    <div class="view-content" style="padding-bottom:90px;">
+        <!-- Banner Section -->
+        <section style="padding:1rem 1.25rem;">
+            <div style="width:100%;aspect-ratio:21/9;border-radius:1rem;overflow:hidden;position:relative;">
+                <img src="sipandu_bedas_dashboard_banner_mockup_1773292728208.png" alt="Banner" style="width:100%;height:100%;object-fit:cover;">
+                <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,78,59,0.4) 0%,transparent 60%);"></div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section style="padding:0 1.25rem 1.25rem;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#eff6ff;color:#3b82f6;">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <p class="stat-value">2</p>
+                        <p class="stat-label">Keluarga</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#ecfdf5;color:#10b981;">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                        <p class="stat-value">6</p>
+                        <p class="stat-label">Kunjungan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Grid -->
+        <section style="padding:0 1.25rem 1.5rem;">
+            <div class="section-separator">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Fitur Utama</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                <button onclick="location.href='pendaftaran.html'" class="menu-card">
+                    <div class="menu-icon" style="background:#ecfdf5;color:#059669;">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">Pendaftaran</p>
+                </button>
+                <button onclick="location.href='spm-menu.html'" class="menu-card">
+                    <div class="menu-icon" style="background:#eff6ff;color:#3b82f6;">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">6 Layanan SPM</p>
+                </button>
+                <button class="menu-card" style="position:relative;">
+                    <div class="badge-count">1</div>
+                    <div class="menu-icon" style="background:#fef3c7;color:#d97706;">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">Assesment</p>
+                </button>
+                <button class="menu-card">
+                    <div class="menu-icon" style="background:#fce7f3;color:#db2777;">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">Laporan</p>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </button>
+        <button onclick="location.href='pendaftaran.html'" class="nav-item">
+            <i class="fa-solid fa-users"></i>
+            <span>Keluarga</span>
+        </button>
+        <button class="nav-item">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Laporan</span>
+        </button>
+        <button class="nav-item">
+            <i class="fa-solid fa-user-circle"></i>
+            <span>Profil</span>
+        </button>
+    </nav>
+
+</div>
+
+</body>
+</html>
