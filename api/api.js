@@ -807,6 +807,134 @@ app.get('/api/pengajuan/:id', async (req, res) => {
     } catch (e) { err(res, e.message); }
 });
 
+// GET /api/v1/riwayat/:id
+app.get('/api/v1/riwayat/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // 1. Get fundamental pengajuan info
+        const pengajuanQuery = `
+            SELECT p.*, k.no_kk, u.nama_lengkap AS nama_kader,
+                   CASE 
+                     WHEN p.jenis_spm = 'sosial' THEN (SELECT nama_sasaran FROM spm_sosial WHERE id = p.ref_id)
+                     WHEN p.jenis_spm = 'pendidikan' THEN (SELECT ak.nama_lengkap FROM spm_pendidikan sp JOIN anggota_keluarga ak ON ak.id = sp.anggota_id WHERE sp.id = p.ref_id)
+                     WHEN p.jenis_spm = 'kesehatan' THEN (SELECT ak.nama_lengkap FROM spm_kesehatan sk JOIN anggota_keluarga ak ON ak.id = sk.anggota_id WHERE sk.id = p.ref_id)
+                     ELSE (SELECT ak.nama_lengkap FROM anggota_keluarga ak WHERE ak.keluarga_id = p.keluarga_id AND ak.status_keluarga = 'kepala_keluarga' LIMIT 1)
+                   END AS nama_sasaran,
+                   CASE
+                     WHEN p.jenis_spm = 'sosial' THEN (SELECT nik_sasaran FROM spm_sosial WHERE id = p.ref_id)
+                     WHEN p.jenis_spm = 'pendidikan' THEN (SELECT ak.nik FROM spm_pendidikan sp JOIN anggota_keluarga ak ON ak.id = sp.anggota_id WHERE sp.id = p.ref_id)
+                     WHEN p.jenis_spm = 'kesehatan' THEN (SELECT ak.nik FROM spm_kesehatan sk JOIN anggota_keluarga ak ON ak.id = sk.anggota_id WHERE sk.id = p.ref_id)
+                     ELSE (SELECT ak.nik FROM anggota_keluarga ak WHERE ak.keluarga_id = p.keluarga_id AND ak.status_keluarga = 'kepala_keluarga' LIMIT 1)
+                   END AS nik_sasaran
+            FROM pengajuan_spm p
+            LEFT JOIN keluarga k ON k.id = p.keluarga_id
+            LEFT JOIN users u ON u.id = p.kader_id
+            WHERE p.id = $1 AND p.deleted_at IS NULL
+        `;
+        
+        const { rows: pRows } = await pool.query(pengajuanQuery, [id]);
+        if (pRows.length === 0) return err(res, 'Data riwayat tidak ditemukan', 404);
+        
+        const data = pRows[0];
+        
+        // 2. Build Timeline
+        const timeline = [];
+        
+        // Step 1: Pengajuan (Always exists if record found)
+        timeline.push({
+            title: 'Pengajuan Diterima',
+            desc: 'Usulan telah berhasil dicatat oleh Kader.',
+            time: data.created_at,
+            status: 'success'
+        });
+        
+        // Step 2: Validasi Desa
+        const statusOrder = [
+            'menunggu_validasi_desa',
+            'menunggu_assesment',
+            'menunggu_rtl_desa',
+            'selesai_di_desa',
+            'menunggu_validasi_kecamatan',
+            'menunggu_validasi_kabupaten',
+            'menunggu_rtl_dinas',
+            'selesai_di_dinas'
+        ];
+        
+        const currentStatusIdx = statusOrder.indexOf(data.status);
+        
+        // Helper to add timeline item based on status
+        if (currentStatusIdx >= 1) {
+            timeline.push({
+                title: 'Validasi Desa',
+                desc: 'Dokumen telah diverifikasi di tingkat Desa.',
+                time: null, // In real app, fetch from audit logs/updated_at
+                status: 'success'
+            });
+        }
+        
+        // Step 3: Assesment
+        const { rows: aRows } = await pool.query('SELECT created_at, deskripsi_assesment FROM pengajuan_assesment WHERE pengajuan_id = $1', [id]);
+        if (aRows.length > 0) {
+            timeline.push({
+                title: 'Assesment Lapangan',
+                desc: aRows[0].deskripsi_assesment || 'Petugas telah melakukan kunjungan lapangan.',
+                time: aRows[0].created_at,
+                status: 'success'
+            });
+        } else if (data.status === 'menunggu_assesment') {
+            timeline.push({
+                title: 'Assesment Lapangan',
+                desc: 'Petugas sedang menjadwalkan kunjungan lapangan.',
+                time: 'Sedang diproses',
+                status: 'process'
+            });
+        }
+        
+        // Step 4: Validasi Kecamatan
+        if (currentStatusIdx >= 5) { // 'menunggu_validasi_kabupaten' or higher
+             timeline.push({
+                title: 'Validasi Kecamatan',
+                desc: 'Rujukan telah disetujui oleh Kecamatan.',
+                time: null,
+                status: 'success'
+            });
+        } else if (data.status === 'menunggu_validasi_kecamatan') {
+            timeline.push({
+                title: 'Validasi Kecamatan',
+                desc: 'Menunggu verifikasi dari tingkat Kecamatan.',
+                time: 'Sedang diproses',
+                status: 'process'
+            });
+        }
+        
+        // Step 5: Selesai
+        if (data.status.startsWith('selesai')) {
+            timeline.push({
+                title: 'Selesai',
+                desc: 'Hasil akhir dari pengajuan SPM telah ditetapkan.',
+                time: data.updated_at,
+                status: 'success'
+            });
+        } else {
+             timeline.push({
+                title: 'Selesai',
+                desc: 'Hasil akhir dari pengajuan SPM.',
+                time: null,
+                status: 'pending'
+            });
+        }
+        
+        ok(res, {
+            ...data,
+            timeline
+        });
+        
+    } catch (e) {
+        err(res, e.message);
+    }
+});
+
 // POST /api/pengajuan
 app.post('/api/pengajuan', async (req, res) => {
     try {

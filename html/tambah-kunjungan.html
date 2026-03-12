@@ -4,79 +4,541 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sipandu Bedas - Tambah Kunjungan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
+
+    <style>
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* ── Header ── */
+        .header-premium-nav {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 2.75rem 1.25rem 2rem 1.25rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.3);
+            z-index: 10;
+        }
+        .header-premium-nav::before {
+            content: '';
+            position: absolute;
+            top: -30px; right: -30px;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* ── Floating Content Card ── */
+        .floating-content {
+            position: relative;
+            z-index: 20;
+            padding: 1.25rem 1.25rem 5rem;
+        }
+
+        /* ── Section Card ── */
+        .section-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 12px -3px rgba(0,0,0,0.04);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.9rem 1.1rem;
+            border-bottom: 1px solid #f1f5f9;
+            background: #fafafa;
+        }
+        .section-icon {
+            width: 30px; height: 30px;
+            border-radius: 0.65rem;
+            background: #ecfdf5;
+            color: #059669;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #334155;
+            letter-spacing: 0.01em;
+        }
+
+        .section-body {
+            padding: 1rem 1.1rem;
+        }
+
+        /* ── Form Fields ── */
+        .field-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .field-input {
+            width: 100%;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0.85rem;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+        }
+        .field-input:focus {
+            border-color: #34d399;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.12);
+        }
+        .field-input::placeholder { color: #94a3b8; font-weight: 400; }
+        .field-input[readonly] {
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: default;
+        }
+
+        /* ── Upload Area ── */
+        .upload-box {
+            border: 2px dashed #e2e8f0;
+            border-radius: 0.85rem;
+            padding: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .upload-box:hover {
+            border-color: #34d399;
+            background: #f0fdf4;
+        }
+        .upload-box.success {
+            border-color: #6ee7b7;
+            background: #f0fdf4;
+        }
+        .upload-icon-wrap {
+            width: 36px; height: 36px;
+            border-radius: 0.65rem;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ── Coordinate Row ── */
+        .coord-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+        .coord-hint {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            margin-top: 0.35rem;
+            font-weight: 500;
+        }
+
+        /* ── Map Box ── */
+        .map-box {
+            width: 100%;
+            height: 200px;
+            border-radius: 0.85rem;
+            overflow: hidden;
+            border: 1.5px solid #e2e8f0;
+            background: #f1f5f9;
+            margin-top: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        #map { width: 100%; height: 100%; }
+
+        /* ── Locate Button ── */
+        .btn-locate {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.85rem;
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+            border-radius: 0.65rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #059669;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-locate:hover { background: #d1fae5; }
+        .btn-locate:disabled { opacity: 0.6; cursor: wait; }
+
+        /* ── Save Button ── */
+        .btn-save {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 800;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.35);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -5px rgba(16, 185, 129, 0.45); }
+        .btn-save:active { transform: scale(0.98); }
+
+        /* ── Modal ── */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal-sheet {
+            background: #fff;
+            border-top-left-radius: 1.75rem;
+            border-top-right-radius: 1.75rem;
+            padding: 2rem 1.5rem 3rem;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-backdrop.open .modal-sheet {
+            transform: translateY(0);
+        }
+        .modal-pill {
+            width: 40px; height: 4px;
+            background: #e2e8f0;
+            border-radius: 99px;
+            margin: 0 auto 1.75rem;
+        }
+        .modal-check {
+            width: 68px; height: 68px;
+            border-radius: 50%;
+            background: #ecfdf5;
+            border: 3px solid #a7f3d0;
+            color: #059669;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1.1rem;
+        }
+        .btn-ok {
+            width: 100%;
+            padding: 0.9rem;
+            background: #0f172a;
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: opacity 0.2s;
+            border: none;
+        }
+        .btn-ok:hover { opacity: 0.85; }
+    </style>
 </head>
-<body class="antialiased" style="color:#334155;">
+<body>
 
-<div class="app-container" id="app">
+<div class="app-container" id="app" style="max-width:480px; margin:0 auto; min-height:100vh; position:relative; background:#f8fafc; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
 
-    <!-- Header -->
-    <header class="header-white-nav">
-        <button onclick="location.href='pendaftaran.html'" class="btn-back" aria-label="Kembali">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <div>
-            <h2 class="page-title">Tambah Kunjungan</h2>
-            <p class="page-subtitle">No. KK 3204320432030594</p>
+    <!-- ───── Header ───── -->
+    <header class="header-premium-nav">
+        <div class="flex justify-between items-center relative z-10">
+            <div class="flex items-center gap-2.5">
+                <button onclick="history.back()" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center border border-white/10 active:scale-90 transition-all flex-shrink-0">
+                    <i class="fa-solid fa-chevron-left text-white text-sm"></i>
+                </button>
+                <div>
+                    <h1 class="text-[17px] font-bold text-white leading-tight">Tambah Kunjungan</h1>
+                    <p class="text-[10px] text-emerald-100/90 font-medium mt-0.5">
+                        <i class="fa-regular fa-id-card mr-1 opacity-70"></i>KK 3204320432030594
+                    </p>
+                </div>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center border border-white/10">
+                <i class="fa-solid fa-house-chimney-user text-white text-sm"></i>
+            </div>
         </div>
     </header>
 
-    <div class="view-content" style="padding:1.25rem;padding-bottom:2rem;">
-        
-        <div class="form-group" style="margin-top:0;">
-            <label class="form-label">Tanggal Kunjungan</label>
-            <input type="date" class="form-input" value="2025-08-27">
-        </div>
-        <div class="form-group">
-            <label class="form-label">Nomor WhatsApp / Telp</label>
-            <input type="tel" class="form-input" placeholder="No. HP" value="085794234248">
-        </div>
+    <!-- ───── Floating Content ───── -->
+    <div class="floating-content">
 
-        <div class="form-group">
-            <label class="form-label">Foto Kartu Keluarga</label>
-            <div class="upload-area success">
-                <i class="fa-solid fa-file-circle-check" style="font-size:1.5rem;color:#10b981;"></i>
-                <p style="font-size:0.75rem;font-weight:600;color:#475569;">Terupload: 1756250103189.jpg</p>
+        <!-- SECTION 1: Info Kunjungan -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <span class="section-title">Informasi Kunjungan</span>
+            </div>
+            <div class="section-body flex flex-col gap-4">
+                <div>
+                    <label class="field-label">Tanggal Kunjungan</label>
+                    <input type="date" class="field-input" value="2025-08-27">
+                </div>
+                <div>
+                    <label class="field-label">Nomor WhatsApp / Telepon</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"><i class="fa-brands fa-whatsapp text-green-500"></i></span>
+                        <input type="tel" class="field-input" style="padding-left:2.5rem;" placeholder="08xxxxxxxxxx" value="085794234248">
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">Foto Warga yang Hadir</label>
-            <div class="upload-area">
-                <i class="fa-solid fa-camera" style="font-size:1.5rem;color:#cbd5e1;"></i>
-                <p style="font-size:0.75rem;font-weight:600;color:#94a3b8;">Ambil Foto / Pilih File</p>
+        <!-- SECTION 2: Upload Dokumen -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fa-solid fa-file-image"></i></div>
+                <span class="section-title">Dokumen & Foto</span>
+            </div>
+            <div class="section-body flex flex-col gap-3">
+                <!-- KK Upload -->
+                <div>
+                    <label class="field-label">Foto Kartu Keluarga</label>
+                    <div class="upload-box success">
+                        <div class="upload-icon-wrap" style="background:#ecfdf5;">
+                            <i class="fa-solid fa-file-circle-check text-emerald-500 text-base"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[13px] font-700 text-slate-700 font-bold truncate">1756250103189.jpg</p>
+                            <p class="text-[10px] text-emerald-600 font-semibold mt-0.5"><i class="fa-solid fa-check-circle mr-1"></i>Berhasil diunggah</p>
+                        </div>
+                        <i class="fa-solid fa-pen text-slate-300 text-xs ml-1"></i>
+                    </div>
+                </div>
+                <!-- Warga Upload -->
+                <div>
+                    <label class="field-label">Foto Warga yang Hadir</label>
+                    <div class="upload-box">
+                        <div class="upload-icon-wrap" style="background:#f1f5f9;">
+                            <i class="fa-solid fa-camera text-slate-400 text-base"></i>
+                        </div>
+                        <div>
+                            <p class="text-[13px] font-bold text-slate-500">Ambil Foto / Pilih File</p>
+                            <p class="text-[10px] text-slate-400 font-medium mt-0.5">JPG, PNG — maks. 5 MB</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <button onclick="showModal()" class="btn-primary" style="margin-top:2.5rem;">
-            <i class="fa-solid fa-floppy-disk"></i> Simpan Kunjungan
+        <!-- SECTION 3: Lokasi GPS -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="flex justify-between items-center w-full">
+                    <span class="section-title">Lokasi Kunjungan (GPS)</span>
+                    <button type="button" id="btnLocate" onclick="getLocation()" class="btn-locate">
+                        <i class="fa-solid fa-location-crosshairs text-[11px]"></i> Deteksi
+                    </button>
+                </div>
+            </div>
+            <div class="section-body flex flex-col gap-3">
+                <!-- Coordinate Inputs -->
+                <div class="coord-row">
+                    <div>
+                        <label class="field-label">Latitude</label>
+                        <input type="text" id="latitude" class="field-input text-xs" placeholder="-6.xxxxxx" readonly>
+                        <p class="coord-hint"><i class="fa-solid fa-circle-info mr-1"></i>Terisi otomatis</p>
+                    </div>
+                    <div>
+                        <label class="field-label">Longitude</label>
+                        <input type="text" id="longitude" class="field-input text-xs" placeholder="107.xxxxxx" readonly>
+                        <p class="coord-hint"><i class="fa-solid fa-up-down-left-right mr-1"></i>Geser pin untuk edit</p>
+                    </div>
+                </div>
+
+                <!-- Map Box -->
+                <div class="map-box" id="map-container">
+                    <div id="map-placeholder" class="text-center text-slate-400 p-4">
+                        <i class="fa-solid fa-map-location-dot text-3xl mb-2 block opacity-40"></i>
+                        <p class="text-xs font-semibold">Peta akan muncul di sini</p>
+                        <p class="text-[10px] mt-1 opacity-70">Ketuk "Deteksi" untuk mulai</p>
+                    </div>
+                    <div id="map" style="display:none; width:100%; height:100%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button type="button" onclick="showModal()" class="btn-save mt-2">
+            <i class="fa-solid fa-circle-check text-lg"></i>
+            Simpan Kunjungan
         </button>
-    </div>
 
-    <!-- Modal Success -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-card">
-            <div style="width:4rem;height:4rem;border-radius:50%;background:#ecfdf5;color:#059669;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 1rem;border:3px solid #d1fae5;">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h3 style="font-size:1.25rem;font-weight:800;color:#0f172a;margin-bottom:0.5rem;">Berhasil!</h3>
-            <p style="font-size:0.8125rem;color:#64748b;font-weight:500;margin-bottom:1.5rem;line-height:1.5;">Data kunjungan berhasil disimpan.</p>
-            <button onclick="closeModal()" class="btn-dark">OK, Kembali</button>
-        </div>
     </div>
 
 </div>
 
+<!-- ───── Modal Success ───── -->
+<div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-sheet">
+        <div class="modal-pill"></div>
+        <div class="modal-check">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="text-xl font-extrabold text-slate-900 mb-1">Berhasil Disimpan!</h3>
+        <p class="text-sm text-slate-500 font-medium leading-relaxed">Data kunjungan telah berhasil<br>dicatat dalam sistem.</p>
+        <button onclick="closeModal()" class="btn-ok">
+            <i class="fa-solid fa-arrow-left mr-2"></i>OK, Kembali ke Daftar
+        </button>
+    </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+    let map = null;
+    let marker = null;
+
+    function initMap(lat, lng) {
+        document.getElementById('map-placeholder').style.display = 'none';
+        document.getElementById('map').style.display = 'block';
+
+        if (!map) {
+            map = L.map('map').setView([lat, lng], 16);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap',
+                maxZoom: 19
+            }).addTo(map);
+
+            const customIcon = L.divIcon({
+                className: '',
+                html: `<div style="
+                    width:32px;height:32px;
+                    background:linear-gradient(135deg,#10b981,#059669);
+                    border:3px solid white;
+                    border-radius:50% 50% 50% 0;
+                    transform:rotate(-45deg);
+                    box-shadow:0 4px 12px rgba(16,185,129,0.5);
+                "></div>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            });
+
+            marker = L.marker([lat, lng], { draggable: true, icon: customIcon }).addTo(map);
+
+            marker.on('dragend', function () {
+                const pos = marker.getLatLng();
+                updateCoordinates(pos.lat, pos.lng);
+            });
+        } else {
+            map.setView([lat, lng], 16);
+            marker.setLatLng([lat, lng]);
+        }
+
+        // Force resize so tiles render correctly
+        setTimeout(() => map.invalidateSize(), 150);
+    }
+
+    function updateCoordinates(lat, lng) {
+        document.getElementById('latitude').value = lat.toFixed(6);
+        document.getElementById('longitude').value = lng.toFixed(6);
+    }
+
+    function getLocation() {
+        if (!navigator.geolocation) {
+            alert('Geolocation tidak didukung oleh browser ini.');
+            return;
+        }
+        const btn = document.getElementById('btnLocate');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[11px]"></i> Mencari...';
+        btn.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                updateCoordinates(lat, lng);
+                initMap(lat, lng);
+
+                btn.innerHTML = '<i class="fa-solid fa-check text-[11px]"></i> Terdapat!';
+                btn.style.background = '#d1fae5';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 3000);
+            },
+            function(error) {
+                const msgs = {1:'Izin lokasi ditolak.', 2:'Lokasi tidak tersedia.', 3:'Waktu habis.'};
+                btn.innerHTML = '<i class="fa-solid fa-xmark text-[11px]"></i> Gagal';
+                btn.style.color = '#ef4444';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.color = '';
+                    btn.disabled = false;
+                }, 3000);
+                alert('Gagal: ' + (msgs[error.code] || 'Terjadi kesalahan.'));
+            },
+            { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+        );
+    }
+
     function showModal() {
-        document.getElementById('app').classList.add('modal-open');
+        document.getElementById('modalBackdrop').classList.add('open');
     }
     function closeModal() {
-        document.getElementById('app').classList.remove('modal-open');
-        location.href = 'pendaftaran.html';
+        document.getElementById('modalBackdrop').classList.remove('open');
+        setTimeout(() => location.href = 'pendaftaran.html', 300);
     }
+
+    // Close modal on backdrop click
+    document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
 </script>
 
 </body>

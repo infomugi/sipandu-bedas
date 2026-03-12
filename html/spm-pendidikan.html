@@ -10,15 +10,15 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-<body class="antialiased" style="color:#334155;">
+<body class="antialiased">
 
 <div class="app-container">
 
-    <div class="view-screen" style="background:#f8fafc;display:flex;flex-direction:column;">
+    <div class="view-screen">
         <!-- Header -->
-        <header class="header-white-nav">
-            <button onclick="history.back()" class="btn-back" aria-label="Kembali">
-                <i class="fa-solid fa-arrow-left"></i>
+        <header class="header-colored bg-header-emerald">
+            <button onclick="history.back()" class="btn-back-light" aria-label="Kembali">
+                <i class="fa-solid fa-chevron-left"></i>
             </button>
             <div>
                 <h2 class="page-title">SPM Pendidikan</h2>
@@ -26,14 +26,12 @@
             </div>
         </header>
 
-        <main style="flex:1;overflow-y:auto;padding:1.25rem;padding-bottom:100px;">
+        <main class="view-content px-5 pt-4 pb-32">
             
             <div class="info-box info-box-blue" style="margin-bottom:1.5rem;">
-                <h3 style="font-size:0.8125rem;font-weight:700;color:#1e3a5f;margin-bottom:0.375rem;">Informasi Target</h3>
-                <p style="font-size:0.75rem;color:#3b82f6;line-height:1.6;font-weight:500;">Pengajuan bantuan untuk anak putus sekolah, terkendala biaya, atau butuh seragam/alat tulis.</p>
-            </div>
-
-                <select class="form-input">
+                <h3 style="font-size:0.8125rem;font-weight:700;color:#1e3a5f;margin-bottom:0.5rem;">Pilih Anak / Penerima</h3>
+                <p style="font-size:0.725rem;color:#3b82f6;line-height:1.5;font-weight:500;margin-bottom:0.75rem;">Pengajuan bantuan untuk anak putus sekolah, terkendala biaya, atau butuh seragam/alat tulis.</p>
+                <select class="form-input" style="background:white;">
                     <option value="" disabled selected>-- Pilih Anggota Keluarga --</option>
                     <option>Budi (Lk, 6 Tahun - SD)</option>
                     <option>Susi (Pr, 13 Tahun - SMP)</option>
@@ -41,8 +39,14 @@
             </div>
 
             <div class="form-group" style="margin-top:0.75rem;">
-                <label class="form-label" style="color:#3b82f6;">NIK Penerima / Anak</label>
-                <input type="number" class="form-input" placeholder="16 digit NIK" style="background:#f0f9ff;border-color:#bae6fd;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+                    <label class="form-label" style="margin-bottom:0;color:#3b82f6;">NIK Penerima / Anak</label>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <span style="font-size:0.7rem;font-weight:600;color:#64748b;">Tidak Punya NIK?</span>
+                        <div class="toggle-switch" id="nikTogglePendidikan" onclick="toggleNikInput('Pendidikan')"></div>
+                    </div>
+                </div>
+                <input type="number" id="nikInputPendidikan" class="form-input" placeholder="16 digit NIK" style="background:#f0f9ff;border-color:#bae6fd;transition:all 0.3s;">
             </div>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
@@ -113,7 +117,7 @@
                 <textarea class="form-input" style="height:4rem;resize:none;" placeholder="Catatan internal kader..."></textarea>
             </div>
             
-            <button onclick="location.href='spm-menu.html'" class="btn-primary btn-accent-blue" style="margin-top:2rem;width:100;padding:0.9375rem 1.5rem;border-radius:0.875rem;border:none;font-weight:700;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:'Plus Jakarta Sans',sans-serif;">
+            <button onclick="location.href='spm-menu.html'" class="btn-primary btn-accent-blue" style="margin-top:2rem;width:100%;padding:0.9375rem 1.5rem;border-radius:0.875rem;border:none;font-weight:700;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:'Plus Jakarta Sans',sans-serif;">
                 <i class="fa-solid fa-paper-plane"></i> Ajukan SPM Pendidikan
             </button>
         </main>
@@ -138,7 +142,7 @@
             <span>Laporan</span>
         </button>
         <button onclick="location.href='profil.html'" class="nav-item">
-            <i class="fa-solid fa-user-circle"></i>
+            <i class="fa-solid fa-circle-user"></i>
             <span>Profil</span>
         </button>
     </nav>
@@ -188,6 +192,26 @@
     function updateCoords(lat, lng) {
         document.getElementById('lat').value = lat.toFixed(7);
         document.getElementById('lng').value = lng.toFixed(7);
+    }
+
+    function toggleNikInput(type) {
+        const toggle = document.getElementById('nikToggle' + type);
+        const input = document.getElementById('nikInput' + type);
+        
+        toggle.classList.toggle('active');
+        
+        if (toggle.classList.contains('active')) {
+            input.disabled = true;
+            input.value = '';
+            input.placeholder = "Tidak Ada NIK";
+            input.style.opacity = '0.6';
+            input.style.backgroundColor = '#f1f5f9';
+        } else {
+            input.disabled = false;
+            input.placeholder = "16 digit NIK";
+            input.style.opacity = '1';
+            input.style.backgroundColor = '#f0f9ff';
+        }
     }
 
     window.onload = initMap;

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sipandu Bedas - Detail Riwayat</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="antialiased text-slate-800">
+
+<div class="app-container">
+
+    <!-- Header Section -->
+    <header class="header-brand">
+        <button onclick="history.back()" class="btn-back-light">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div>
+            <h2 class="text-lg font-bold">Detail Riwayat</h2>
+            <p class="text-[10px] text-emerald-100 opacity-80" id="detail-kode">#PRM-0082</p>
+        </div>
+    </header>
+
+    <div class="view-content px-5 pt-6">
+        
+        <!-- Status Card -->
+        <div class="card mb-6 border-l-4 border-l-emerald-500">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status Terkini</span>
+                <span id="badge-status" class="px-2 py-1 text-[9px] font-bold rounded-md bg-emerald-100 text-emerald-700">Dalam Proses</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-800 mb-1" id="detail-nama-layanan">Bantuan Rutilahu</h3>
+            <p class="text-xs text-slate-500" id="detail-kategori">SPM Perumahan</p>
+        </div>
+
+        <!-- Tracking Timeline -->
+        <div class="section-separator mb-4">
+            <i class="fa-solid fa-route"></i>
+            <span>Progress Tracking</span>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 mb-6">
+            <div class="timeline-container" id="timeline-list">
+                <!-- Timeline items will be injected here -->
+                <div class="timeline-item active">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-badge success">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Pengajuan Diterima</h4>
+                        <p class="timeline-desc">Usulan telah berhasil dicatat oleh Kader.</p>
+                        <span class="timeline-time">12 Maret 2026, 14:20</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item active">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-badge success">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Validasi Desa</h4>
+                        <p class="timeline-desc">Dokumen telah diverifikasi di tingkat Desa.</p>
+                        <span class="timeline-time">12 Maret 2026, 16:45</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-badge process">
+                        <i class="fa-solid fa-person-walking-luggage animate-pulse"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Assesment Lapangan</h4>
+                        <p class="timeline-desc">Petugas sedang menjadwalkan kunjungan lapangan.</p>
+                        <span class="timeline-time text-emerald-600">Sedang diproses</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-badge">
+                        <i class="fa-solid fa-building-shield"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Validasi Kecamatan</h4>
+                        <p class="timeline-desc">Menunggu rujukan dari tingkat Desa.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-badge">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">Selesai</h4>
+                        <p class="timeline-desc">Hasil akhir dari pengajuan SPM.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Info -->
+        <div class="section-separator mb-4">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Rincian Usulan</span>
+        </div>
+
+        <div class="card space-y-4 mb-6">
+            <div class="flex flex-col gap-1">
+                <span class="text-[10px] text-slate-400 font-bold uppercase">Nama Sasaran</span>
+                <p class="text-xs font-bold text-slate-800" id="detail-sasaran">ATANG OKTAVIANA</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1">
+                    <span class="text-[10px] text-slate-400 font-bold uppercase">NIK</span>
+                    <p class="text-xs font-bold text-slate-800" id="detail-nik">320432040001</p>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="text-[10px] text-slate-400 font-bold uppercase">Kader</span>
+                    <p class="text-xs font-bold text-slate-800" id="detail-kader">Mugi Rachmat</p>
+                </div>
+            </div>
+            <div class="flex flex-col gap-1">
+                <span class="text-[10px] text-slate-400 font-bold uppercase">Keterangan / Catatan</span>
+                <p class="text-xs text-slate-600 italic bg-slate-50 p-2 rounded-lg border border-slate-100" id="detail-keterangan">Kondisi rumah panggung bocor parah di bagian belakang.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button onclick="location.href='index.html'" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </button>
+        <button onclick="location.href='pendaftaran.html'" class="nav-item">
+            <i class="fa-solid fa-users"></i>
+            <span>Keluarga</span>
+        </button>
+        <button onclick="location.href='riwayat-pengajuan.html'" class="nav-item active">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Riwayat</span>
+        </button>
+        <button onclick="location.href='laporan.html'" class="nav-item">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Laporan</span>
+        </button>
+        <button onclick="location.href='profil.html'" class="nav-item">
+            <i class="fa-solid fa-circle-user"></i>
+            <span>Profil</span>
+        </button>
+    </nav>
+
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        
+        if (id) {
+            // In a real app, fetch data from API
+            // For demo purposes, we can simulate loading or use the data passed
+            console.log('Loading detail for ID:', id);
+        }
+    });
+</script>
+</body>
+</html>

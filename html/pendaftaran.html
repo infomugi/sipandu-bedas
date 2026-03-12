@@ -16,174 +16,420 @@
         body {
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
+        
+        /* Premium Header */
         .header-premium-nav {
-            background: linear-gradient(180deg, #064e3b 0%, #065f46 100%);
-            padding: 4rem 1.5rem 2rem 1.5rem;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 2.5rem 1.25rem 5.5rem 1.25rem;
             color: white;
             position: relative;
+            z-index: 10;
         }
-        .pro-card {
-            background: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
-            padding: 1.25rem;
-            border: 1px solid rgba(0,0,0,0.02);
-            position: relative;
-            overflow: hidden;
-        }
-        .pro-card::after {
+
+        /* Decorative Background Elements in Header */
+        .header-premium-nav::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 1.25rem;
-            right: 1.25rem;
-            height: 1px;
-            background-color: #f1f5f9;
+            top: -20px; right: -20px;
+            width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
-        .pro-card:last-child {
-            margin-bottom: 2rem;
+        
+        .header-premium-nav::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: -20px;
+            width: 120px; height: 120px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
-        .search-container {
+        
+        /* Floating Search */
+        .search-wrapper {
+            margin-top: -2rem;
             position: relative;
+            z-index: 20;
+            padding: 0 1.25rem;
             margin-bottom: 1.5rem;
         }
+        
         .search-input {
             width: 100%;
-            background: white;
+            background: #ffffff;
             border-radius: 1rem;
             padding: 0.85rem 1rem 0.85rem 3rem;
-            font-size: 0.875rem;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05);
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
+            color: #1e293b;
         }
+        
+        .search-input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        
         .search-input:focus {
-            border-color: #10b981;
+            box-shadow: 0 4px 15px -3px rgba(16, 185, 129, 0.15), 0 0 0 2px rgba(16, 185, 129, 0.1);
+            border-color: #34d399;
         }
-        .chip-pro {
+
+        .search-icon {
+            position: absolute;
+            left: 2.35rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+        
+        .search-input:focus + .search-icon,
+        .search-wrapper:focus-within .search-icon {
+            color: #059669;
+        }
+
+        /* Compact Pro Card */
+        .pro-card-compact {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .pro-card-compact:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.05);
+            border-color: #a7f3d0;
+        }
+        
+        /* Subtle Indicator on Hover */
+        .pro-card-compact::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: #10b981;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .pro-card-compact:hover::before {
+            opacity: 1;
+        }
+
+        /* Compact Avatar */
+        .avatar-compact {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #059669;
+            background: #ecfdf5;
+            flex-shrink: 0;
+            border: 1px solid #d1fae5;
+        }
+
+        /* Compact Chip */
+        .chip-compact {
             background: #ecfdf5;
             color: #059669;
-            padding: 0.25rem 0.65rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 0.5rem;
             font-size: 0.65rem;
             font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            border: 1px solid #d1fae5;
+            white-space: nowrap;
+        }
+
+        /* Compact Info Row */
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        
+        .date-badge {
             display: flex;
             align-items: center;
             gap: 0.35rem;
+            background: #f8fafc;
+            padding: 0.35rem 0.6rem;
+            border-radius: 0.5rem;
+            border: 1px solid #f1f5f9;
+        }
+
+        /* Compact Action Buttons */
+        .btn-compact {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 0.65rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .btn-green {
+            background: #ecfdf5;
+            color: #059669;
+        }
+        
+        .btn-green:hover, .btn-green:active {
+            background: #d1fae5;
+        }
+        
+        .btn-gray {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .btn-gray:hover, .btn-gray:active {
+            background: #f8fafc;
+            color: #475569;
+        }
+
+        /* Animating List */
+        .stagger-1 { animation: fadeIn 0.3s ease forwards; animation-delay: 0.05s; opacity: 0; }
+        .stagger-2 { animation: fadeIn 0.3s ease forwards; animation-delay: 0.1s; opacity: 0; }
+        .stagger-3 { animation: fadeIn 0.3s ease forwards; animation-delay: 0.15s; opacity: 0; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .page-btn-active {
+            background: #10b981;
+            color: white;
+            box-shadow: 0 4px 10px -2px rgba(16, 185, 129, 0.3);
+        }
+        
+        .page-btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
-<body class="antialiased text-slate-800">
+<body class="antialiased text-slate-800 pb-20">
 
-<div class="app-container">
+<div class="app-container max-w-md mx-auto bg-[#f8fafc] min-h-screen relative shadow-xl overflow-hidden shadow-slate-200/50 block">
 
     <!-- Header Section -->
-    <header class="header-premium-nav">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <button onclick="history.back()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md">
-                    <i class="fa-solid fa-chevron-left"></i>
+    <header class="header-premium-nav rounded-b-[1.5rem]">
+        <div class="flex justify-between items-start relative z-10 w-full mb-1">
+            <div class="flex items-center gap-2.5">
+                <button onclick="history.back()" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 border border-white/10 shrink-0">
+                    <i class="fa-solid fa-chevron-left text-white text-sm"></i>
                 </button>
-                <div>
-                    <h1 class="text-sm font-bold tracking-tight">Daftar Keluarga</h1>
-                    <p class="text-[10px] text-emerald-400 font-bold opacity-80 uppercase tracking-widest">RW 11 Rancamanyar</p>
+                <div class="flex flex-col">
+                    <h1 class="text-[17px] font-bold tracking-tight text-white leading-tight">Daftar Keluarga</h1>
+                    <div class="flex items-center gap-1 opacity-90 mt-0.5">
+                        <i class="fa-solid fa-map-location-dot text-[9px] text-emerald-200"></i>
+                        <p class="text-[10px] text-emerald-100 font-medium tracking-wide">RW 11 Rancamanyar</p>
+                    </div>
                 </div>
             </div>
-            <button onclick="location.href='tambah-keluarga.html'" class="px-4 py-2 bg-emerald-500 text-white font-bold rounded-xl text-xs shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform">
-                <i class="fa-solid fa-plus mr-1.5"></i> Tambah
+            <button onclick="location.href='tambah-keluarga.html'" class="w-9 h-9 bg-white text-emerald-600 rounded-full flex items-center justify-center font-bold shadow-md hover:shadow-lg active:scale-95 transition-all shrink-0">
+                <i class="fa-solid fa-plus text-sm"></i>
             </button>
         </div>
     </header>
 
-    <div class="view-content px-5 pt-6 pb-24">
+    <!-- Content Area -->
+    <div class="px-3.5 pb-8">
+        
         <!-- Search Section -->
-        <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-            <input type="text" class="search-input" placeholder="Cari No KK atau Nama...">
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" class="search-input" placeholder="Cari NIK atau Nama...">
         </div>
 
-        <!-- Family List -->
-        <div class="space-y-4">
+        <!-- Section Title & Filter -->
+        <div class="flex justify-between items-center mb-3 px-1">
+            <div>
+                <h2 class="text-[14px] font-bold text-slate-800">Semua Keluarga</h2>
+                <p class="text-[10px] text-slate-500">Menampilkan data terbaru</p>
+            </div>
+            <button class="text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1.5 rounded-[0.6rem] text-[10px] font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-arrow-up-wide-short"></i> Filter
+            </button>
+        </div>
+
+        <!-- Family List Container -->
+        <div class="space-y-2.5">
             <!-- Card 1 -->
-            <div class="pro-card">
-                <div class="flex justify-between items-start mb-3">
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-[15px]">Hansah Darmawan</h3>
-                        <p class="text-xs text-slate-400 font-medium">KK: 3204320305940004</p>
-                    </div>
-                    <div class="chip-pro">
-                        <i class="fa-solid fa-location-dot text-[8px]"></i>
-                        RT 03 / RW 11
+            <div class="pro-card-compact stagger-1">
+                <div class="flex gap-3 items-start">
+                    <div class="avatar-compact">AS</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start gap-2">
+                            <h3 class="font-bold text-slate-800 text-[14px] leading-tight truncate">Angga Sura Sendana</h3>
+                            <div class="chip-compact shrink-0">
+                                <i class="fa-solid fa-location-dot text-[8px]"></i> RW 11
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 mt-1">
+                            <i class="fa-regular fa-id-card text-slate-400"></i> 3204320305940004
+                        </p>
                     </div>
                 </div>
-                <div class="flex items-center justify-between pt-3 border-t border-slate-50">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-regular fa-calendar text-slate-400 text-[10px]"></i>
-                        <span class="text-[11px] text-slate-400 font-medium">25-08-2025</span>
+                
+                <div class="info-row pt-2 border-t border-slate-100/60 mt-1">
+                    <div class="date-badge">
+                        <i class="fa-regular fa-calendar-check text-emerald-500 text-[10px]"></i>
+                        <span class="text-[10px] text-slate-600 font-bold whitespace-nowrap">25 Ags 2025</span>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="location.href='spm-menu.html'" class="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-[11px] font-bold active:scale-95 transition-transform">SPM</button>
-                        <button class="px-3 py-1.5 bg-slate-50 text-slate-500 rounded-lg text-[11px] font-bold active:scale-95 transition-transform">Detail</button>
+                    <div class="flex gap-1.5">
+                        <button onclick="location.href='spm-menu.html'" class="btn-compact btn-green">
+                            <i class="fa-solid fa-notes-medical"></i> SPM
+                        </button>
+                        <button class="btn-compact btn-gray">
+                            <i class="fa-regular fa-eye"></i> Detail
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Card 2 -->
-            <div class="pro-card">
-                <div class="flex justify-between items-start mb-3">
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-[15px]">Atang Oktaviana</h3>
-                        <p class="text-xs text-slate-400 font-medium">KK: 3204320432030594</p>
-                    </div>
-                    <div class="chip-pro">
-                        <i class="fa-solid fa-location-dot text-[8px]"></i>
-                        RT 05 / RW 11
+            <div class="pro-card-compact stagger-2">
+                <div class="flex gap-3 items-start">
+                    <div class="avatar-compact">AO</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start gap-2">
+                            <h3 class="font-bold text-slate-800 text-[14px] leading-tight truncate">Atang Oktaviana</h3>
+                            <div class="chip-compact shrink-0">
+                                <i class="fa-solid fa-location-dot text-[8px]"></i> RW 11
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 mt-1">
+                            <i class="fa-regular fa-id-card text-slate-400"></i> 3204320432030594
+                        </p>
                     </div>
                 </div>
-                <div class="flex items-center justify-between pt-3 border-t border-slate-50">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-regular fa-calendar text-slate-400 text-[10px]"></i>
-                        <span class="text-[11px] text-slate-400 font-medium">26-08-2025</span>
+                
+                <div class="info-row pt-2 border-t border-slate-100/60 mt-1">
+                    <div class="date-badge">
+                        <i class="fa-regular fa-calendar-check text-emerald-500 text-[10px]"></i>
+                        <span class="text-[10px] text-slate-600 font-bold whitespace-nowrap">26 Ags 2025</span>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="location.href='tambah-kunjungan.html'" class="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-[11px] font-bold active:scale-95 transition-transform">Hadir</button>
-                        <button class="px-3 py-1.5 bg-slate-50 text-slate-500 rounded-lg text-[11px] font-bold active:scale-95 transition-transform">Detail</button>
+                    <div class="flex gap-1.5">
+                        <button onclick="location.href='tambah-kunjungan.html'" class="btn-compact btn-green">
+                            <i class="fa-solid fa-hand-holding-hand"></i> Hadir
+                        </button>
+                        <button class="btn-compact btn-gray">
+                            <i class="fa-regular fa-eye"></i> Detail
+                        </button>
                     </div>
                 </div>
             </div>
+            
+            <!-- Card 3 -->
+            <div class="pro-card-compact stagger-3">
+                <div class="flex gap-3 items-start">
+                    <div class="avatar-compact">SM</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start gap-2">
+                            <h3 class="font-bold text-slate-800 text-[14px] leading-tight truncate">Siti Maimunah</h3>
+                            <div class="chip-compact shrink-0">
+                                <i class="fa-solid fa-location-dot text-[8px]"></i> RW 11
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 mt-1">
+                            <i class="fa-regular fa-id-card text-slate-400"></i> 3204320432030612
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="info-row pt-2 border-t border-slate-100/60 mt-1">
+                    <div class="date-badge">
+                        <i class="fa-regular fa-calendar-check text-emerald-500 text-[10px]"></i>
+                        <span class="text-[10px] text-slate-600 font-bold whitespace-nowrap">27 Ags 2025</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button onclick="location.href='spm-menu.html'" class="btn-compact btn-green">
+                            <i class="fa-solid fa-notes-medical"></i> SPM
+                        </button>
+                        <button class="btn-compact btn-gray">
+                            <i class="fa-regular fa-eye"></i> Detail
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-center gap-2 mt-8">
-            <button class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 shadow-sm active:scale-95 transition-transform"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-            <button class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform">1</button>
-            <button class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 shadow-sm active:scale-95 transition-transform"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+        <div class="flex justify-center gap-2 mt-6">
+            <button class="page-btn page-btn-outline"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
+            <button class="page-btn page-btn-active">1</button>
+            <button class="page-btn page-btn-outline"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
         </div>
     </div>
 
     <!-- Bottom Nav -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav z-50">
         <button onclick="location.href='index.html'" class="nav-item">
-            <i class="fa-solid fa-house"></i>
-            <span>Beranda</span>
+            <i class="fa-solid fa-house text-[18px]"></i>
+            <span class="text-[10px] font-medium leading-[1]">Beranda</span>
         </button>
         <button class="nav-item active">
-            <i class="fa-solid fa-users"></i>
-            <span>Keluarga</span>
+            <i class="fa-solid fa-users text-[18px]"></i>
+            <span class="text-[10px] font-medium leading-[1]">Keluarga</span>
         </button>
         <button onclick="location.href='riwayat-pengajuan.html'" class="nav-item">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>Riwayat</span>
+            <i class="fa-solid fa-clock-rotate-left text-[18px]"></i>
+            <span class="text-[10px] font-medium leading-[1]">Riwayat</span>
         </button>
         <button onclick="location.href='laporan.html'" class="nav-item">
-            <i class="fa-solid fa-chart-pie"></i>
-            <span>Laporan</span>
+            <i class="fa-solid fa-chart-pie text-[18px]"></i>
+            <span class="text-[10px] font-medium leading-[1]">Laporan</span>
         </button>
         <button onclick="location.href='profil.html'" class="nav-item">
-            <i class="fa-solid fa-circle-user"></i>
-            <span>Profil</span>
+            <i class="fa-solid fa-circle-user text-[18px]"></i>
+            <span class="text-[10px] font-medium leading-[1]">Profil</span>
         </button>
     </nav>
 
