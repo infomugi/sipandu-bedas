@@ -4,96 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sipandu Bedas - Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .header-premium {
+            background: linear-gradient(180deg, #064e3b 0%, #065f46 100%);
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            color: white;
+            position: relative;
+        }
+        .pro-card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            padding: 1.25rem;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .stat-badge {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+        .menu-btn {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            transition: transform 0.2s, background-color 0.2s;
+            border: 1px solid rgba(0,0,0,0.02);
+            width: 100%;
+        }
+        .menu-btn:active {
+            transform: scale(0.97);
+            background-color: #f8fafc;
+        }
+        .menu-btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+        .view-content {
+            margin-top: -1.5rem;
+            border-top-left-radius: 2rem;
+            border-top-right-radius: 2rem;
+            background: #f8fafc;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 90px;
+        }
+    </style>
 </head>
-<body class="antialiased" style="color:#334155;">
+<body class="antialiased text-slate-800">
 
 <div class="app-container">
 
     <!-- Header Section -->
-    <header class="header-white" style="padding-top:2.75rem;">
-        <div style="display:flex;align-items:center;gap:0.75rem;">
-            <div style="width:2.75rem;height:2.75rem;border-radius:50%;overflow:hidden;border:2px solid #d1fae5;flex-shrink:0;">
-                <img src="https://i.pravatar.cc/150?img=47" alt="Profile" style="width:100%;height:100%;object-fit:cover;">
-            </div>
-            <div>
-                <p style="font-size:0.8125rem;font-weight:700;color:#0f172a;">HANSAH DARMAWAN</p>
-                <div style="display:flex;align-items:center;gap:0.25rem;margin-top:0.125rem;">
-                    <i class="fa-solid fa-location-dot" style="font-size:0.5625rem;color:#10b981;"></i>
-                    <p style="font-size:0.6875rem;color:#94a3b8;font-weight:500;">Posyandu RW 11 · Rancamanyar · Baleendah</p>
+    <header class="header-premium">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full border-2 border-white/10 p-0.5 overflow-hidden shadow-lg">
+                    <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold tracking-tight">Hansah Darmawan</h1>
+                    <div class="flex items-center gap-1.5 opacity-60">
+                        <i class="fa-solid fa-location-dot text-[10px]"></i>
+                        <span class="text-[10px] font-medium">Baleendah, Bandung</span>
+                    </div>
                 </div>
             </div>
+            <button onclick="location.href='profil.html'" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md">
+                <i class="fa-regular fa-bell"></i>
+            </button>
         </div>
-        <button onclick="location.href='login.html'" class="btn-small" style="background:#fff1f2;color:#e11d48;">
-            <i class="fa-solid fa-right-from-bracket" style="font-size:0.625rem;"></i> Keluar
-        </button>
+        <div class="bg-emerald-950/20 rounded-2xl p-4 backdrop-blur-sm border border-white/10 flex justify-between items-center">
+            <div>
+                <p class="text-[10px] uppercase tracking-widest font-bold text-emerald-300 mb-1">Posyandu RW 11</p>
+                <p class="text-xs font-semibold text-white/90 leading-tight">Kelurahan Rancamanyar</p>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] text-white/50 font-medium mb-1">Status Kader</p>
+                <span class="px-2 py-0.5 bg-emerald-400/20 text-emerald-300 rounded-md text-[9px] font-bold border border-emerald-400/30">AKTIF</span>
+            </div>
+        </div>
     </header>
 
-    <div class="view-content" style="padding-bottom:90px;">
+    <div class="view-content">
         <!-- Banner Section -->
-        <section style="padding:1rem 1.25rem;">
-            <div style="width:100%;aspect-ratio:21/9;border-radius:1rem;overflow:hidden;position:relative;">
-                <img src="sipandu_bedas_dashboard_banner_mockup_1773292728208.png" alt="Banner" style="width:100%;height:100%;object-fit:cover;">
-                <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,78,59,0.4) 0%,transparent 60%);"></div>
+        <section class="p-5">
+            <div class="w-full aspect-[21/9] rounded-2xl overflow-hidden shadow-xl relative">
+                <img src="sipandu_bedas_dashboard_banner_mockup_1773292728208.png" alt="Banner" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-tr from-emerald-950/60 to-transparent"></div>
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                    <p class="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80">Info Terkini</p>
+                    <p class="text-sm font-bold leading-tight">Pengajuan SPM kini lebih cepat & transparan</p>
+                </div>
             </div>
         </section>
 
         <!-- Stats Section -->
-        <section style="padding:0 1.25rem 1.25rem;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:#eff6ff;color:#3b82f6;">
+        <section class="px-5 mb-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="pro-card">
+                    <div class="stat-badge bg-blue-50 text-blue-600">
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <div>
-                        <p class="stat-value">2</p>
-                        <p class="stat-label">Keluarga</p>
+                        <p class="text-2xl font-extrabold text-slate-800">42</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Keluarga</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:#ecfdf5;color:#10b981;">
+                <div class="pro-card">
+                    <div class="stat-badge bg-emerald-50 text-emerald-600">
                         <i class="fa-solid fa-clipboard-check"></i>
                     </div>
                     <div>
-                        <p class="stat-value">6</p>
-                        <p class="stat-label">Kunjungan</p>
+                        <p class="text-2xl font-extrabold text-slate-800">18</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Layanan</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Menu Grid -->
-        <section style="padding:0 1.25rem 1.5rem;">
-            <div class="section-separator">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>Fitur Utama</span>
+        <section class="px-5 mb-8">
+            <div class="flex items-center justify-between mb-4 px-1">
+                <h3 class="text-sm font-extrabold text-slate-900 tracking-tight">Layanan Utama</h3>
+                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Lihat Semua</span>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                <button onclick="location.href='pendaftaran.html'" class="menu-card">
-                    <div class="menu-icon" style="background:#ecfdf5;color:#059669;">
+            <div class="grid grid-cols-1 gap-3">
+                <button onclick="location.href='pendaftaran.html'" class="menu-btn">
+                    <div class="menu-btn-icon bg-emerald-50 text-emerald-600">
                         <i class="fa-solid fa-user-plus"></i>
                     </div>
-                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">Pendaftaran</p>
+                    <div>
+                        <p class="text-sm font-bold text-slate-800">Pendaftaran Keluarga</p>
+                        <p class="text-[10px] text-slate-400 font-medium">Input data warga & KK baru</p>
+                    </div>
                 </button>
-                <button onclick="location.href='spm-menu.html'" class="menu-card">
-                    <div class="menu-icon" style="background:#eff6ff;color:#3b82f6;">
+                <button onclick="location.href='spm-menu.html'" class="menu-btn">
+                    <div class="menu-btn-icon bg-blue-50 text-blue-600">
                         <i class="fa-solid fa-list-check"></i>
                     </div>
-                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">6 Layanan SPM</p>
-                </button>
-                <button onclick="location.href='verifikasi-desa.html'" class="menu-card">
-                    <div class="menu-icon" style="background:#fef3c7;color:#d97706;">
-                        <i class="fa-solid fa-clipboard-check"></i>
+                    <div>
+                        <p class="text-sm font-bold text-slate-800">6 Layanan SPM</p>
+                        <p class="text-[10px] text-slate-400 font-medium">Pendidikan, Kesehatan, Sosial, dll</p>
                     </div>
-                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">Verifikasi</p>
                 </button>
-                <button onclick="location.href='laporan.html'" class="menu-card">
-                    <div class="menu-icon" style="background:#fce7f3;color:#db2777;">
-                        <i class="fa-solid fa-file-invoice"></i>
+                <button onclick="location.href='verifikasi-desa.html'" class="menu-btn">
+                    <div class="menu-btn-icon bg-amber-50 text-amber-600">
+                        <i class="fa-solid fa-circle-check"></i>
                     </div>
-                    <p style="font-size:0.8125rem;font-weight:700;color:#1e293b;">Laporan</p>
+                    <div>
+                        <p class="text-sm font-bold text-slate-800">Verifikasi Data</p>
+                        <p class="text-[10px] text-slate-400 font-medium">Cek validasi data lapangan</p>
+                    </div>
+                </button>
+                <button onclick="location.href='laporan.html'" class="menu-btn">
+                    <div class="menu-btn-icon bg-rose-50 text-rose-600">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-800">Laporan & Statistik</p>
+                        <p class="text-[10px] text-slate-400 font-medium">Rekapitulasi pencapaian target</p>
+                    </div>
                 </button>
             </div>
         </section>
@@ -118,7 +216,7 @@
             <span>Laporan</span>
         </button>
         <button onclick="location.href='profil.html'" class="nav-item">
-            <i class="fa-solid fa-user-circle"></i>
+            <i class="fa-solid fa-circle-user"></i>
             <span>Profil</span>
         </button>
     </nav>

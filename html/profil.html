@@ -18,7 +18,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         .profile-header-dark {
-            background-color: #121212;
+            background: linear-gradient(180deg, #064e3b 0%, #065f46 100%);
             padding: 4rem 1.5rem 6rem 1.5rem;
             color: white;
             text-align: center;
@@ -34,42 +34,50 @@
             background: white;
             border-radius: 1.5rem;
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 1.5rem;
-            padding: 0.5rem 0;
+            margin-bottom: 1rem;
+            padding: 0.25rem 0;
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            text-align: left;
         }
         .menu-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1.15rem 1.25rem;
-            transition: background-color 0.2s;
+            padding: 0.85rem 1.25rem;
+            transition: all 0.2s;
             position: relative;
         }
         .menu-item::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 4.75rem;
+            left: 4.5rem;
             right: 1.25rem;
             height: 1px;
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
         }
         .menu-item:last-child::after {
             display: none;
         }
         .menu-item:active {
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
+            transform: scale(0.98);
         }
         .icon-box {
             width: 2.5rem;
             height: 2.5rem;
-            border-radius: 0.75rem;
+            border-radius: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f4f4f5;
-            color: #52525b;
-            font-size: 1.15rem;
+            background-color: #ecfdf5;
+            color: #059669;
+            font-size: 1.1rem;
+            border: 1px solid #d1fae5;
+            transition: all 0.2s;
         }
         .toggle-switch {
             width: 44px;
@@ -78,38 +86,43 @@
             border-radius: 12px;
             position: relative;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .toggle-switch::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background-color: white;
             border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: left 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .toggle-switch.active {
             background-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
         }
         .toggle-switch.active::after {
-            left: 22px;
+            left: 23px;
         }
-        .btn-logout {
+        .btn-logout-card {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: #f43f5e;
-            font-weight: 700;
-            padding: 1.15rem 1.25rem;
+            justify-content: space-between;
+            padding: 0.85rem 1.25rem;
             width: 100%;
             background: white;
             border-radius: 1.5rem;
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
             margin-top: 0.5rem;
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+        .btn-logout-card:active {
+            transform: scale(0.98);
+            background-color: #fff1f2;
         }
     </style>
 </head>
@@ -127,7 +140,7 @@
                 <h1 class="text-lg font-bold">Account</h1>
                 <button class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md relative">
                     <i class="fa-regular fa-bell text-white"></i>
-                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-[#121212]"></span>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-[#064e3b]"></span>
                 </button>
             </div>
             
@@ -139,7 +152,7 @@
                     </button>
                 </div>
                 <h2 class="text-xl font-bold tracking-tight">Hansah Darmawan</h2>
-                <p class="text-sm text-slate-400 font-medium">hansah.darmawan@gmail.com</p>
+                <p class="text-sm text-emerald-100/60 font-medium">hansah.darmawan@gmail.com</p>
             </div>
         </div>
 
@@ -150,28 +163,31 @@
                     <div class="flex items-center gap-4">
                         <div class="icon-box"><i class="fa-regular fa-id-card"></i></div>
                         <div>
-                            <p class="text-[14px] font-medium text-slate-700">Personal Information</p>
+                            <p class="text-[14px] font-bold text-slate-800">Informasi Pribadi</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Nama, Email, dan Alamat</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[12px]"></i>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
                 </div>
                 <div class="menu-item cursor-pointer" onclick="location.href='forgot-password.html'">
                     <div class="flex items-center gap-4">
-                        <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="icon-box bg-blue-50 text-blue-600 border-blue-100"><i class="fa-solid fa-shield-halved"></i></div>
                         <div>
-                            <p class="text-[14px] font-medium text-slate-700">Security & Privacy</p>
+                            <p class="text-[14px] font-bold text-slate-800">Keamanan & Privasi</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Kata sandi dan autentikasi</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[12px]"></i>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
                 </div>
                 <div class="menu-item cursor-pointer">
                     <div class="flex items-center gap-4">
-                        <div class="icon-box"><i class="fa-regular fa-hospital"></i></div>
+                        <div class="icon-box bg-amber-50 text-amber-600 border-amber-100"><i class="fa-regular fa-hospital"></i></div>
                         <div>
-                            <p class="text-[14px] font-medium text-slate-700">Posyandu Assignment</p>
+                            <p class="text-[14px] font-bold text-slate-800">Penugasan Posyandu</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Wilayah kerja kader</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[12px]"></i>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
                 </div>
             </div>
 
@@ -179,40 +195,45 @@
             <div class="menu-card">
                 <div class="menu-item">
                     <div class="flex items-center gap-4">
-                        <div class="icon-box"><i class="fa-regular fa-bell"></i></div>
+                        <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-regular fa-bell"></i></div>
                         <div>
-                            <p class="text-[14px] font-medium text-slate-700">Push Notifications</p>
+                            <p class="text-[14px] font-bold text-slate-800">Notifikasi Push</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Dapatkan update terbaru</p>
                         </div>
                     </div>
                     <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
                 </div>
                 <div class="menu-item cursor-pointer">
                     <div class="flex items-center gap-4">
-                        <div class="icon-box"><i class="fa-solid fa-circle-question"></i></div>
+                        <div class="icon-box bg-slate-100 text-slate-600 border-slate-200"><i class="fa-solid fa-circle-question"></i></div>
                         <div>
-                            <p class="text-[14px] font-medium text-slate-700">Help Center & FAQ</p>
+                            <p class="text-[14px] font-bold text-slate-800">Pusat Bantuan</p>
+                            <p class="text-[10px] text-slate-400 font-medium">FAQ dan layanan dukungan</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[12px]"></i>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
                 </div>
                 <div class="menu-item cursor-pointer">
                     <div class="flex items-center gap-4">
-                        <div class="icon-box"><i class="fa-solid fa-quote-left"></i></div>
+                        <div class="icon-box bg-purple-50 text-purple-600 border-purple-100"><i class="fa-solid fa-language"></i></div>
                         <div>
-                            <p class="text-[14px] font-medium text-slate-700">Language</p>
+                            <p class="text-[14px] font-bold text-slate-800">Bahasa</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Bahasa Indonesia</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[13px] text-slate-400 font-medium">Bahasa Indo</span>
-                        <i class="fa-solid fa-chevron-right text-slate-300 text-[12px]"></i>
-                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
                 </div>
             </div>
 
             <!-- Logout Button -->
-            <button onclick="location.href='login.html'" class="btn-logout active:scale-95 transition-transform">
-                <div class="icon-box bg-rose-50 text-rose-500"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                <span>Keluar dari Aplikasi</span>
+            <button onclick="location.href='login.html'" class="btn-logout-card">
+                <div class="flex items-center gap-4">
+                    <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                    <div>
+                        <p class="text-[14px] font-bold text-rose-600">Keluar Aplikasi</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-rose-200 text-[10px]"></i>
             </button>
             
             <p class="text-center text-[10px] text-slate-400 font-bold tracking-widest uppercase py-8">Sipandu Bedas v1.2.4</p>

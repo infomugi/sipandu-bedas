@@ -352,17 +352,17 @@ app.post('/api/spm/kesehatan', async (req, res) => {
         const { keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran,
                 berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a,
                 terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm,
-                catatan_tindak_lanjut, ajukan_bantuan, latitude, longitude, created_by } = req.body;
+                catatan_tindak_lanjut, ajukan_bantuan, nik, keterangan, latitude, longitude, created_by } = req.body;
         if (!keluarga_id || !anggota_id || !kader_id || !tgl_pelayanan || !jenis_sasaran) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_kesehatan (keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran,
              berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing,
-             usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, latitude, longitude, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20) RETURNING id`,
+             usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, nik, keterangan, latitude, longitude, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22) RETURNING id`,
             [keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran,
              berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a || 0,
              terima_obat_cacing || 0, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm,
-             catatan_tindak_lanjut, ajukan_bantuan || 0, latitude, longitude, created_by]
+             catatan_tindak_lanjut, ajukan_bantuan || 0, nik, keterangan, latitude, longitude, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Data SPM Kesehatan disimpan' }, 201);
     } catch (e) { err(res, e.message); }
@@ -383,10 +383,10 @@ app.get('/api/spm/kesehatan/:id', async (req, res) => {
 // PUT /api/spm/kesehatan/:id
 app.put('/api/spm/kesehatan/:id', async (req, res) => {
     try {
-        const { berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, updated_by } = req.body;
+        const { berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, nik, keterangan, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE spm_kesehatan SET berat_badan=$1, tinggi_badan=$2, lingkar_kepala_cm=$3, status_kms=$4, jenis_imunisasi=$5, terima_vitamin_a=$6, terima_obat_cacing=$7, usia_kehamilan_mgg=$8, tekanan_darah=$9, lingkar_lengan_cm=$10, catatan_tindak_lanjut=$11, ajukan_bantuan=$12, updated_by=$13 WHERE id=$14 AND deleted_at IS NULL`,
-            [berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, updated_by, req.params.id]
+            `UPDATE spm_kesehatan SET berat_badan=$1, tinggi_badan=$2, lingkar_kepala_cm=$3, status_kms=$4, jenis_imunisasi=$5, terima_vitamin_a=$6, terima_obat_cacing=$7, usia_kehamilan_mgg=$8, tekanan_darah=$9, lingkar_lengan_cm=$10, catatan_tindak_lanjut=$11, ajukan_bantuan=$12, nik=$13, keterangan=$14, updated_by=$15 WHERE id=$16 AND deleted_at IS NULL`,
+            [berat_badan, tinggi_badan, lingkar_kepala_cm, status_kms, jenis_imunisasi, terima_vitamin_a, terima_obat_cacing, usia_kehamilan_mgg, tekanan_darah, lingkar_lengan_cm, catatan_tindak_lanjut, ajukan_bantuan, nik, keterangan, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
         ok(res, { message: 'Data SPM Kesehatan diperbarui' });
@@ -431,14 +431,14 @@ app.get('/api/spm/pendidikan/:id', async (req, res) => {
 app.post('/api/spm/pendidikan', async (req, res) => {
     try {
         const { keluarga_id, anggota_id, kader_id, tgl_pengajuan, jenjang_pendidikan,
-                kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, created_by } = req.body;
+                kelas, nama_institusi, jenis_bantuan, keterangan_alasan, nik, keterangan, file_bukti, latitude, longitude, created_by } = req.body;
         if (!keluarga_id || !anggota_id || !kader_id || !jenjang_pendidikan || !jenis_bantuan || !keterangan_alasan) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_pendidikan (keluarga_id, anggota_id, kader_id, tgl_pengajuan, jenjang_pendidikan,
-             kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
+             kelas, nama_institusi, jenis_bantuan, keterangan_alasan, nik, keterangan, file_bukti, latitude, longitude, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id`,
             [keluarga_id, anggota_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
-             jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, created_by]
+             jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, nik, keterangan, file_bukti, latitude, longitude, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM Pendidikan disimpan' }, 201);
     } catch (e) { err(res, e.message); }
@@ -459,10 +459,10 @@ app.get('/api/spm/pendidikan/:id', async (req, res) => {
 // PUT /api/spm/pendidikan/:id
 app.put('/api/spm/pendidikan/:id', async (req, res) => {
     try {
-        const { jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, updated_by } = req.body;
+        const { jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, nik, keterangan, file_bukti, latitude, longitude, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE spm_pendidikan SET jenjang_pendidikan=$1, kelas=$2, nama_institusi=$3, jenis_bantuan=$4, keterangan_alasan=$5, file_bukti=$6, latitude=$7, longitude=$8, updated_by=$9 WHERE id=$10 AND deleted_at IS NULL`,
-            [jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, file_bukti, latitude, longitude, updated_by, req.params.id]
+            `UPDATE spm_pendidikan SET jenjang_pendidikan=$1, kelas=$2, nama_institusi=$3, jenis_bantuan=$4, keterangan_alasan=$5, nik=$6, keterangan=$7, file_bukti=$8, latitude=$9, longitude=$10, updated_by=$11 WHERE id=$12 AND deleted_at IS NULL`,
+            [jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, nik, keterangan, file_bukti, latitude, longitude, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
         ok(res, { message: 'Data SPM Pendidikan diperbarui' });
@@ -508,15 +508,15 @@ app.post('/api/spm/perumahan', async (req, res) => {
     try {
         const { keluarga_id, kader_id, tgl_pengajuan, latitude, longitude,
                 status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai,
-                pernyataan_belum_pernah_terima, file_ktp, file_kk, created_by } = req.body;
+                pernyataan_belum_pernah_terima, nik, keterangan, file_ktp, file_kk, created_by } = req.body;
         if (!keluarga_id || !kader_id) return err(res, 'keluarga_id dan kader_id wajib', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_perumahan (keluarga_id, kader_id, tgl_pengajuan, latitude, longitude,
-             status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, file_ktp, file_kk, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
+             status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, nik, keterangan, file_ktp, file_kk, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id`,
             [keluarga_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
              latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding,
-             jenis_lantai, pernyataan_belum_pernah_terima || 0, file_ktp, file_kk, created_by]
+             jenis_lantai, pernyataan_belum_pernah_terima || 0, nik, keterangan, file_ktp, file_kk, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM Perumahan disimpan' }, 201);
     } catch (e) { err(res, e.message); }
@@ -534,10 +534,10 @@ app.get('/api/spm/perumahan/:id', async (req, res) => {
 // PUT /api/spm/perumahan/:id
 app.put('/api/spm/perumahan/:id', async (req, res) => {
     try {
-        const { latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, file_ktp, file_kk, updated_by } = req.body;
+        const { latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, nik, keterangan, file_ktp, file_kk, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE spm_perumahan SET latitude=$1, longitude=$2, status_kepemilikan_lahan=$3, jenis_atap=$4, jenis_dinding=$5, jenis_lantai=$6, pernyataan_belum_pernah_terima=$7, file_ktp=$8, file_kk=$9, updated_by=$10 WHERE id=$11 AND deleted_at IS NULL`,
-            [latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima || 0, file_ktp, file_kk, updated_by, req.params.id]
+            `UPDATE spm_perumahan SET latitude=$1, longitude=$2, status_kepemilikan_lahan=$3, jenis_atap=$4, jenis_dinding=$5, jenis_lantai=$6, pernyataan_belum_pernah_terima=$7, nik=$8, keterangan=$9, file_ktp=$10, file_kk=$11, updated_by=$12 WHERE id=$13 AND deleted_at IS NULL`,
+            [latitude, longitude, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima || 0, nik, keterangan, file_ktp, file_kk, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
         ok(res, { message: 'Data SPM Perumahan diperbarui' });
@@ -582,13 +582,13 @@ app.get('/api/spm/pu/:id', async (req, res) => {
 app.post('/api/spm/pu', async (req, res) => {
     try {
         const { keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan,
-                detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by } = req.body;
+                detail_lokasi, nik, keterangan, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by } = req.body;
         if (!keluarga_id || !kader_id || !jenis_kebutuhan || !detail_lokasi) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
-            `INSERT INTO spm_pu (keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id`,
+            `INSERT INTO spm_pu (keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan, detail_lokasi, nik, keterangan, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id`,
             [keluarga_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
-             jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by]
+             jenis_kebutuhan, detail_lokasi, nik, keterangan, latitude, longitude, estimasi_dimensi, file_surat_permohonan, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM PU disimpan' }, 201);
     } catch (e) { err(res, e.message); }
@@ -606,10 +606,10 @@ app.get('/api/spm/pu/:id', async (req, res) => {
 // PUT /api/spm/pu/:id
 app.put('/api/spm/pu/:id', async (req, res) => {
     try {
-        const { jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, updated_by } = req.body;
+        const { jenis_kebutuhan, detail_lokasi, nik, keterangan, latitude, longitude, estimasi_dimensi, file_surat_permohonan, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE spm_pu SET jenis_kebutuhan=$1, detail_lokasi=$2, latitude=$3, longitude=$4, estimasi_dimensi=$5, file_surat_permohonan=$6, updated_by=$7 WHERE id=$8 AND deleted_at IS NULL`,
-            [jenis_kebutuhan, detail_lokasi, latitude, longitude, estimasi_dimensi, file_surat_permohonan, updated_by, req.params.id]
+            `UPDATE spm_pu SET jenis_kebutuhan=$1, detail_lokasi=$2, nik=$3, keterangan=$4, latitude=$5, longitude=$6, estimasi_dimensi=$7, file_surat_permohonan=$8, updated_by=$9 WHERE id=$10 AND deleted_at IS NULL`,
+            [jenis_kebutuhan, detail_lokasi, nik, keterangan, latitude, longitude, estimasi_dimensi, file_surat_permohonan, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
         ok(res, { message: 'Data SPM PU diperbarui' });
@@ -655,15 +655,15 @@ app.get('/api/spm/sosial/:id', async (req, res) => {
 app.post('/api/spm/sosial', async (req, res) => {
     try {
         const { keluarga_id, kader_id, tgl_pengajuan, kategori_sasaran, nik_sasaran,
-                nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude,
+                nama_sasaran, penjelasan_kondisi, keterangan, bantuan_mendesak, latitude, longitude,
                 file_identitas_sasaran, file_sk_desa, created_by } = req.body;
         if (!kader_id || !kategori_sasaran || !penjelasan_kondisi) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_sosial (keluarga_id, kader_id, tgl_pengajuan, kategori_sasaran, nik_sasaran,
-             nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id`,
+             nama_sasaran, penjelasan_kondisi, keterangan, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING id`,
             [keluarga_id, kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0],
-             kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi,
+             kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, keterangan,
              bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengajuan SPM Sosial disimpan' }, 201);
@@ -673,10 +673,10 @@ app.post('/api/spm/sosial', async (req, res) => {
 // PUT /api/spm/sosial/:id
 app.put('/api/spm/sosial/:id', async (req, res) => {
     try {
-        const { kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, updated_by } = req.body;
+        const { kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, keterangan, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE spm_sosial SET kategori_sasaran=$1, nik_sasaran=$2, nama_sasaran=$3, penjelasan_kondisi=$4, bantuan_mendesak=$5, latitude=$6, longitude=$7, file_identitas_sasaran=$8, file_sk_desa=$9, updated_by=$10 WHERE id=$11 AND deleted_at IS NULL`,
-            [kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, updated_by, req.params.id]
+            `UPDATE spm_sosial SET kategori_sasaran=$1, nik_sasaran=$2, nama_sasaran=$3, penjelasan_kondisi=$4, keterangan=$5, bantuan_mendesak=$6, latitude=$7, longitude=$8, file_identitas_sasaran=$9, file_sk_desa=$10, updated_by=$11 WHERE id=$12 AND deleted_at IS NULL`,
+            [kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, keterangan, bantuan_mendesak, latitude, longitude, file_identitas_sasaran, file_sk_desa, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
         ok(res, { message: 'Data SPM Sosial diperbarui' });
@@ -722,15 +722,15 @@ app.get('/api/spm/trantibum/:id', async (req, res) => {
 app.post('/api/spm/trantibum', async (req, res) => {
     try {
         const { kader_id, tgl_pengajuan, waktu_kejadian, kategori_laporan, detail_kejadian,
-                latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor,
+                nik, keterangan, latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor,
                 file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by } = req.body;
         if (!kader_id || !kategori_laporan || !detail_kejadian) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO spm_trantibum (kader_id, tgl_pengajuan, waktu_kejadian, kategori_laporan, detail_kejadian,
-             latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING id`,
+             nik, keterangan, latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING id`,
             [kader_id, tgl_pengajuan || new Date().toISOString().split('T')[0], waktu_kejadian,
-             kategori_laporan, detail_kejadian, latitude, longitude, is_anonim || 0,
+             kategori_laporan, detail_kejadian, nik, keterangan, latitude, longitude, is_anonim || 0,
              nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Pengaduan Trantibum disimpan' }, 201);
@@ -740,10 +740,10 @@ app.post('/api/spm/trantibum', async (req, res) => {
 // PUT /api/spm/trantibum/:id
 app.put('/api/spm/trantibum/:id', async (req, res) => {
     try {
-        const { waktu_kejadian, kategori_laporan, detail_kejadian, latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, updated_by } = req.body;
+        const { waktu_kejadian, kategori_laporan, detail_kejadian, nik, keterangan, latitude, longitude, is_anonim, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, updated_by } = req.body;
         const result = await pool.query(
-            `UPDATE spm_trantibum SET waktu_kejadian=$1, kategori_laporan=$2, detail_kejadian=$3, latitude=$4, longitude=$5, is_anonim=$6, nama_pelapor=$7, no_kontak_pelapor=$8, file_ktp_pelapor=$9, estimasi_korban=$10, estimasi_kerugian=$11, updated_by=$12 WHERE id=$13 AND deleted_at IS NULL`,
-            [waktu_kejadian, kategori_laporan, detail_kejadian, latitude, longitude, is_anonim || 0, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, updated_by, req.params.id]
+            `UPDATE spm_trantibum SET waktu_kejadian=$1, kategori_laporan=$2, detail_kejadian=$3, nik=$4, keterangan=$5, latitude=$6, longitude=$7, is_anonim=$8, nama_pelapor=$9, no_kontak_pelapor=$10, file_ktp_pelapor=$11, estimasi_korban=$12, estimasi_kerugian=$13, updated_by=$14 WHERE id=$15 AND deleted_at IS NULL`,
+            [waktu_kejadian, kategori_laporan, detail_kejadian, nik, keterangan, latitude, longitude, is_anonim || 0, nama_pelapor, no_kontak_pelapor, file_ktp_pelapor, estimasi_korban, estimasi_kerugian, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'Data tidak ditemukan', 404);
         ok(res, { message: 'Data Trantibum diperbarui' });

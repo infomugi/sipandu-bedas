@@ -14,65 +14,111 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .header-premium-nav {
+            background: linear-gradient(180deg, #064e3b 0%, #065f46 100%);
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            color: white;
+            position: relative;
+        }
+        .pro-card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            padding: 1.25rem;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .stat-badge {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .filter-pill {
+            background: white;
+            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #f1f5f9;
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 <body class="antialiased text-slate-800">
 
 <div class="app-container">
 
     <!-- Header Section -->
-    <header class="header-brand">
-        <button onclick="history.back()" class="btn-back-light">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <div>
-            <h2 class="text-lg font-bold">Laporan & Statistik</h2>
-            <p class="text-[10px] text-emerald-100 opacity-80">Rekapitulasi Data Posyandu RW 11</p>
+    <header class="header-premium-nav">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <button onclick="history.back()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md">
+                    <i class="fa-solid fa-chevron-left text-white"></i>
+                </button>
+                <div>
+                    <h1 class="text-sm font-bold tracking-tight">Statistik & Laporan</h1>
+                    <p class="text-[10px] text-emerald-400 font-bold opacity-80 uppercase tracking-widest">RW 11 Rancamanyar</p>
+                </div>
+            </div>
+            <button class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-md text-white active:scale-95 transition-transform">
+                <i class="fa-solid fa-download text-sm"></i>
+            </button>
         </div>
-        <button class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center btn-press">
-            <i class="fa-solid fa-download text-sm"></i>
-        </button>
     </header>
 
-    <div class="view-content px-5 pt-6">
+    <div class="view-content px-5 pt-6 pb-24">
 
         <!-- Month Filter -->
-        <div class="mb-6 flex items-center justify-between bg-white rounded-xl p-2 shadow-sm border border-slate-100">
-            <button class="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-50"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="filter-pill">
+            <button class="text-slate-400 p-1"><i class="fa-solid fa-chevron-left text-xs"></i></button>
             <span class="text-xs font-bold text-slate-700">Agustus 2025</span>
-            <button class="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-50"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="text-slate-400 p-1"><i class="fa-solid fa-chevron-right text-xs"></i></button>
         </div>
 
         <!-- Quick Stats -->
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="stat-card">
-                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center mb-2"><i class="fa-solid fa-house-chimney"></i></div>
-                <h3 class="text-2xl font-bold text-slate-800">42</h3>
-                <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Keluarga Terdaftar</p>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="pro-card">
+                <div class="stat-badge bg-emerald-50 text-emerald-500"><i class="fa-solid fa-house-chimney"></i></div>
+                <h3 class="text-2xl font-extrabold text-slate-800">42</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Keluarga</p>
             </div>
-            <div class="stat-card">
-                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center mb-2"><i class="fa-solid fa-handshake-angle"></i></div>
-                <h3 class="text-2xl font-bold text-slate-800">18</h3>
-                <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Pengajuan SPM</p>
+            <div class="pro-card">
+                <div class="stat-badge bg-blue-50 text-blue-500"><i class="fa-solid fa-handshake-angle"></i></div>
+                <h3 class="text-2xl font-extrabold text-slate-800">18</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Layanan</p>
             </div>
         </div>
 
         <!-- Chart Section -->
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
-            <h3 class="text-xs font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-chart-column text-emerald-500"></i> Distribusi Pengajuan SPM
-            </h3>
+        <div class="pro-card mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-column text-emerald-500"></i> Distribusi Layanan
+                </h3>
+            </div>
             <div class="w-full h-48">
                 <canvas id="spmChart"></canvas>
             </div>
         </div>
 
-        <!-- Recent Activity Summary -->
-        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl mb-6">
+        <!-- Insights -->
+        <div class="bg-emerald-50/50 border border-emerald-100 p-5 rounded-2xl">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-bolt"></i></div>
+                <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-lg shadow-emerald-500/20"><i class="fa-solid fa-bolt"></i></div>
                 <h3 class="text-xs font-bold text-emerald-900">Insight Bulan Ini</h3>
             </div>
-            <p class="text-[10px] text-emerald-700 leading-relaxed font-medium">Pengajuan tertinggi bulan ini berada pada layanan <strong class="font-bold">Kesehatan (PMT & Imunisasi)</strong>. Terdapat 3 keluarga Pra-Sejahtera baru yang terdaftar minggu ini.</p>
+            <p class="text-[11px] text-emerald-700 leading-relaxed font-medium">Layanan tertinggi berada pada <strong class="font-bold">Kesehatan (PMT & Imunisasi)</strong>. Ada peningkatan partisipasi keluarga sebesar 12% dibanding bulan lalu.</p>
         </div>
 
     </div>
@@ -104,7 +150,6 @@
 </div>
 
 <script>
-    // Initialize Chart
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('spmChart').getContext('2d');
         new Chart(ctx, {
@@ -114,15 +159,9 @@
                 datasets: [{
                     label: 'Jumlah Pengajuan',
                     data: [3, 8, 1, 4, 0, 2],
-                    backgroundColor: [
-                        '#3b82f6', // Pend
-                        '#10b981', // Kes
-                        '#f59e0b', // PU
-                        '#f97316', // Perum
-                        '#ef4444', // Trantib
-                        '#8b5cf6'  // Sosial
-                    ],
-                    borderRadius: 4
+                    backgroundColor: ['#10b981', '#10b981', '#10b981', '#10b981', '#10b981', '#10b981'],
+                    borderRadius: 8,
+                    maxBarThickness: 24
                 }]
             },
             options: {
@@ -130,8 +169,8 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 9, family: "'Plus Jakarta Sans'" } } },
-                    x: { grid: { display: false }, ticks: { font: { size: 9, family: "'Plus Jakarta Sans'" } } }
+                    y: { beginAtZero: true, grid: { color: '#f8fafc', drawTicks: false }, border: { display: false }, ticks: { font: { size: 9, family: "'Plus Jakarta Sans'" }, stepSize: 2 } },
+                    x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 9, family: "'Plus Jakarta Sans'" } } }
                 }
             }
         });

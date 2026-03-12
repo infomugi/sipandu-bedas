@@ -346,7 +346,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"anggota_id\": 2,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pelayanan\": \"2026-03-12\",\n    \"jenis_sasaran\": \"balita\",\n    \"berat_badan\": 10.5,\n    \"tinggi_badan\": 85,\n    \"status_kms\": \"hijau\",\n    \"latitude\": \"-6.1234\",\n    \"longitude\": \"107.5678\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"anggota_id\": 2,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pelayanan\": \"2026-03-12\",\n    \"jenis_sasaran\": \"balita\",\n    \"berat_badan\": 10.5,\n    \"tinggi_badan\": 85,\n    \"status_kms\": \"hijau\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Pemeriksaan rutin balita sehat\",\n    \"latitude\": \"-6.1234\",\n    \"longitude\": \"107.5678\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -393,7 +393,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"berat_badan\": 11.2,\n    \"tinggi_badan\": 87,\n    \"lingkar_kepala_cm\": 46,\n    \"status_kms\": \"hijau\",\n    \"catatan_tindak_lanjut\": \"Sudah diberikan vitamin tambahan\",\n    \"updated_by\": \"{{userId}}\"\n}",
+                            "raw": "{\n    \"berat_badan\": 11.2,\n    \"tinggi_badan\": 87,\n    \"lingkar_kepala_cm\": 46,\n    \"status_kms\": \"hijau\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Update data per 12 Maret\",\n    \"catatan_tindak_lanjut\": \"Sudah diberikan vitamin tambahan\",\n    \"updated_by\": \"{{userId}}\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -479,7 +479,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"anggota_id\": 2,\n    \"kader_id\": \"{{kader_id}}\",\n    \"jenjang_pendidikan\": \"SD\",\n    \"jenis_bantuan\": \"seragam\",\n    \"keterangan_alasan\": \"Anak putus sekolah karena biaya.\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"anggota_id\": 2,\n    \"kader_id\": \"{{kader_id}}\",\n    \"jenjang_pendidikan\": \"SD\",\n    \"jenis_bantuan\": \"seragam\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Membantu siswa kurang mampu\",\n    \"keterangan_alasan\": \"Anak putus sekolah karena biaya.\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -526,7 +526,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"jenjang_pendidikan\": \"SD\",\n    \"kelas\": \"2\",\n    \"nama_institusi\": \"SDN 01 RANCAMANYAR\",\n    \"jenis_bantuan\": \"seragam\",\n    \"keterangan_alasan\": \"Update data permohonan\",\n    \"updated_by\": \"{{userId}}\"\n}",
+                            "raw": "{\n    \"jenjang_pendidikan\": \"SD\",\n    \"kelas\": \"2\",\n    \"nama_institusi\": \"SDN 01 RANCAMANYAR\",\n    \"jenis_bantuan\": \"seragam\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Revisi jenjang pendidikan\",\n    \"keterangan_alasan\": \"Update data permohonan\",\n    \"updated_by\": \"{{userId}}\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -612,7 +612,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"status_kepemilikan_lahan\": \"milik_sendiri\",\n    \"jenis_atap\": \"seng\",\n    \"jenis_dinding\": \"bilik\",\n    \"jenis_lantai\": \"tanah\",\n    \"pernyataan_belum_pernah_terima\": 1\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"status_kepemilikan_lahan\": \"milik_sendiri\",\n    \"jenis_atap\": \"seng\",\n    \"jenis_dinding\": \"bilik\",\n    \"jenis_lantai\": \"tanah\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Rumah panggung dinding bambu\",\n    \"pernyataan_belum_pernah_terima\": 1\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -659,7 +659,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"status_kepemilikan_lahan\": \"milik_sendiri\",\n    \"jenis_atap\": \"genteng\",\n    \"jenis_dinding\": \"tembok\",\n    \"jenis_lantai\": \"keramik\",\n    \"updated_by\": \"{{userId}}\"\n}",
+                            "raw": "{\n    \"status_kepemilikan_lahan\": \"milik_sendiri\",\n    \"jenis_atap\": \"genteng\",\n    \"jenis_dinding\": \"tembok\",\n    \"jenis_lantai\": \"keramik\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Update material bangunan\",\n    \"updated_by\": \"{{userId}}\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -745,7 +745,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"jenis_kebutuhan\": \"air_bersih\",\n    \"detail_lokasi\": \"RT 01 RW 02\",\n    \"estimasi_dimensi\": \"Pipa 100 meter\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"jenis_kebutuhan\": \"air_bersih\",\n    \"detail_lokasi\": \"RT 01 RW 02\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Pemasangan pipa swadaya\",\n    \"estimasi_dimensi\": \"Pipa 100 meter\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -792,7 +792,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"jenis_kebutuhan\": \"air_bersih\",\n    \"detail_lokasi\": \"RT 01 RW 02 Depok\",\n    \"estimasi_dimensi\": \"Pipa 150 meter\",\n    \"updated_by\": \"{{userId}}\"\n}",
+                            "raw": "{\n    \"jenis_kebutuhan\": \"air_bersih\",\n    \"detail_lokasi\": \"RT 01 RW 02 Depok\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Revisi lokasi pipa\",\n    \"estimasi_dimensi\": \"Pipa 150 meter\",\n    \"updated_by\": \"{{userId}}\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -878,7 +878,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"kategori_sasaran\": \"lansia_terlantar\",\n    \"nama_sasaran\": \"Mbah Fulan\",\n    \"penjelasan_kondisi\": \"Lansia sebatang kara perlu bantuan pangan.\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"kategori_sasaran\": \"lansia_terlantar\",\n    \"nik_sasaran\": \"3204123456780001\",\n    \"nama_sasaran\": \"Mbah Fulan\",\n    \"penjelasan_kondisi\": \"Lansia sebatang kara perlu bantuan pangan.\",\n    \"keterangan\": \"Tinggal menumpang di rumah warga\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -925,7 +925,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"kategori_sasaran\": \"lansia_terlantar\",\n    \"penjelasan_kondisi\": \"Update kondisi: Sangat memerlukan bantuan segera\",\n    \"bantuan_mendesak\": \"Pangan dan Obat\",\n    \"updated_by\": \"{{userId}}\"\n}",
+                            "raw": "{\n    \"kategori_sasaran\": \"lansia_terlantar\",\n    \"penjelasan_kondisi\": \"Update kondisi: Sangat memerlukan bantuan segera\",\n    \"keterangan\": \"Kesehatan menurun drastis\",\n    \"bantuan_mendesak\": \"Pangan dan Obat\",\n    \"updated_by\": \"{{userId}}\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1011,7 +1011,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"kader_id\": \"{{kader_id}}\",\n    \"kategori_laporan\": \"bencana_alam\",\n    \"detail_kejadian\": \"Pohon tumbang menutup jalan desa.\",\n    \"is_anonim\": 0,\n    \"nama_pelapor\": \"Agus\"\n}",
+                            "raw": "{\n    \"kader_id\": \"{{kader_id}}\",\n    \"kategori_laporan\": \"bencana_alam\",\n    \"detail_kejadian\": \"Pohon tumbang menutup jalan desa.\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Lokasi di pertigaan RW 11\",\n    \"is_anonim\": 0,\n    \"nama_pelapor\": \"Agus\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1058,7 +1058,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"kategori_laporan\": \"bencana_alam\",\n    \"detail_kejadian\": \"Tanah longsor kecil di pinggir jalan\",\n    \"estimasi_kerugian\": 5000000,\n    \"updated_by\": \"{{userId}}\"\n}",
+                            "raw": "{\n    \"kategori_laporan\": \"bencana_alam\",\n    \"detail_kejadian\": \"Tanah longsor kecil di pinggir jalan\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Akses jalan terganggu sebagian\",\n    \"estimasi_kerugian\": 5000000,\n    \"updated_by\": \"{{userId}}\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"

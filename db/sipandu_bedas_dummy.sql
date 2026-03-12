@@ -59,22 +59,22 @@ INSERT INTO posyandu_assesment (id, kader_id, tgl_assesment, meja_1_pendaftaran,
 -- ============================================================
 
 -- SKENARIO 1: Balita Caca mengalami Gizi Buruk (SPM Kesehatan) -> Baru masuk, Menunggu Validasi Desa
-INSERT INTO spm_kesehatan (id, keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran, berat_badan, tinggi_badan, lingkar_kepala_cm, lingkar_lengan_cm, status_kms, latitude, longitude, status_pengajuan) 
-VALUES ('eeeeeeee-1111-1111-1111-111111111111', 'aaaaaaaa-1111-1111-1111-111111111111', 'bbbbbbbb-1111-1111-1111-111111111113', '11111111-1111-1111-1111-111111111111', '2026-03-05', 'balita', 8.5, 75.0, 45.0, 12.0, 'merah', -6.9991, 107.6012, 'menunggu_validasi_desa');
+INSERT INTO spm_kesehatan (id, keluarga_id, anggota_id, kader_id, tgl_pelayanan, jenis_sasaran, berat_badan, tinggi_badan, lingkar_kepala_cm, lingkar_lengan_cm, status_kms, latitude, longitude, status_pengajuan, nik, keterangan) 
+VALUES ('eeeeeeee-1111-1111-1111-111111111111', 'aaaaaaaa-1111-1111-1111-111111111111', 'bbbbbbbb-1111-1111-1111-111111111113', '11111111-1111-1111-1111-111111111111', '2026-03-05', 'balita', 8.5, 75.0, 45.0, 12.0, 'merah', -6.9991, 107.6012, 'menunggu_validasi_desa', '3204321111111103', 'Balita gizi kurang, perlu PMT');
 INSERT INTO pengajuan_spm (id, kader_id, keluarga_id, jenis_spm, ref_id, status, catatan)
 VALUES ('eeeeeeee-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'aaaaaaaa-1111-1111-1111-111111111111', 'kesehatan', 'eeeeeeee-1111-1111-1111-111111111111', 'menunggu_validasi_desa', 'Pengajuan PMT Pemulihan');
 
 -- SKENARIO 2: Lansia Karto Terlantar (SPM Sosial) -> Sedang Assesment Lapangan
-INSERT INTO spm_sosial (id, keluarga_id, kader_id, tgl_pengajuan, kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, status_pengajuan)
-VALUES ('eeeeeeee-2222-2222-2222-222222222222', 'aaaaaaaa-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', '2026-03-06', 'lansia', '3204322222222202', 'Karto Miharja', 'Lansia sebatang kara, sakit-sakitan', 'Sembako dan Obat', -6.9992, 107.6015, 'menunggu_rtl_desa');
+INSERT INTO spm_sosial (id, keluarga_id, kader_id, tgl_pengajuan, kategori_sasaran, nik_sasaran, nama_sasaran, penjelasan_kondisi, bantuan_mendesak, latitude, longitude, status_pengajuan, keterangan)
+VALUES ('eeeeeeee-2222-2222-2222-222222222222', 'aaaaaaaa-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', '2026-03-06', 'lansia', '3204322222222202', 'Karto Miharja', 'Lansia sebatang kara, sakit-sakitan', 'Sembako dan Obat', -6.9992, 107.6015, 'menunggu_rtl_desa', 'Perlu bantuan kursi roda');
 INSERT INTO pengajuan_spm (id, kader_id, keluarga_id, jenis_spm, ref_id, status, catatan)
 VALUES ('eeeeeeee-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111', 'aaaaaaaa-2222-2222-2222-222222222222', 'sosial', 'eeeeeeee-2222-2222-2222-222222222222', 'menunggu_rtl_desa', 'Pengajuan Bantuan Sosial Lansia');
 INSERT INTO pengajuan_assesment (id, pengajuan_id, foto_kk, foto_rumah, latitude, longitude, deskripsi_assesment)
 VALUES ('ffffffff-0000-0000-0000-000000000002', 'eeeeeeee-0000-0000-0000-000000000002', 'kk_joko.jpg', 'rumah_joko.jpg', '-6.9992', '107.6015', 'Telah diverifikasi, Karto memang lumpuh di ranjang.');
 
 -- SKENARIO 3: Rumah Asep Roboh (SPM Perumahan) -> Dirujuk, Selesai di Dinas
-INSERT INTO spm_perumahan (id, keluarga_id, kader_id, tgl_pengajuan, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, status_pengajuan)
-VALUES ('eeeeeeee-3333-3333-3333-333333333333', 'aaaaaaaa-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '2026-02-15', 'milik_sendiri', 'asbes_seng', 'bilik_bambu', 'tanah', 1, 'selesai_di_dinas');
+INSERT INTO spm_perumahan (id, keluarga_id, kader_id, tgl_pengajuan, status_kepemilikan_lahan, jenis_atap, jenis_dinding, jenis_lantai, pernyataan_belum_pernah_terima, status_pengajuan, nik, keterangan)
+VALUES ('eeeeeeee-3333-3333-3333-333333333333', 'aaaaaaaa-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '2026-02-15', 'milik_sendiri', 'asbes_seng', 'bilik_bambu', 'tanah', 1, 'selesai_di_dinas', '3204321111111101', 'Kondisi atap bocor parah');
 INSERT INTO pengajuan_spm (id, kader_id, keluarga_id, jenis_spm, ref_id, status, catatan)
 VALUES ('eeeeeeee-0000-0000-0000-000000000003', '11111111-1111-1111-1111-111111111111', 'aaaaaaaa-1111-1111-1111-111111111111', 'perumahan', 'eeeeeeee-3333-3333-3333-333333333333', 'selesai_di_dinas', 'Pengajuan Bantuan Rutilahu Bp Asep');
 INSERT INTO pengajuan_assesment (id, pengajuan_id, foto_kk, foto_rumah, latitude, longitude, deskripsi_assesment)
@@ -83,8 +83,16 @@ INSERT INTO pengajuan_rujukan (id, pengajuan_id, no_surat_pengantar, file_surat_
 VALUES ('aaaaaabb-0000-0000-0000-000000000003', 'eeeeeeee-0000-0000-0000-000000000003', '460/01/DS/2026', 'rujukan_asep.pdf', '2026-02-20', 1, 1, 'Bantuan material perbaikan rumah telah turun senilai 15 Jt.');
 
 -- SKENARIO 4: Bencana Angin Puting Beliung (SPM Trantibum) -> Validasi Kecamatan
-INSERT INTO spm_trantibum (id, kader_id, tgl_pengajuan, waktu_kejadian, kategori_laporan, detail_kejadian, latitude, longitude, is_anonim, nama_pelapor, status_pengajuan)
-VALUES ('eeeeeeee-4444-4444-4444-444444444444', '22222222-2222-2222-2222-222222222222', '2026-03-11', '2026-03-10 15:30:00', 'bencana_alam', 'Pohon tumbang', -6.9990, 107.6000, 0, 'Kader Budi', 'menunggu_validasi_kabupaten');
+INSERT INTO spm_trantibum (id, kader_id, tgl_pengajuan, waktu_kejadian, kategori_laporan, detail_kejadian, latitude, longitude, is_anonim, nama_pelapor, status_pengajuan, nik, keterangan)
+VALUES ('eeeeeeee-4444-4444-4444-444444444444', '22222222-2222-2222-2222-222222222222', '2026-03-11', '2026-03-10 15:30:00', 'bencana_alam', 'Pohon tumbang menimpa atap', -6.9990, 107.6000, 0, 'Kader Budi', 'menunggu_validasi_kabupaten', '3204320102900002', 'Laporan awal dari warga');
+
+-- SKENARIO 5: Bantuan Seragam (SPM Pendidikan)
+INSERT INTO spm_pendidikan (id, keluarga_id, anggota_id, kader_id, tgl_pengajuan, jenjang_pendidikan, kelas, nama_institusi, jenis_bantuan, keterangan_alasan, status_pengajuan, nik, keterangan)
+VALUES ('eeeeeeee-5555-5555-5555-555555555555', 'aaaaaaaa-1111-1111-1111-111111111111', 'bbbbbbbb-1111-1111-1111-111111111113', '11111111-1111-1111-1111-111111111111', '2026-03-07', 'sd_mi', '1', 'SDN Rancamanyar 01', 'seragam_alat_tulis', 'Orang tua tidak mampu beli seragam', 'menunggu_validasi_desa', '3204321111111103', 'Sangat mendesak');
+
+-- SKENARIO 6: Sanitasi Septic Tank (SPM PU)
+INSERT INTO spm_pu (id, keluarga_id, kader_id, tgl_pengajuan, jenis_kebutuhan, detail_lokasi, status_pengajuan, nik, keterangan)
+VALUES ('eeeeeeee-6666-6666-6666-666666666666', 'aaaaaaaa-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', '2026-03-08', 'sanitasi_septic_tank', 'Kampung Tengah RT 02 RW 11', 'menunggu_validasi_desa', '3204323333333301', 'Area padat penduduk');
 INSERT INTO pengajuan_spm (id, kader_id, jenis_spm, ref_id, status, catatan)
 VALUES ('eeeeeeee-0000-0000-0000-000000000004', '22222222-2222-2222-2222-222222222222', 'trantibum', 'eeeeeeee-4444-4444-4444-444444444444', 'menunggu_validasi_kabupaten', 'Evakuasi Pohon Tumbang');
 INSERT INTO pengajuan_assesment (id, pengajuan_id, foto_kk, foto_rumah, latitude, longitude, deskripsi_assesment)
