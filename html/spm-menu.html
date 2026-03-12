@@ -15,7 +15,7 @@
     <!-- Screen: Menu 6 SPM -->
     <div class="view-screen" style="background:#f8fafc;">
         <header class="header-white-nav">
-            <button onclick="location.href='index.html'" class="btn-back" aria-label="Kembali">
+            <button onclick="history.back()" class="btn-back" aria-label="Kembali">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             <div>
@@ -24,7 +24,7 @@
             </div>
         </header>
         
-        <main style="flex:1;overflow-y:auto;padding:1.25rem;padding-bottom:2rem;">
+        <main style="flex:1;overflow-y:auto;padding:1.25rem;padding-bottom:100px;">
             <!-- Target Family Info -->
             <div class="info-box info-box-indigo" style="margin-bottom:1.5rem;">
                 <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -111,6 +111,30 @@
             </div>
         </main>
     </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button onclick="location.href='index.html'" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </button>
+        <button onclick="location.href='pendaftaran.html'" class="nav-item">
+            <i class="fa-solid fa-users"></i>
+            <span>Keluarga</span>
+        </button>
+        <button onclick="location.href='riwayat-pengajuan.html'" class="nav-item">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Riwayat</span>
+        </button>
+        <button onclick="location.href='laporan.html'" class="nav-item">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Laporan</span>
+        </button>
+        <button onclick="location.href='profil.html'" class="nav-item">
+            <i class="fa-solid fa-user-circle"></i>
+            <span>Profil</span>
+        </button>
+    </nav>
 
 </div>
 

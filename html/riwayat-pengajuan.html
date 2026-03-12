@@ -11,63 +11,20 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: {
-                        brand: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' },
-                        surface: '#f8fafc',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #e2e8f0; -webkit-tap-highlight-color: transparent; }
-        ::-webkit-scrollbar { display: none; }
-        
-        .app-container {
-            max-width: 414px; margin: 0 auto; background-color: #f8fafc;
-            height: 100vh; position: relative; overflow: hidden;
-            display: flex; flex-direction: column;
-        }
-
-        @media (min-width: 640px) {
-            .app-container {
-                height: 850px; margin-top: 2rem; margin-bottom: 2rem;
-                border-radius: 40px; border: 12px solid #0f172a; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        .view-content {
-            flex: 1; overflow-y: auto; padding-bottom: 80px;
-        }
-
-        .btn-press:active { transform: scale(0.96); }
-
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(241, 245, 249, 0.8); position: absolute; bottom: 0; width: 100%; z-index: 50;
-        }
-
-        /* Status Colors */
-        .status-badge-pending { background: #fef3c7; color: #d97706; }
-        .status-badge-process { background: #e0e7ff; color: #4338ca; }
-        .status-badge-success { background: #d1fae5; color: #059669; }
-        .status-badge-rejected { background: #ffe4e6; color: #e11d48; }
-    </style>
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body class="antialiased text-slate-800">
 
 <div class="app-container">
 
     <!-- Header Section -->
-    <header class="bg-indigo-600 px-5 pt-12 pb-6 flex items-center justify-between sticky top-0 z-20 shadow-lg text-white">
+    <header class="header-brand">
+        <button onclick="history.back()" class="btn-back-light">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
         <div>
             <h2 class="text-lg font-bold">Riwayat Pengajuan</h2>
-            <p class="text-[10px] text-indigo-100 opacity-80">Pantau status usulan 6 Layanan SPM</p>
+            <p class="text-[10px] text-emerald-100 opacity-80">Pantau status usulan 6 Layanan SPM</p>
         </div>
     </header>
 
@@ -75,10 +32,10 @@
 
         <!-- Tabs -->
         <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-none">
-            <button class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-full whitespace-nowrap">Semua</button>
-            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap">Diproses</button>
-            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap">Selesai</button>
-            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap">Ditolak</button>
+            <button class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-full whitespace-nowrap">Semua</button>
+            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Diproses</button>
+            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Selesai</button>
+            <button class="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold rounded-full whitespace-nowrap hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Ditolak</button>
         </div>
 
         <div class="space-y-4">
@@ -122,7 +79,7 @@
                     <p><strong class="text-slate-700">Tanggal:</strong> 20 Agustus 2025</p>
                     <p><strong class="text-slate-700">ID Pengajuan:</strong> #PDD-0192</p>
                 </div>
-                <div class="mt-3 text-[10px] text-indigo-600 font-bold flex items-center gap-1">
+                <div class="mt-3 text-[10px] text-emerald-600 font-bold flex items-center gap-1">
                     <i class="fa-solid fa-circle-info"></i> Berkas sedang diverifikasi oleh Disdik.
                 </div>
             </div>
@@ -151,22 +108,26 @@
     </div>
 
     <!-- Bottom Nav -->
-    <nav class="glass-nav px-8 py-5 flex justify-between items-center text-slate-400">
-        <button onclick="location.href='index.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
-            <i class="fa-solid fa-house text-xl"></i>
-            <span class="text-[9px] font-bold">Beranda</span>
+    <nav class="bottom-nav">
+        <button onclick="location.href='index.html'" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
         </button>
-        <button class="flex flex-col items-center gap-1 text-emerald-600 w-16">
-            <i class="fa-solid fa-clock-rotate-left text-xl"></i>
-            <span class="text-[9px] font-bold">Riwayat</span>
+        <button onclick="location.href='pendaftaran.html'" class="nav-item">
+            <i class="fa-solid fa-users"></i>
+            <span>Keluarga</span>
         </button>
-        <button onclick="location.href='laporan.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
-            <i class="fa-solid fa-chart-pie text-xl"></i>
-            <span class="text-[9px] font-bold">Laporan</span>
+        <button class="nav-item active">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Riwayat</span>
         </button>
-        <button onclick="location.href='profil.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
-            <i class="fa-solid fa-user text-xl"></i>
-            <span class="text-[9px] font-bold">Profil</span>
+        <button onclick="location.href='laporan.html'" class="nav-item">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Laporan</span>
+        </button>
+        <button onclick="location.href='profil.html'" class="nav-item">
+            <i class="fa-solid fa-circle-user"></i>
+            <span>Profil</span>
         </button>
     </nav>
 

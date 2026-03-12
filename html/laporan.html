@@ -13,62 +13,20 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: {
-                        brand: { 50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 900: '#064e3b' },
-                        surface: '#f8fafc',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #e2e8f0; -webkit-tap-highlight-color: transparent; }
-        ::-webkit-scrollbar { display: none; }
-        
-        .app-container {
-            max-width: 414px; margin: 0 auto; background-color: #f8fafc;
-            height: 100vh; position: relative; overflow: hidden;
-            display: flex; flex-direction: column;
-        }
-
-        @media (min-width: 640px) {
-            .app-container {
-                height: 850px; margin-top: 2rem; margin-bottom: 2rem;
-                border-radius: 40px; border: 12px solid #0f172a; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        .view-content {
-            flex: 1; overflow-y: auto; padding-bottom: 80px;
-        }
-
-        .btn-press:active { transform: scale(0.96); }
-
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(241, 245, 249, 0.8); position: absolute; bottom: 0; width: 100%; z-index: 50;
-        }
-
-        .stat-card {
-            background: white; border-radius: 1rem; padding: 1rem; border: 1px solid #f1f5f9;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body class="antialiased text-slate-800">
 
 <div class="app-container">
 
     <!-- Header Section -->
-    <header class="bg-indigo-600 px-5 pt-12 pb-6 flex items-center justify-between sticky top-0 z-20 shadow-lg text-white">
+    <header class="header-brand">
+        <button onclick="history.back()" class="btn-back-light">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
         <div>
             <h2 class="text-lg font-bold">Laporan & Statistik</h2>
-            <p class="text-[10px] text-indigo-100 opacity-80">Rekapitulasi Data Posyandu RW 11</p>
+            <p class="text-[10px] text-emerald-100 opacity-80">Rekapitulasi Data Posyandu RW 11</p>
         </div>
         <button class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center btn-press">
             <i class="fa-solid fa-download text-sm"></i>
@@ -101,7 +59,7 @@
         <!-- Chart Section -->
         <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
             <h3 class="text-xs font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-chart-column text-indigo-500"></i> Distribusi Pengajuan SPM
+                <i class="fa-solid fa-chart-column text-emerald-500"></i> Distribusi Pengajuan SPM
             </h3>
             <div class="w-full h-48">
                 <canvas id="spmChart"></canvas>
@@ -109,33 +67,37 @@
         </div>
 
         <!-- Recent Activity Summary -->
-        <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl mb-6">
+        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl mb-6">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-bolt"></i></div>
-                <h3 class="text-xs font-bold text-indigo-900">Insight Bulan Ini</h3>
+                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-bolt"></i></div>
+                <h3 class="text-xs font-bold text-emerald-900">Insight Bulan Ini</h3>
             </div>
-            <p class="text-[10px] text-indigo-700 leading-relaxed font-medium">Pengajuan tertinggi bulan ini berada pada layanan <strong class="font-bold">Kesehatan (PMT & Imunisasi)</strong>. Terdapat 3 keluarga Pra-Sejahtera baru yang terdaftar minggu ini.</p>
+            <p class="text-[10px] text-emerald-700 leading-relaxed font-medium">Pengajuan tertinggi bulan ini berada pada layanan <strong class="font-bold">Kesehatan (PMT & Imunisasi)</strong>. Terdapat 3 keluarga Pra-Sejahtera baru yang terdaftar minggu ini.</p>
         </div>
 
     </div>
 
     <!-- Bottom Nav -->
-    <nav class="glass-nav px-8 py-5 flex justify-between items-center text-slate-400">
-        <button onclick="location.href='index.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
-            <i class="fa-solid fa-house text-xl"></i>
-            <span class="text-[9px] font-bold">Beranda</span>
+    <nav class="bottom-nav">
+        <button onclick="location.href='index.html'" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
         </button>
-        <button onclick="location.href='riwayat-pengajuan.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
-            <i class="fa-solid fa-clock-rotate-left text-xl"></i>
-            <span class="text-[9px] font-bold">Riwayat</span>
+        <button onclick="location.href='pendaftaran.html'" class="nav-item">
+            <i class="fa-solid fa-users"></i>
+            <span>Keluarga</span>
         </button>
-        <button class="flex flex-col items-center gap-1 text-emerald-600 w-16">
-            <i class="fa-solid fa-chart-pie text-xl"></i>
-            <span class="text-[9px] font-bold">Laporan</span>
+        <button onclick="location.href='riwayat-pengajuan.html'" class="nav-item">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Riwayat</span>
         </button>
-        <button onclick="location.href='profil.html'" class="flex flex-col items-center gap-1 hover:text-emerald-600 w-16">
-            <i class="fa-solid fa-user text-xl"></i>
-            <span class="text-[9px] font-bold">Profil</span>
+        <button class="nav-item active">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Laporan</span>
+        </button>
+        <button onclick="location.href='profil.html'" class="nav-item">
+            <i class="fa-solid fa-circle-user"></i>
+            <span>Profil</span>
         </button>
     </nav>
 
