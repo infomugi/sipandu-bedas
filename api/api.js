@@ -43,13 +43,18 @@ app.post('/api/auth/login', async (req, res) => {
         const { nik, password } = req.body;
         if (!nik || !password) return err(res, 'NIK dan password wajib diisi', 400);
         const { rows } = await pool.query(
-            'SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, desa, kecamatan, foto_profil, is_active FROM users WHERE nik = $1 AND deleted_at IS NULL',
+            'SELECT id, nama_lengkap, nik, email, no_hp, password, role, rw, rt, desa, kecamatan, foto_profil, is_active FROM users WHERE nik = $1 AND deleted_at IS NULL',
             [nik]
         );
         if (rows.length === 0) return err(res, 'NIK tidak ditemukan', 401);
         if (!rows[0].is_active) return err(res, 'Akun tidak aktif', 403);
         // NOTE: Di produksi gunakan bcrypt.compare(password, rows[0].password)
-        ok(res, { user: rows[0], token: `mock-token-${rows[0].id}` });
+        if (password !== rows[0].password) return err(res, 'Password salah', 401); // 🛡️ Sentinel: Fix authentication bypass
+
+        const user = { ...rows[0] };
+        delete user.password; // 🛡️ Sentinel: Don't leak password
+
+        ok(res, { user, token: `mock-token-${user.id}` });
     } catch (e) { err(res, e.message); }
 });
 
