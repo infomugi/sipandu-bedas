@@ -479,7 +479,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"anggota_id\": 2,\n    \"kader_id\": \"{{kader_id}}\",\n    \"jenjang_pendidikan\": \"SD\",\n    \"jenis_bantuan\": \"seragam\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Membantu siswa kurang mampu\",\n    \"keterangan_alasan\": \"Anak putus sekolah karena biaya.\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"anggota_id\": 2,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pengajuan\": \"2026-03-12\",\n    \"jenjang_pendidikan\": \"SD\",\n    \"kelas\": \"5\",\n    \"nama_institusi\": \"SDN 01 RANCAMANYAR\",\n    \"jenis_bantuan\": \"seragam\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Membantu siswa kurang mampu\",\n    \"keterangan_alasan\": \"Anak putus sekolah karena biaya.\",\n    \"file_bukti\": \"bukti_skl.pdf\",\n    \"latitude\": \"-6.123\",\n    \"longitude\": \"107.123\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -612,7 +612,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"status_kepemilikan_lahan\": \"milik_sendiri\",\n    \"jenis_atap\": \"seng\",\n    \"jenis_dinding\": \"bilik\",\n    \"jenis_lantai\": \"tanah\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Rumah panggung dinding bambu\",\n    \"pernyataan_belum_pernah_terima\": 1\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pengajuan\": \"2026-03-12\",\n    \"status_kepemilikan_lahan\": \"milik_sendiri\",\n    \"jenis_atap\": \"seng\",\n    \"jenis_dinding\": \"bilik\",\n    \"jenis_lantai\": \"tanah\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Rumah panggung dinding bambu\",\n    \"pernyataan_belum_pernah_terima\": 1,\n    \"latitude\": \"-6.123\",\n    \"longitude\": \"107.123\",\n    \"file_ktp\": \"ktp.jpg\",\n    \"file_kk\": \"kk.jpg\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -745,7 +745,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"jenis_kebutuhan\": \"air_bersih\",\n    \"detail_lokasi\": \"RT 01 RW 02\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Pemasangan pipa swadaya\",\n    \"estimasi_dimensi\": \"Pipa 100 meter\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pengajuan\": \"2026-03-12\",\n    \"jenis_kebutuhan\": \"air_bersih\",\n    \"detail_lokasi\": \"RT 01 RW 02\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Pemasangan pipa swadaya\",\n    \"estimasi_dimensi\": \"Pipa 100 meter\",\n    \"latitude\": \"-6.123\",\n    \"longitude\": \"107.123\",\n    \"file_surat_permohonan\": \"surat_pu.pdf\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -878,7 +878,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"kategori_sasaran\": \"lansia_terlantar\",\n    \"nik_sasaran\": \"3204123456780001\",\n    \"nama_sasaran\": \"Mbah Fulan\",\n    \"penjelasan_kondisi\": \"Lansia sebatang kara perlu bantuan pangan.\",\n    \"keterangan\": \"Tinggal menumpang di rumah warga\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pengajuan\": \"2026-03-12\",\n    \"kategori_sasaran\": \"lansia_terlantar\",\n    \"nik_sasaran\": \"3204123456780001\",\n    \"nama_sasaran\": \"Mbah Fulan\",\n    \"penjelasan_kondisi\": \"Lansia sebatang kara perlu bantuan pangan.\",\n    \"keterangan\": \"Tinggal menumpang di rumah warga\",\n    \"bantuan_mendesak\": \"Sembako\",\n    \"latitude\": \"-6.123\",\n    \"longitude\": \"107.123\",\n    \"file_identitas_sasaran\": \"ktp_lansia.jpg\",\n    \"file_sk_desa\": \"sk_desa.pdf\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1011,7 +1011,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"kader_id\": \"{{kader_id}}\",\n    \"kategori_laporan\": \"bencana_alam\",\n    \"detail_kejadian\": \"Pohon tumbang menutup jalan desa.\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Lokasi di pertigaan RW 11\",\n    \"is_anonim\": 0,\n    \"nama_pelapor\": \"Agus\"\n}",
+                            "raw": "{\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_pengajuan\": \"2026-03-12\",\n    \"waktu_kejadian\": \"2026-03-12 14:00:00\",\n    \"kategori_laporan\": \"bencana_alam\",\n    \"detail_kejadian\": \"Pohon tumbang menutup jalan desa.\",\n    \"nik\": \"3204123456780001\",\n    \"keterangan\": \"Lokasi di pertigaan RW 11\",\n    \"is_anonim\": 0,\n    \"nama_pelapor\": \"Agus\",\n    \"no_kontak_pelapor\": \"08123456789\",\n    \"latitude\": \"-6.123\",\n    \"longitude\": \"107.123\",\n    \"file_ktp_pelapor\": \"ktp_pelapor.jpg\",\n    \"estimasi_korban\": \"0\",\n    \"estimasi_kerugian\": \"1000000\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"

@@ -944,25 +944,23 @@ app.get('/api/laporan/dashboard', async (req, res) => {
             ),
             pool.query(
                 `SELECT k.rt,
-                 COUNT(DISTINCT k.id)   AS jumlah_keluarga,
-                 COUNT(DISTINCT an.id)  AS jumlah_anggota,
+                 COUNT(k.id)   AS jumlah_keluarga,
+                 SUM((SELECT COUNT(id) FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL)) AS jumlah_anggota,
                  SUM(CASE WHEN k.status_kesejahteraan='pra_sejahtera' THEN 1 ELSE 0 END) AS pra_sejahtera,
                  SUM(CASE WHEN k.status_asuransi='tidak_memiliki'     THEN 1 ELSE 0 END) AS tanpa_bpjs
                  FROM keluarga k
-                 LEFT JOIN anggota_keluarga an ON an.keluarga_id=k.id
                  WHERE k.is_aktif=1 ${kader_id ? 'AND k.kader_id=$1' : ''}
                  GROUP BY k.rt ORDER BY k.rt`, kader_id ? [kader_id] : []
             ),
             pool.query(
                 `SELECT k.no_kk, a.nama_lengkap AS kepala_keluarga, k.rt, k.rw,
-                 MAX(kj.tgl_kunjungan) AS kunjungan_terakhir
+                 (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id=k.id AND deleted_at IS NULL) AS kunjungan_terakhir
                  FROM keluarga k
-                 JOIN anggota_keluarga a ON a.keluarga_id=k.id AND a.status_keluarga='kepala_keluarga'
-                 LEFT JOIN kunjungan_posyandu kj ON kj.keluarga_id=k.id
+                 JOIN anggota_keluarga a ON a.keluarga_id=k.id AND a.status_keluarga='kepala_keluarga' AND a.deleted_at IS NULL
                  WHERE k.is_aktif=1 ${kader_id ? 'AND k.kader_id=$1' : ''}
                  GROUP BY k.id, k.no_kk, a.nama_lengkap, k.rt, k.rw
-                 HAVING MAX(kj.tgl_kunjungan) IS NULL
-                    OR MAX(kj.tgl_kunjungan) < CURRENT_DATE - INTERVAL '3 months'
+                 HAVING (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id=k.id AND deleted_at IS NULL) IS NULL
+                    OR (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id=k.id AND deleted_at IS NULL) < CURRENT_DATE - INTERVAL '3 months'
                  ORDER BY kunjungan_terakhir`, kader_id ? [kader_id] : []
             )
         ]);
