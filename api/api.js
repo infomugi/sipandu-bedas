@@ -130,13 +130,15 @@ app.get('/api/dashboard', async (req, res) => {
 app.get('/api/keluarga', async (req, res) => {
     try {
         const { kader_id, search } = req.query;
+        // ⚡ Bolt Optimization: Replaced multiple LEFT JOINs with correlated subqueries
+        // to prevent Cartesian product explosion (M members * V visits per family).
+        // This reduces time complexity from O(N * M * V) to O(N) and eliminates the need for GROUP BY.
         let query = `
             SELECT k.*, a.nama_lengkap AS nama_kepala_keluarga, a.nik AS nik_kepala_keluarga,
-                   COUNT(DISTINCT an.id) AS jumlah_anggota, MAX(kj.tgl_kunjungan) AS kunjungan_terakhir
+                   (SELECT COUNT(id) FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL) AS jumlah_anggota,
+                   (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id = k.id AND deleted_at IS NULL) AS kunjungan_terakhir
             FROM keluarga k
             LEFT JOIN anggota_keluarga a  ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga' AND a.deleted_at IS NULL
-            LEFT JOIN anggota_keluarga an ON an.keluarga_id = k.id AND an.deleted_at IS NULL
-            LEFT JOIN kunjungan_posyandu kj ON kj.keluarga_id = k.id AND kj.deleted_at IS NULL
             WHERE k.is_aktif = 1 AND k.deleted_at IS NULL`;
         const params = [];
         if (kader_id) { params.push(kader_id); query += ` AND k.kader_id = $${params.length}`; }
@@ -144,7 +146,7 @@ app.get('/api/keluarga', async (req, res) => {
             params.push(`%${search}%`);
             query += ` AND (k.no_kk ILIKE $${params.length} OR a.nama_lengkap ILIKE $${params.length} OR a.nik ILIKE $${params.length})`;
         }
-        query += ' GROUP BY k.id, a.nama_lengkap, a.nik ORDER BY a.nama_lengkap';
+        query += ' ORDER BY a.nama_lengkap';
         const { rows } = await pool.query(query, params);
         ok(res, rows);
     } catch (e) { err(res, e.message); }
