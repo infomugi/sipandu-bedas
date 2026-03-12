@@ -289,7 +289,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_kunjungan\": \"2026-03-12\",\n    \"catatan\": \"Kunjungan rutin pemeriksaan kesehatan.\",\n    \"no_hp_pendaftar\": \"08123456789\",\n    \"foto_kk\": \"kk_photo.jpg\",\n    \"foto_warga\": \"warga_photo.jpg\"\n}",
+                            "raw": "{\n    \"keluarga_id\": 1,\n    \"kader_id\": \"{{kader_id}}\",\n    \"tgl_kunjungan\": \"2026-03-12\",\n    \"catatan\": \"Kunjungan rutin pemeriksaan kesehatan.\",\n    \"no_hp_pendaftar\": \"08123456789\",\n    \"foto_kk\": \"kk_photo.jpg\",\n    \"foto_warga\": \"warga_photo.jpg\",\n    \"latitude\": \"-6.1234\",\n    \"longitude\": \"107.5678\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"

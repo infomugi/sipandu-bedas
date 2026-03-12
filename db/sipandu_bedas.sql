@@ -189,6 +189,8 @@ CREATE TABLE kunjungan_posyandu (
     no_hp_pendaftar  VARCHAR(20) NULL,
     foto_kk          VARCHAR(255) NULL,
     foto_warga       VARCHAR(255) NULL,
+    latitude         DECIMAL(10,7) NULL,
+    longitude        DECIMAL(11,7) NULL,
     created_by UUID NULL REFERENCES users(id),
     updated_by UUID NULL REFERENCES users(id),
     deleted_at          TIMESTAMP NULL,

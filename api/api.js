@@ -312,13 +312,13 @@ app.get('/api/kunjungan/:id', async (req, res) => {
 // POST /api/kunjungan
 app.post('/api/kunjungan', async (req, res) => {
     try {
-        const { keluarga_id, kader_id, tgl_kunjungan, catatan, no_hp_pendaftar, foto_kk, foto_warga, created_by } = req.body;
+        const { keluarga_id, kader_id, tgl_kunjungan, catatan, no_hp_pendaftar, foto_kk, foto_warga, latitude, longitude, created_by } = req.body;
         if (!keluarga_id || !kader_id || !tgl_kunjungan) return err(res, 'Field wajib tidak lengkap', 400);
         const d = new Date(tgl_kunjungan);
         const { rows } = await pool.query(
-            `INSERT INTO kunjungan_posyandu (keluarga_id, kader_id, tgl_kunjungan, bulan, tahun, catatan, no_hp_pendaftar, foto_kk, foto_warga, created_by)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id`,
-            [keluarga_id, kader_id, tgl_kunjungan, d.getMonth() + 1, d.getFullYear(), catatan, no_hp_pendaftar, foto_kk, foto_warga, created_by]
+            `INSERT INTO kunjungan_posyandu (keluarga_id, kader_id, tgl_kunjungan, bulan, tahun, catatan, no_hp_pendaftar, foto_kk, foto_warga, latitude, longitude, created_by)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id`,
+            [keluarga_id, kader_id, tgl_kunjungan, d.getMonth() + 1, d.getFullYear(), catatan, no_hp_pendaftar, foto_kk, foto_warga, latitude, longitude, created_by]
         );
         ok(res, { id: rows[0].id, message: 'Kunjungan dicatat' }, 201);
     } catch (e) { err(res, e.message); }
