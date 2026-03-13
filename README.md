@@ -15,11 +15,13 @@ Sipandu Bedas adalah platform digital yang dirancang untuk mengintegrasikan laya
 - **Kunjungan**: Pencatatan aktivitas kunjungan petugas ke rumah tangga.
 - **Laporan & Dashboard**: Visualisasi data real-time untuk pengambilan keputusan.
 - **Profil & Admin**: Manajemen akses dan pengaturan aplikasi.
+- **Mobile App**: Aplikasi mobile berbasis Expo untuk pendataan lapangan.
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla).
-- **Backend**: [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/).
+- **Web Frontend**: HTML5, CSS3, JavaScript (Vanilla).
+- **Mobile App**: React Native, Expo, TypeScript.
+- **Backend API**: [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/).
 - **Database**: [PostgreSQL](https://www.postgresql.org/).
 
 ## 📂 Struktur Proyek
@@ -28,10 +30,13 @@ Sipandu Bedas adalah platform digital yang dirancang untuk mengintegrasikan laya
 sipandu-bedas/
 ├── api/             # Backend API (Node.js/Express)
 │   ├── api.js       # Main API logic
-│   ├── package.json # Node.js dependencies
 │   └── ...
-├── html/            # Frontend HTML pages
-├── assets/          # Static files (CSS, Images)
+├── html/            # Web Frontend
+│   ├── assets/      # Static files (CSS, Images) moved here
+│   └── ...          # HTML Pages
+├── mobile/          # Mobile Application (Expo)
+│   ├── app/         # Expo Router pages
+│   └── ...
 ├── db/              # Database scripts
 │   └── sipandu_bedas.sql
 └── docs/            # Dokumentasi tambahan
@@ -56,20 +61,31 @@ Pastikan PostgreSQL telah terinstall di sistem Anda.
    ```bash
    npm install
    ```
-3. Konfigurasikan koneksi database di file `api.js` (pastikan sesuai dengan kredensial PostgreSQL Anda).
+3. Konfigurasikan koneksi database di file `api.js`.
 
-### 3. Menjalankan Aplikasi
+### 3. Mobile Setup
+1. Masuk ke direktori `mobile`:
+   ```bash
+   cd mobile
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Jalankan aplikasi:
+   ```bash
+   npx expo start
+   ```
+
+## 💻 Menjalankan Aplikasi Web
+
 1. Jalankan server backend:
    ```bash
+   cd api
    node api.js
    ```
    *Secara default, API akan berjalan di port `3000`.*
-2. Buka file `html/login.html` atau `html/index.html` melalui browser untuk mengakses tampilan antarmuka (Frontend).
-
-## 📝 Kontribusid
-Untuk melakukan pengembangan lebih lanjut:
-1. Dokumentasikan perubahan fungsionalitas di folder `docs`.
-2. Pastikan setiap penambahan menu baru di frontend (HTML) sinkron dengan endpoint di `api.js`.
+2. Buka file `html/login.html` melalui browser untuk mengakses Web Frontend.
 
 ---
 © 2026 Sipandu Bedas Team
