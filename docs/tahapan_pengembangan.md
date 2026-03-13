@@ -59,8 +59,8 @@ Setiap modul diberikan **prioritas** dan **urutan pengerjaan**.
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `users` |
-| API Endpoint | `POST /api/auth/login`, `POST /api/auth/register`, `POST /api/auth/forgot-password` |
-| HTML Referensi | `login.html`, `register.html`, `forgot-password.html` |
+| Referensi API | **1. AUTH** (`docs/api_documentation_postman.json`)<br>• `Login` (`POST /api/auth/login`)<br>• `Register` (`POST /api/auth/register`)<br>• `Forgot Password` (`POST /api/auth/forgot-password`) |
+| Referensi UI/UX | 🎨 `html/login.html`<br>🎨 `html/register.html`<br>🎨 `html/forgot-password.html` |
 
 **Field Form Login:**
 - NIK (16 digit)
@@ -99,8 +99,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `users` |
-| API Endpoint | `GET /api/profil/:id`, `PUT /api/profil/:id`, `PUT /api/profil/:id/password` |
-| HTML Referensi | `profil.html` |
+| Referensi API | **14. PROFIL KADER** (`docs/api_documentation_postman.json`)<br>• `Detail Profil` (`GET /api/profil/:id`)<br>• `Update Profil` (`PUT /api/profil/:id`)<br>• `Update Password` (`PUT /api/profil/:id/password`) |
+| Referensi UI/UX | 🎨 `html/profil.html` |
 
 **Field yang ditampilkan:**
 - Foto profil, Nama, NIK, Email, No HP, RT/RW, Desa/Kecamatan, Role
@@ -130,8 +130,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `keluarga`, `kunjungan_posyandu`, `pengajuan_spm` |
-| API Endpoint | `GET /api/dashboard?kader_id=` |
-| HTML Referensi | `index.html` |
+| Referensi API | **2. DASHBOARD** (`docs/api_documentation_postman.json`)<br>• `Get Dashboard Data` (`GET /api/dashboard`) |
+| Referensi UI/UX | 🎨 `html/index.html` |
 
 **Komponen yang ditampilkan di dashboard:**
 - Total keluarga binaan
@@ -154,8 +154,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `keluarga`, `anggota_keluarga` |
-| API Endpoint | `GET /api/keluarga`, `GET /api/keluarga/:id`, `POST /api/keluarga`, `PUT /api/keluarga/:id`, `DELETE /api/keluarga/:id` |
-| HTML Referensi | `pendaftaran.html`, `tambah-keluarga.html` |
+| Referensi API | **3. KELUARGA** (`docs/api_documentation_postman.json`)<br>• `List Keluarga` (`GET /api/keluarga`)<br>• `Get Detail` (`GET /api/keluarga/:id`)<br>• `Create` (`POST /api/keluarga`)<br>• `Update` (`PUT /api/keluarga/:id`)<br>• `Delete` (`DELETE /api/keluarga/:id`) |
+| Referensi UI/UX | 🎨 `html/pendaftaran.html`<br>🎨 `html/tambah-keluarga.html` |
 
 **Field Pendaftaran Keluarga:**
 | Field | Type | Wajib |
@@ -200,8 +200,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `anggota_keluarga` |
-| API Endpoint | `GET /api/keluarga/:id/anggota`, `POST /api/anggota`, `PUT /api/anggota/:id`, `DELETE /api/anggota/:id` |
-| HTML Referensi | `pendaftaran.html`, `tambah-keluarga.html` |
+| Referensi API | **4. ANGGOTA KELUARGA** (`docs/api_documentation_postman.json`)<br>• `Get Anggota` (`GET /api/keluarga/:id/anggota`)<br>• `Create` (`POST /api/anggota`)<br>• `Update` (`PUT /api/anggota/:id`)<br>• `Delete` (`DELETE /api/anggota/:id`) |
+| Referensi UI/UX | 🎨 `html/pendaftaran.html`<br>🎨 `html/tambah-keluarga.html`<br>*(UI Anggota menyatu di dalam Pendaftaran Keluarga)* |
 
 **Field Anggota:**
 | Field | Type | Wajib |
@@ -240,8 +240,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `kunjungan_posyandu` |
-| API Endpoint | `GET /api/kunjungan`, `GET /api/kunjungan/:id`, `POST /api/kunjungan` |
-| HTML Referensi | `tambah-kunjungan.html` |
+| Referensi API | **5. KUNJUNGAN** (`docs/api_documentation_postman.json`)<br>• `List Kunjungan` (`GET /api/kunjungan`)<br>• `Post Kunjungan` (`POST /api/kunjungan`) |
+| Referensi UI/UX | 🎨 `html/tambah-kunjungan.html` |
 
 **Field Form Tambah Kunjungan:**
 | Field | Type | Wajib | Catatan |
@@ -280,7 +280,7 @@ app/
 #### 📦 Modul 7: Menu SPM
 **Prioritas: 🟠 Tinggi**
 
-| HTML Referensi | `spm-menu.html` |
+| Referensi UI/UX | 🎨 `html/spm-menu.html` |
 
 **Screen Expo:**
 ```
@@ -298,8 +298,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `spm_kesehatan` |
-| API Endpoint | CRUD `/api/spm/kesehatan` |
-| HTML Referensi | `spm-kesehatan.html` |
+| Referensi API | **6. SPM KESEHATAN** (`docs/api_documentation_postman.json`)<br>• `List` (`GET /api/spm/kesehatan`)<br>• `Post` (`POST /api/spm/kesehatan`)<br>• `Detail` (`GET /api/spm/kesehatan/:id`)<br>• `Update` (`PUT /api/spm/kesehatan/:id`)<br>• `Delete` (`DELETE /api/spm/kesehatan/:id`) |
+| Referensi UI/UX | 🎨 `html/spm-kesehatan.html` |
 
 **Form dinamis berdasarkan `jenis_sasaran`:**
 
@@ -349,8 +349,8 @@ app/spm/kesehatan/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `spm_pendidikan` |
-| API Endpoint | CRUD `/api/spm/pendidikan` |
-| HTML Referensi | `spm-pendidikan.html` |
+| Referensi API | **7. SPM PENDIDIKAN** (`docs/api_documentation_postman.json`)<br>• `List` (`GET /api/spm/pendidikan`)<br>• `Post` (`POST /api/spm/pendidikan`)<br>• `Detail` (`GET /api/spm/pendidikan/:id`)<br>• `Update` (`PUT /api/spm/pendidikan/:id`)<br>• `Delete` (`DELETE /api/spm/pendidikan/:id`) |
+| Referensi UI/UX | 🎨 `html/spm-pendidikan.html` |
 
 **Field Form:**
 | Field | Type | Wajib |
@@ -382,8 +382,8 @@ app/spm/kesehatan/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `spm_perumahan` |
-| API Endpoint | CRUD `/api/spm/perumahan` |
-| HTML Referensi | `spm-perumahan.html` |
+| Referensi API | **8. SPM PERUMAHAN** (`docs/api_documentation_postman.json`)<br>• `List` (`GET /api/spm/perumahan`)<br>• `Post` (`POST /api/spm/perumahan`)<br>• `Detail` (`GET /api/spm/perumahan/:id`)<br>• `Update` (`PUT /api/spm/perumahan/:id`)<br>• `Delete` (`DELETE /api/spm/perumahan/:id`) |
+| Referensi UI/UX | 🎨 `html/spm-perumahan.html` |
 
 **Field Form:**
 | Field | Type | Wajib |
@@ -421,8 +421,8 @@ app/spm/kesehatan/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `spm_pu` |
-| API Endpoint | CRUD `/api/spm/pu` |
-| HTML Referensi | `spm-pu.html` |
+| Referensi API | **9. SPM PU** (`docs/api_documentation_postman.json`)<br>• `List` (`GET /api/spm/pu`)<br>• `Post` (`POST /api/spm/pu`)<br>• `Detail` (`GET /api/spm/pu/:id`)<br>• `Update` (`PUT /api/spm/pu/:id`)<br>• `Delete` (`DELETE /api/spm/pu/:id`) |
+| Referensi UI/UX | 🎨 `html/spm-pu.html` |
 
 **Field Form:**
 | Field | Type | Wajib |
@@ -449,8 +449,8 @@ app/spm/kesehatan/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `spm_sosial` |
-| API Endpoint | CRUD `/api/spm/sosial` |
-| HTML Referensi | `spm-sosial.html` |
+| Referensi API | **10. SPM SOSIAL** (`docs/api_documentation_postman.json`)<br>• `List` (`GET /api/spm/sosial`)<br>• `Post` (`POST /api/spm/sosial`)<br>• `Detail` (`GET /api/spm/sosial/:id`)<br>• `Update` (`PUT /api/spm/sosial/:id`)<br>• `Delete` (`DELETE /api/spm/sosial/:id`) |
+| Referensi UI/UX | 🎨 `html/spm-sosial.html` |
 
 **Field Form:**
 | Field | Type | Wajib |
@@ -480,8 +480,8 @@ app/spm/kesehatan/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `spm_trantibum` |
-| API Endpoint | CRUD `/api/spm/trantibum` |
-| HTML Referensi | `spm-trantibum.html` |
+| Referensi API | **11. SPM TRANTIBUM** (`docs/api_documentation_postman.json`)<br>• `List` (`GET /api/spm/trantibum`)<br>• `Post` (`POST /api/spm/trantibum`)<br>• `Detail` (`GET /api/spm/trantibum/:id`)<br>• `Update` (`PUT /api/spm/trantibum/:id`)<br>• `Delete` (`DELETE /api/spm/trantibum/:id`) |
+| Referensi UI/UX | 🎨 `html/spm-trantibum.html` |
 
 **Field Form:**
 | Field | Type | Wajib |
@@ -516,8 +516,8 @@ app/spm/kesehatan/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `pengajuan_spm` |
-| API Endpoint | `GET /api/pengajuan`, `GET /api/pengajuan/:id`, `POST /api/pengajuan` |
-| HTML Referensi | `riwayat-pengajuan.html` |
+| Referensi API | **12. PENGAJUAN SPM** (`docs/api_documentation_postman.json`)<br>• `List Pengajuan` (`GET /api/pengajuan`)<br>• `Get Detail` (`GET /api/pengajuan/:id`)<br>• `Create Pengajuan` (`POST /api/pengajuan`) |
+| Referensi UI/UX | 🎨 `html/riwayat-pengajuan.html` |
 
 **Alur Pengajuan:**
 ```
@@ -549,8 +549,8 @@ Status: menunggu_validasi_desa
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `pengajuan_spm`, `pengajuan_assesment`, `pengajuan_rujukan` |
-| API Endpoint | `GET /api/pengajuan`, `GET /api/v1/riwayat/:id` |
-| HTML Referensi | `riwayat-pengajuan.html`, `riwayat-detail.html` |
+| Referensi API | **12. PENGAJUAN SPM (Riwayat)** (`docs/api_documentation_postman.json`)<br>• `Riwayat Detail & Timeline` (`GET /api/v1/riwayat/:id`)<br>• `List Pengajuan` (`GET /api/pengajuan`) |
+| Referensi UI/UX | 🎨 `html/riwayat-pengajuan.html`<br>🎨 `html/riwayat-detail.html` |
 
 **Status Flow:**
 ```
@@ -600,8 +600,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `pengajuan_spm`, `pengajuan_assesment`, `pengajuan_rujukan` |
-| API Endpoint | `PUT /api/pengajuan/:id/validasi-desa`, `POST /api/pengajuan/:id/assesment`, `PUT /api/pengajuan/:id/rtl-desa`, `POST /api/pengajuan/:id/rujukan`, `PUT /api/pengajuan/:id/validasi-kecamatan`, `PUT /api/pengajuan/:id/validasi-kabupaten`, `PUT /api/pengajuan/:id/rtl-dinas` |
-| HTML Referensi | `verifikasi-desa.html`, `verifikasi-berjenjang.html`, `assesment-lapangan.html`, `rujukan-desa.html`, `rtl-dinas.html` |
+| Referensi API | **12. PENGAJUAN SPM (Verifikasi Berjenjang)** (`docs/api_documentation_postman.json`)<br>• `Validasi Desa` (`PUT /api/pengajuan/:id/validasi-desa`)<br>• `Assesment` (`POST /api/pengajuan/:id/assesment`)<br>• `RTL Desa` (`PUT /api/pengajuan/:id/rtl-desa`)<br>• `Rujukan` (`POST /api/pengajuan/:id/rujukan`)<br>• `Validasi Kecamatan` (`PUT /api/pengajuan/:id/validasi-kecamatan`)<br>• `Validasi Kabupaten` (`PUT /api/pengajuan/:id/validasi-kabupaten`)<br>• `RTL Dinas` (`PUT /api/pengajuan/:id/rtl-dinas`) |
+| Referensi UI/UX | 🎨 `html/verifikasi-desa.html`<br>🎨 `html/verifikasi-berjenjang.html`<br>🎨 `html/assesment-lapangan.html`<br>🎨 `html/rujukan-desa.html`<br>🎨 `html/rtl-dinas.html` |
 
 **Assesment Field:**
 ```json
@@ -634,8 +634,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `pengajuan_spm`, `spm_kesehatan`, `keluarga`, `kunjungan_posyandu` |
-| API Endpoint | `GET /api/laporan/dashboard`, `GET /api/laporan/gizi`, `GET /api/laporan/bumil-kek` |
-| HTML Referensi | `laporan.html` |
+| Referensi API | **13. LAPORAN & ANALITIK** (`docs/api_documentation_postman.json`)<br>• `Dashboard` (`GET /api/laporan/dashboard`)<br>• `Gizi` (`GET /api/laporan/gizi`)<br>• `Bumil KEK` (`GET /api/laporan/bumil-kek`) |
+| Referensi UI/UX | 🎨 `html/laporan.html` |
 
 **Data dari `/api/laporan/dashboard`:**
 - Distribusi SPM per jenis dan status
@@ -675,8 +675,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `notifikasi` |
-| API Endpoint | `GET /api/notifikasi?user_id=`, `PUT /api/notifikasi/:id/read` |
-| HTML Referensi | - |
+| Referensi API | **15. ASSESMENT, PESAN & NOTIFIKASI** (`docs/api_documentation_postman.json`)<br>• `List Notifikasi` (`GET /api/notifikasi?user_id=`)<br>• `Mark as Read` (`PUT /api/notifikasi/:id/read`) |
+| Referensi UI/UX | 🎨 *(Komponen Modal / Dropdown Navbar)* |
 
 **Komponen:**
 - Badge jumlah notifikasi belum dibaca
@@ -691,8 +691,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `pesan` |
-| API Endpoint | `GET /api/pesan?user_id=`, `POST /api/pesan` |
-| HTML Referensi | - |
+| Referensi API | **15. ASSESMENT, PESAN & NOTIFIKASI** (`docs/api_documentation_postman.json`)<br>• `Get Pesan` (`GET /api/pesan?user_id=`)<br>• `Kirim Pesan` (`POST /api/pesan`) |
+| Referensi UI/UX | 🎨 *(Disesuaikan)* |
 
 ---
 
@@ -702,8 +702,8 @@ app/
 | Aspek | Detail |
 |-------|--------|
 | DB Tabel | `posyandu_assesment` |
-| API Endpoint | `GET /api/assesment`, `POST /api/assesment` |
-| HTML Referensi | `assesment-lapangan.html` |
+| Referensi API | **15. ASSESMENT, PESAN & NOTIFIKASI** (`docs/api_documentation_postman.json`)<br>• `Get Assesment` (`GET /api/assesment`)<br>• `Post Assesment` (`POST /api/assesment`) |
+| Referensi UI/UX | 🎨 `html/assesment-lapangan.html` |
 
 **Field Checklist (semua boolean 0/1):**
 - `meja_1_pendaftaran`, `meja_2_penimbangan`, `meja_3_pencatatan`
