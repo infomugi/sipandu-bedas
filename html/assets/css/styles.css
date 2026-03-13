@@ -1,6 +1,29 @@
 /* ===================================
-   SIPANDU BEDAS — Premium Design System
+   SIPANDU BEDAS — Premium Design System (iOS 17 Style)
    =================================== */
+
+:root {
+  /* iOS System Colors */
+  --ios-blue: #007AFF;
+  --ios-green: #34C759;
+  --ios-red: #FF3B30;
+  --ios-orange: #FF9500;
+  --ios-yellow: #FFCC00;
+  --ios-purple: #AF52DE;
+  --ios-indigo: #5856D6;
+  --ios-teal: #5AC8FA;
+
+  /* Grayscale */
+  --ios-gray-100: #F2F2F7;
+  --ios-gray-200: #E5E5EA;
+  --ios-gray-300: #D1D1D6;
+  --ios-gray-400: #C7C7CC;
+  --ios-gray-500: #AEAEB2;
+  --ios-gray-600: #8E8E93;
+  --ios-gray-700: #636366;
+  --ios-gray-800: #3A3A3C;
+  --ios-gray-900: #1C1C1E;
+}
 
 /* Reset & Base */
 *,
@@ -9,11 +32,14 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
 }
 body {
-  background-color: #e2e8f0;
+  background-color: var(--ios-gray-100);
   -webkit-tap-highlight-color: transparent;
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -584,47 +610,46 @@ body {
 
 /* ===== BOTTOM NAVIGATION ===== */
 .bottom-nav {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid #f1f5f9;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 50;
-  padding: 0.75rem 1rem 1.5rem;
+  padding: 0.5rem 0.5rem 1.5rem 0.5rem;
   display: flex;
   justify-content: space-around;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.02);
 }
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.375rem;
-  color: #94a3b8;
+  gap: 0.25rem;
+  color: var(--ios-gray-400);
   font-size: 1.25rem;
   background: none;
   border: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
   flex: 1;
   max-width: 20%;
 }
 .nav-item span {
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-size: 0.625rem;
+  font-weight: 500;
   text-transform: capitalize;
   letter-spacing: 0.01em;
 }
 .nav-item.active {
-  color: #059669;
-  transform: translateY(-2px);
+  color: var(--ios-blue);
 }
 .nav-item.active i {
-  color: #059669;
+  color: var(--ios-blue);
 }
 
 /* ===== CHIP / BADGE ===== */
@@ -758,6 +783,16 @@ body {
 }
 
 /* ===== ANIMATIONS ===== */
+@keyframes iosFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes iosSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -769,7 +804,7 @@ body {
   }
 }
 .animate-fade-in {
-  animation: fadeInUp 0.4s ease forwards;
+  animation: iosFadeIn 0.2s ease-out forwards;
 }
 
 @keyframes pulse-soft {
