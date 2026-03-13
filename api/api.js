@@ -1081,15 +1081,20 @@ app.get('/api/laporan/dashboard', async (req, res) => {
                  GROUP BY k.rt ORDER BY k.rt`, kader_id ? [kader_id] : []
             ),
             pool.query(
-                `SELECT k.no_kk, a.nama_lengkap AS kepala_keluarga, k.rt, k.rw,
-                 (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id=k.id AND deleted_at IS NULL) AS kunjungan_terakhir
+                `-- ⚡ Bolt Optimization: Used LEFT JOIN LATERAL to calculate MAX(tgl_kunjungan) once per family,
+                 -- eliminating 3 identical subqueries and a redundant GROUP BY.
+                 SELECT k.no_kk, a.nama_lengkap AS kepala_keluarga, k.rt, k.rw,
+                 kp.kunjungan_terakhir
                  FROM keluarga k
                  JOIN anggota_keluarga a ON a.keluarga_id=k.id AND a.status_keluarga='kepala_keluarga' AND a.deleted_at IS NULL
+                 LEFT JOIN LATERAL (
+                    SELECT MAX(tgl_kunjungan) as kunjungan_terakhir
+                    FROM kunjungan_posyandu
+                    WHERE keluarga_id=k.id AND deleted_at IS NULL
+                 ) kp ON true
                  WHERE k.is_aktif=1 ${kader_id ? 'AND k.kader_id=$1' : ''}
-                 GROUP BY k.id, k.no_kk, a.nama_lengkap, k.rt, k.rw
-                 HAVING (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id=k.id AND deleted_at IS NULL) IS NULL
-                    OR (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id=k.id AND deleted_at IS NULL) < CURRENT_DATE - INTERVAL '3 months'
-                 ORDER BY kunjungan_terakhir`, kader_id ? [kader_id] : []
+                 AND (kp.kunjungan_terakhir IS NULL OR kp.kunjungan_terakhir < CURRENT_DATE - INTERVAL '3 months')
+                 ORDER BY kp.kunjungan_terakhir`, kader_id ? [kader_id] : []
             )
         ]);
 
