@@ -89,32 +89,39 @@
 <div class="app-container">
 
     <!-- Header Section (iOS Navigation Bar) -->
-    <header class="header-premium">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full overflow-hidden shadow-sm">
-                    <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <h1 class="text-lg font-semibold tracking-tight">Angga Sura Sendana</h1>
-                    <div class="flex items-center gap-1 text-gray-500">
-                        <i class="fa-solid fa-location-dot text-[10px]"></i>
-                        <span class="text-xs font-medium">Baleendah, Bandung</span>
+    <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full overflow-hidden shadow-sm">
+                        <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-semibold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Angga Sura Sendana</h1>
+                        <div class="flex items-center gap-1 text-gray-500">
+                            <i class="fa-solid fa-location-dot text-[10px]"></i>
+                            <span class="text-xs font-medium">Baleendah, Bandung</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex space-x-2">
-                <button onclick="location.href='profil.html'" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 transition-colors">
-                    <i class="fa-regular fa-bell text-gray-700"></i>
-                </button>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors" aria-label="Search">
+                        <span class="sr-only">Search</span>
+                        <i class="fa-solid fa-magnifying-glass text-gray-700"></i>
+                    </button>
+                    <button onclick="location.href='profil.html'" class="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors" aria-label="Profile">
+                        <span class="sr-only">Profile</span>
+                        <i class="fa-regular fa-bell text-gray-700"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <div class="view-content mt-4">
         <!-- iOS Info Banner -->
         <section class="px-5 mb-6">
-            <div class="pro-card flex items-center justify-between p-4 bg-white/90">
+            <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-4 flex items-center justify-between">
                 <div>
                     <p class="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mb-1">Posyandu RW 11</p>
                     <p class="text-sm font-semibold text-gray-900 leading-tight">Kelurahan Rancamanyar</p>
@@ -128,7 +135,7 @@
 
         <!-- Banner Section -->
         <section class="px-5 mb-6">
-            <div class="w-full aspect-[21/9] rounded-2xl overflow-hidden shadow-lg shadow-black/5 relative border border-white/20">
+            <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-0 overflow-hidden relative aspect-[21/9]">
                 <img src="sipandu_bedas_dashboard_banner_mockup_1773292728208.png" alt="Banner" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -141,7 +148,7 @@
         <!-- Stats Section -->
         <section class="px-5 mb-6">
             <div class="grid grid-cols-2 gap-4">
-                <div class="pro-card">
+                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-4">
                     <div class="stat-badge bg-blue-50 text-[#007AFF]">
                         <i class="fa-solid fa-users"></i>
                     </div>
@@ -150,7 +157,7 @@
                         <p class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-1">Keluarga</p>
                     </div>
                 </div>
-                <div class="pro-card">
+                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-4">
                     <div class="stat-badge bg-green-50 text-[#34C759]">
                         <i class="fa-solid fa-clipboard-check"></i>
                     </div>
@@ -168,7 +175,7 @@
                 <h3 class="text-[13px] font-semibold text-gray-500 uppercase tracking-wider">Layanan Utama</h3>
                 <span class="text-[13px] font-medium text-[#007AFF]">Lihat Semua</span>
             </div>
-            <div class="divide-y divide-gray-200/50 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/20 shadow-lg shadow-black/5 overflow-hidden">
+            <div class="divide-y divide-gray-100 bg-white/80 rounded-2xl">
                 <button onclick="location.href='pendaftaran.html'" class="w-full flex items-center justify-between p-4 hover:bg-gray-50/50 active:bg-gray-100 transition-colors cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white shadow-sm">
@@ -176,10 +183,10 @@
                         </div>
                         <div>
                             <h4 class="font-medium text-gray-900 text-[15px]">Pendaftaran Keluarga</h4>
-                            <p class="text-[13px] text-gray-500 mt-0.5">Input data warga & KK baru</p>
+                            <p class="text-sm text-gray-500 mt-0.5">Input data warga & KK baru</p>
                         </div>
                     </div>
-                    <span class="text-gray-300 text-lg">›</span>
+                    <span class="text-gray-400 text-lg">›</span>
                 </button>
 
                 <button onclick="location.href='spm-menu.html'" class="w-full flex items-center justify-between p-4 hover:bg-gray-50/50 active:bg-gray-100 transition-colors cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset">
@@ -189,10 +196,10 @@
                         </div>
                         <div>
                             <h4 class="font-medium text-gray-900 text-[15px]">6 Layanan SPM</h4>
-                            <p class="text-[13px] text-gray-500 mt-0.5">Pendidikan, Kesehatan, Sosial, dll</p>
+                            <p class="text-sm text-gray-500 mt-0.5">Pendidikan, Kesehatan, Sosial, dll</p>
                         </div>
                     </div>
-                    <span class="text-gray-300 text-lg">›</span>
+                    <span class="text-gray-400 text-lg">›</span>
                 </button>
 
                 <button onclick="location.href='verifikasi-desa.html'" class="w-full flex items-center justify-between p-4 hover:bg-gray-50/50 active:bg-gray-100 transition-colors cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset">
@@ -202,10 +209,10 @@
                         </div>
                         <div>
                             <h4 class="font-medium text-gray-900 text-[15px]">Verifikasi Data</h4>
-                            <p class="text-[13px] text-gray-500 mt-0.5">Cek validasi data lapangan</p>
+                            <p class="text-sm text-gray-500 mt-0.5">Cek validasi data lapangan</p>
                         </div>
                     </div>
-                    <span class="text-gray-300 text-lg">›</span>
+                    <span class="text-gray-400 text-lg">›</span>
                 </button>
 
                 <button onclick="location.href='laporan.html'" class="w-full flex items-center justify-between p-4 hover:bg-gray-50/50 active:bg-gray-100 transition-colors cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset">
@@ -215,10 +222,10 @@
                         </div>
                         <div>
                             <h4 class="font-medium text-gray-900 text-[15px]">Laporan & Statistik</h4>
-                            <p class="text-[13px] text-gray-500 mt-0.5">Rekapitulasi pencapaian target</p>
+                            <p class="text-sm text-gray-500 mt-0.5">Rekapitulasi pencapaian target</p>
                         </div>
                     </div>
-                    <span class="text-gray-300 text-lg">›</span>
+                    <span class="text-gray-400 text-lg">›</span>
                 </button>
             </div>
         </section>
