@@ -1328,6 +1328,24 @@ app.get('/api/view/keluarga-lengkap', async (req, res) => {
     } catch (e) { err(res, e.message); }
 });
 
+// 🛡️ Sentinel: Add requireAdmin middleware to protect sensitive endpoints
+const requireAdmin = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer mock-token-')) {
+        return err(res, 'Akses ditolak. Token tidak valid.', 401);
+    }
+    const userId = authHeader.split('mock-token-')[1];
+    try {
+        const { rows } = await pool.query('SELECT role FROM users WHERE id = $1 AND deleted_at IS NULL', [userId]);
+        if (rows.length === 0 || rows[0].role !== 'admin') {
+            return err(res, 'Akses ditolak. Memerlukan hak akses admin.', 403);
+        }
+        next();
+    } catch (e) {
+        err(res, 'Kesalahan saat verifikasi token.', 500);
+    }
+};
+
 // GET /api/users  (admin only)
 app.get('/api/users', isAdmin, async (req, res) => {
     try {
