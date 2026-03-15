@@ -33,6 +33,32 @@ pool.connect()
 const ok  = (res, data, code = 200) => res.status(code).json({ success: true,  data });
 const err = (res, msg,  code = 500) => res.status(code).json({ success: false, message: msg });
 
+// 🛡️ Sentinel: Add authentication middleware for admin endpoints
+const isAdmin = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    // In a real application, this should verify a JWT or session token.
+    // For now, it checks the mock token format returned by the login endpoint.
+    if (!authHeader || !authHeader.startsWith('Bearer mock-token-')) {
+        return err(res, 'Unauthorized', 401);
+    }
+
+    // Extract the user ID from the mock token.
+    // ⚠️ Security Note: This is insecure for production and must be replaced with true token validation.
+    const userId = authHeader.split('mock-token-')[1];
+    try {
+        const { rows } = await pool.query('SELECT role FROM users WHERE id = $1 AND is_active = 1 AND deleted_at IS NULL', [userId]);
+        if (rows.length === 0 || rows[0].role !== 'admin') {
+            return err(res, 'Forbidden: Admin access required', 403);
+        }
+        next();
+    } catch (e) {
+        // 🛡️ Sentinel: Do not expose internal database error details
+        console.error('Authorization error:', e);
+        err(res, 'Internal Server Error', 500);
+    }
+};
+
 // ============================================================
 // 1. AUTH
 // ============================================================
@@ -1303,7 +1329,7 @@ app.get('/api/view/keluarga-lengkap', async (req, res) => {
 });
 
 // GET /api/users  (admin only)
-app.get('/api/users', async (req, res) => {
+app.get('/api/users', isAdmin, async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, is_active, created_at FROM users WHERE deleted_at IS NULL ORDER BY nama_lengkap");
         ok(res, rows);
@@ -1311,7 +1337,7 @@ app.get('/api/users', async (req, res) => {
 });
 
 // PUT /api/users/:id/toggle-active  (admin)
-app.put('/api/users/:id/toggle-active', async (req, res) => {
+app.put('/api/users/:id/toggle-active', isAdmin, async (req, res) => {
     try {
         const { updated_by } = req.body;
         const result = await pool.query('UPDATE users SET is_active = CASE WHEN is_active=1 THEN 0 ELSE 1 END, updated_by=$1 WHERE id=$2 AND deleted_at IS NULL RETURNING is_active', [updated_by, req.params.id]);
