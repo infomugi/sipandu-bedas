@@ -1297,8 +1297,26 @@ app.get('/api/view/keluarga-lengkap', async (req, res) => {
     } catch (e) { err(res, e.message); }
 });
 
+// 🛡️ Sentinel: Add requireAdmin middleware to protect sensitive endpoints
+const requireAdmin = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer mock-token-')) {
+        return err(res, 'Akses ditolak. Token tidak valid.', 401);
+    }
+    const userId = authHeader.split('mock-token-')[1];
+    try {
+        const { rows } = await pool.query('SELECT role FROM users WHERE id = $1 AND deleted_at IS NULL', [userId]);
+        if (rows.length === 0 || rows[0].role !== 'admin') {
+            return err(res, 'Akses ditolak. Memerlukan hak akses admin.', 403);
+        }
+        next();
+    } catch (e) {
+        err(res, 'Kesalahan saat verifikasi token.', 500);
+    }
+};
+
 // GET /api/users  (admin only)
-app.get('/api/users', async (req, res) => {
+app.get('/api/users', requireAdmin, async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT id, nama_lengkap, nik, email, no_hp, role, rw, rt, is_active, created_at FROM users WHERE deleted_at IS NULL ORDER BY nama_lengkap");
         ok(res, rows);
@@ -1306,7 +1324,7 @@ app.get('/api/users', async (req, res) => {
 });
 
 // PUT /api/users/:id/toggle-active  (admin)
-app.put('/api/users/:id/toggle-active', async (req, res) => {
+app.put('/api/users/:id/toggle-active', requireAdmin, async (req, res) => {
     try {
         const { updated_by } = req.body;
         const result = await pool.query('UPDATE users SET is_active = CASE WHEN is_active=1 THEN 0 ELSE 1 END, updated_by=$1 WHERE id=$2 AND deleted_at IS NULL RETURNING is_active', [updated_by, req.params.id]);
