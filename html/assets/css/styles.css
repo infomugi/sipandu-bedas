@@ -793,11 +793,9 @@ body {
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Smooth transitions for all interactive elements */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 @keyframes fadeInUp {
@@ -1086,6 +1084,14 @@ body {
 .pt-8 { padding-top: 2rem; }
 .pb-32 { padding-bottom: 8rem !important; }
 
+/* iOS Spacing System Overrides (using utility classes) */
+.p-xs { padding: 4px; }
+.p-sm { padding: 8px; }
+.p-md { padding: 16px; }
+.p-lg { padding: 24px; }
+.p-xl { padding: 32px; }
+.p-2xl { padding: 48px; }
+
 /* ===== TRACKING TIMELINE ===== */
 .timeline-container {
   padding: 1.5rem 0.5rem;
@@ -1217,4 +1223,34 @@ body {
 }
 .pro-card:hover .spm-icon-box {
   transform: scale(1.1) rotate(-5deg);
+}
+
+/* ===== iOS Segmented Control ===== */
+.ios-segmented-control {
+  background: var(--ios-gray-200);
+  padding: 2px;
+  border-radius: 8px;
+  display: inline-flex;
+}
+.ios-segment-btn {
+  padding: 4px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--ios-gray-900);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.ios-segment-btn.active {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+}
+
+/* ===== iOS Form Elements & Interactions ===== */
+.ios-focus-ring:focus {
+  outline: none;
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
 }
