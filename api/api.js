@@ -1099,12 +1099,16 @@ app.get('/api/laporan/dashboard', async (req, res) => {
                  GROUP BY jenis_spm, status ORDER BY jenis_spm`, p
             ),
             pool.query(
-                `SELECT k.rt,
+                `-- ⚡ Bolt Optimization: Replaced correlated subquery inside SUM with LEFT JOIN LATERAL to prevent repeated query execution during grouping.
+                 SELECT k.rt,
                  COUNT(k.id)   AS jumlah_keluarga,
-                 SUM((SELECT COUNT(id) FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL)) AS jumlah_anggota,
+                 SUM(ak.jml) AS jumlah_anggota,
                  SUM(CASE WHEN k.status_kesejahteraan='pra_sejahtera' THEN 1 ELSE 0 END) AS pra_sejahtera,
                  SUM(CASE WHEN k.status_asuransi='tidak_memiliki'     THEN 1 ELSE 0 END) AS tanpa_bpjs
                  FROM keluarga k
+                 LEFT JOIN LATERAL (
+                    SELECT COUNT(id) AS jml FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL
+                 ) ak ON true
                  WHERE k.is_aktif=1 ${kader_id ? 'AND k.kader_id=$1' : ''}
                  GROUP BY k.rt ORDER BY k.rt`, kader_id ? [kader_id] : []
             ),
