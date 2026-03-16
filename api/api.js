@@ -118,6 +118,11 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 // 2. DASHBOARD
 // ============================================================
 
+// ⚡ Bolt: Simple in-memory cache for dashboard metrics to reduce database load.
+// Caching for 5 minutes as dashboard data doesn't require real-time precision.
+const dashboardCache = new Map();
+const DASHBOARD_CACHE_TTL = 5 * 60 * 1000;
+
 // GET /api/dashboard?kader_id=
 app.get('/api/dashboard', async (req, res) => {
     try {
@@ -125,6 +130,13 @@ app.get('/api/dashboard', async (req, res) => {
         if (!kader_id) return err(res, 'kader_id wajib', 400);
 
         const now = new Date();
+        const cacheKey = `dashboard_${kader_id}`;
+        const cachedData = dashboardCache.get(cacheKey);
+
+        if (cachedData && (now.getTime() - cachedData.timestamp < DASHBOARD_CACHE_TTL)) {
+            return ok(res, cachedData.data);
+        }
+
         const bulan = now.getMonth() + 1;
         const tahun = now.getFullYear();
 
@@ -139,12 +151,20 @@ app.get('/api/dashboard', async (req, res) => {
             )
         ]);
 
-        ok(res, {
+        const dashboardData = {
             total_keluarga:          parseInt(keluarga.rows[0].count),
             kunjungan_bulan_ini:     parseInt(kunjungan.rows[0].count),
             pengajuan_menunggu:      parseInt(pengajuan.rows[0].count),
             distribusi_spm_bulan_ini: spmBulanIni.rows,
+        };
+
+        // Update cache
+        dashboardCache.set(cacheKey, {
+            data: dashboardData,
+            timestamp: now.getTime()
         });
+
+        ok(res, dashboardData);
     } catch (e) { err(res, e.message); }
 });
 
