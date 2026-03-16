@@ -40,6 +40,30 @@ body {
   background-color: var(--ios-gray-100);
   -webkit-tap-highlight-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ios-gray-900);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ios-gray-100: #1C1C1E;
+    --ios-gray-200: #2C2C2E;
+    --ios-gray-300: #3A3A3C;
+    --ios-gray-400: #48484A;
+    --ios-gray-500: #636366;
+    --ios-gray-600: #8E8E93;
+    --ios-gray-700: #AEAEB2;
+    --ios-gray-800: #C7C7CC;
+    --ios-gray-900: #F2F2F7;
+
+    --ios-blue: #0A84FF;
+    --ios-green: #30D158;
+    --ios-red: #FF453A;
+    --ios-orange: #FF9F0A;
+    --ios-yellow: #FFD60A;
+    --ios-purple: #BF5AF2;
+    --ios-indigo: #5E5CE6;
+    --ios-teal: #64D2FF;
+  }
 }
 ::-webkit-scrollbar {
   display: none;
@@ -49,7 +73,7 @@ body {
 .app-container {
   max-width: 414px;
   margin: 0 auto;
-  background-color: #f8fafc;
+  background-color: var(--ios-gray-100);
   height: 100vh;
   position: relative;
   overflow: hidden;
@@ -987,34 +1011,6 @@ body {
   z-index: 50;
 }
 
-.ios-segmented-control {
-  background-color: var(--ios-gray-100);
-  padding: 0.25rem;
-  border-radius: 0.75rem;
-  display: inline-flex;
-}
-
-.ios-segmented-btn {
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-}
-
-.ios-segmented-btn.active {
-  background-color: white;
-  color: var(--ios-gray-900);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.ios-segmented-btn:not(.active) {
-  color: var(--ios-gray-600);
-}
-
-.ios-segmented-btn:not(.active):hover {
-  color: var(--ios-gray-900);
-}
 
 /* Primary Button (iOS Blue) */
 .ios-btn-primary {
@@ -1227,25 +1223,29 @@ body {
 
 /* ===== iOS Segmented Control ===== */
 .ios-segmented-control {
-  background: var(--ios-gray-200);
-  padding: 2px;
-  border-radius: 8px;
+  background: var(--ios-gray-100);
+  padding: 4px;
+  border-radius: 12px;
   display: inline-flex;
 }
 .ios-segment-btn {
-  padding: 4px 16px;
-  border-radius: 6px;
+  padding: 8px 24px;
+  border-radius: 8px;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 14px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  color: var(--ios-gray-900);
+  color: var(--ios-gray-600);
   background: transparent;
   border: none;
   cursor: pointer;
 }
 .ios-segment-btn.active {
   background: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  color: var(--ios-gray-900);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.ios-segment-btn:not(.active):hover {
+  color: var(--ios-gray-900);
 }
 
 /* ===== iOS Form Elements & Interactions ===== */

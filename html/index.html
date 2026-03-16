@@ -139,8 +139,8 @@
         <!-- Stats Section -->
         <section class="px-5 mb-6">
             <div class="grid grid-cols-2 gap-4">
-                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6">
-                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-[#007AFF] mb-3">
+                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 transition-transform hover:scale-[0.98]">
+                    <div class="w-12 h-12 rounded-full bg-[rgba(0,122,255,0.1)] flex items-center justify-center text-[var(--ios-blue)] mb-3">
                         <i class="fa-solid fa-users text-xl"></i>
                     </div>
                     <div>
@@ -148,8 +148,8 @@
                         <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Keluarga</p>
                     </div>
                 </div>
-                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6">
-                    <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-[#34C759] mb-3">
+                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 transition-transform hover:scale-[0.98]">
+                    <div class="w-12 h-12 rounded-full bg-[rgba(52,199,89,0.1)] flex items-center justify-center text-[var(--ios-green)] mb-3">
                         <i class="fa-solid fa-clipboard-check text-xl"></i>
                     </div>
                     <div>
@@ -164,12 +164,12 @@
         <section class="px-5 mb-8">
             <div class="flex items-center justify-between mb-2 px-1">
                 <h3 class="text-[13px] font-semibold text-gray-500 uppercase tracking-wider">Layanan Utama</h3>
-                <span class="text-[13px] font-medium text-[#007AFF]">Lihat Semua</span>
+                <span class="text-[13px] font-medium text-[var(--ios-blue)]">Lihat Semua</span>
             </div>
-            <div class="divide-y divide-gray-100 bg-white/80 rounded-2xl">
-                <button onclick="location.href='pendaftaran.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset rounded-t-2xl">
+            <div class="divide-y divide-gray-100 bg-white/80 rounded-2xl shadow-lg shadow-black/5 border border-white/20">
+                <button onclick="location.href='pendaftaran.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset rounded-t-2xl">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-[var(--ios-green)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-user-plus"></i>
                         </div>
                         <div>
@@ -180,9 +180,9 @@
                     <span class="text-gray-400">›</span>
                 </button>
 
-                <button onclick="location.href='spm-menu.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset">
+                <button onclick="location.href='spm-menu.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#007AFF] to-blue-500 flex items-center justify-center text-white">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-[var(--ios-blue)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-list-check"></i>
                         </div>
                         <div>
@@ -193,9 +193,9 @@
                     <span class="text-gray-400">›</span>
                 </button>
 
-                <button onclick="location.href='verifikasi-desa.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset">
+                <button onclick="location.href='verifikasi-desa.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF9500] to-orange-400 flex items-center justify-center text-white">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-[var(--ios-orange)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <div>
@@ -206,9 +206,9 @@
                     <span class="text-gray-400">›</span>
                 </button>
 
-                <button onclick="location.href='laporan.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-inset rounded-b-2xl">
+                <button onclick="location.href='laporan.html'" class="w-full text-left flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset rounded-b-2xl">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF3B30] to-red-500 flex items-center justify-center text-white">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-[var(--ios-red)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-chart-pie"></i>
                         </div>
                         <div>

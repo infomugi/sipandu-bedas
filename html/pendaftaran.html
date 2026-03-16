@@ -99,12 +99,14 @@
 
         /* Compact Pro Card */
         .pro-card-compact {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 1rem;
             padding: 1rem;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.03);
-            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             margin-bottom: 0.75rem;
@@ -114,9 +116,7 @@
         }
         
         .pro-card-compact:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.05);
-            border-color: #a7f3d0;
+            transform: scale(0.98);
         }
         
         /* Subtle Indicator on Hover */
@@ -284,16 +284,16 @@
         <!-- Search Section -->
         <div class="search-wrapper">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" class="search-input" placeholder="Cari NIK atau Nama...">
+            <input type="text" class="search-input focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2" aria-label="Cari NIK atau Nama" placeholder="Cari NIK atau Nama...">
         </div>
 
         <!-- Section Title & Filter -->
         <div class="flex justify-between items-center mb-3 px-1">
             <div>
-                <h2 class="text-[14px] font-bold text-slate-800">Semua Keluarga</h2>
-                <p class="text-[10px] text-slate-500">Menampilkan data terbaru</p>
+                <h2 class="text-[14px] font-bold text-[var(--ios-gray-900)]">Semua Keluarga</h2>
+                <p class="text-[10px] text-[var(--ios-gray-500)]">Menampilkan data terbaru</p>
             </div>
-            <button class="text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1.5 rounded-[0.6rem] text-[10px] font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1.5 shrink-0">
+            <button class="text-[var(--ios-green)] bg-[rgba(52,199,89,0.1)] border border-[rgba(52,199,89,0.2)] px-2.5 py-1.5 rounded-[0.6rem] text-[10px] font-bold hover:bg-[rgba(52,199,89,0.2)] transition-colors flex items-center gap-1.5 shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
                 <i class="fa-solid fa-arrow-up-wide-short"></i> Filter
             </button>
         </div>
@@ -306,27 +306,27 @@
                     <div class="avatar-compact">AS</div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-bold text-slate-800 text-[14px] leading-tight truncate">Angga Sura Sendana</h3>
-                            <div class="chip-compact shrink-0">
+                            <h3 class="font-bold text-[var(--ios-gray-900)] text-[14px] leading-tight truncate">Angga Sura Sendana</h3>
+                            <div class="chip-compact shrink-0 bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] border-transparent">
                                 <i class="fa-solid fa-location-dot text-[8px]"></i> RW 11
                             </div>
                         </div>
-                        <p class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 mt-1">
-                            <i class="fa-regular fa-id-card text-slate-400"></i> 3204320305940004
+                        <p class="text-[11px] text-[var(--ios-gray-500)] font-medium flex items-center gap-1.5 mt-1">
+                            <i class="fa-regular fa-id-card text-[var(--ios-gray-400)]"></i> 3204320305940004
                         </p>
                     </div>
                 </div>
                 
-                <div class="info-row pt-2 border-t border-slate-100/60 mt-1">
-                    <div class="date-badge">
-                        <i class="fa-regular fa-calendar-check text-emerald-500 text-[10px]"></i>
-                        <span class="text-[10px] text-slate-600 font-bold whitespace-nowrap">25 Ags 2025</span>
+                <div class="info-row pt-2 border-t border-[var(--ios-gray-200)] mt-1">
+                    <div class="date-badge bg-[var(--ios-gray-100)] border-[var(--ios-gray-200)]">
+                        <i class="fa-regular fa-calendar-check text-[var(--ios-green)] text-[10px]"></i>
+                        <span class="text-[10px] text-[var(--ios-gray-600)] font-bold whitespace-nowrap">25 Ags 2025</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <button onclick="location.href='spm-menu.html'" class="btn-compact btn-green">
+                        <button aria-label="SPM" onclick="location.href='spm-menu.html'" class="btn-compact bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] hover:bg-[rgba(52,199,89,0.2)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
                             <i class="fa-solid fa-notes-medical"></i> SPM
                         </button>
-                        <button class="btn-compact btn-gray">
+                        <button aria-label="Detail" class="btn-compact bg-transparent text-[var(--ios-gray-600)] border border-[var(--ios-gray-200)] hover:bg-[var(--ios-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-gray-400)] focus:ring-offset-2">
                             <i class="fa-regular fa-eye"></i> Detail
                         </button>
                     </div>
@@ -339,27 +339,27 @@
                     <div class="avatar-compact">AO</div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-bold text-slate-800 text-[14px] leading-tight truncate">Atang Oktaviana</h3>
-                            <div class="chip-compact shrink-0">
+                            <h3 class="font-bold text-[var(--ios-gray-900)] text-[14px] leading-tight truncate">Atang Oktaviana</h3>
+                            <div class="chip-compact shrink-0 bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] border-transparent">
                                 <i class="fa-solid fa-location-dot text-[8px]"></i> RW 11
                             </div>
                         </div>
-                        <p class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 mt-1">
-                            <i class="fa-regular fa-id-card text-slate-400"></i> 3204320432030594
+                        <p class="text-[11px] text-[var(--ios-gray-500)] font-medium flex items-center gap-1.5 mt-1">
+                            <i class="fa-regular fa-id-card text-[var(--ios-gray-400)]"></i> 3204320432030594
                         </p>
                     </div>
                 </div>
                 
-                <div class="info-row pt-2 border-t border-slate-100/60 mt-1">
-                    <div class="date-badge">
-                        <i class="fa-regular fa-calendar-check text-emerald-500 text-[10px]"></i>
-                        <span class="text-[10px] text-slate-600 font-bold whitespace-nowrap">26 Ags 2025</span>
+                <div class="info-row pt-2 border-t border-[var(--ios-gray-200)] mt-1">
+                    <div class="date-badge bg-[var(--ios-gray-100)] border-[var(--ios-gray-200)]">
+                        <i class="fa-regular fa-calendar-check text-[var(--ios-green)] text-[10px]"></i>
+                        <span class="text-[10px] text-[var(--ios-gray-600)] font-bold whitespace-nowrap">26 Ags 2025</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <button onclick="location.href='tambah-kunjungan.html'" class="btn-compact btn-green">
+                        <button aria-label="Hadir" onclick="location.href='tambah-kunjungan.html'" class="btn-compact bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] hover:bg-[rgba(52,199,89,0.2)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
                             <i class="fa-solid fa-hand-holding-hand"></i> Hadir
                         </button>
-                        <button class="btn-compact btn-gray">
+                        <button aria-label="Detail" class="btn-compact bg-transparent text-[var(--ios-gray-600)] border border-[var(--ios-gray-200)] hover:bg-[var(--ios-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-gray-400)] focus:ring-offset-2">
                             <i class="fa-regular fa-eye"></i> Detail
                         </button>
                     </div>
@@ -372,27 +372,27 @@
                     <div class="avatar-compact">SM</div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-bold text-slate-800 text-[14px] leading-tight truncate">Siti Maimunah</h3>
-                            <div class="chip-compact shrink-0">
+                            <h3 class="font-bold text-[var(--ios-gray-900)] text-[14px] leading-tight truncate">Siti Maimunah</h3>
+                            <div class="chip-compact shrink-0 bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] border-transparent">
                                 <i class="fa-solid fa-location-dot text-[8px]"></i> RW 11
                             </div>
                         </div>
-                        <p class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 mt-1">
-                            <i class="fa-regular fa-id-card text-slate-400"></i> 3204320432030612
+                        <p class="text-[11px] text-[var(--ios-gray-500)] font-medium flex items-center gap-1.5 mt-1">
+                            <i class="fa-regular fa-id-card text-[var(--ios-gray-400)]"></i> 3204320432030612
                         </p>
                     </div>
                 </div>
                 
-                <div class="info-row pt-2 border-t border-slate-100/60 mt-1">
-                    <div class="date-badge">
-                        <i class="fa-regular fa-calendar-check text-emerald-500 text-[10px]"></i>
-                        <span class="text-[10px] text-slate-600 font-bold whitespace-nowrap">27 Ags 2025</span>
+                <div class="info-row pt-2 border-t border-[var(--ios-gray-200)] mt-1">
+                    <div class="date-badge bg-[var(--ios-gray-100)] border-[var(--ios-gray-200)]">
+                        <i class="fa-regular fa-calendar-check text-[var(--ios-green)] text-[10px]"></i>
+                        <span class="text-[10px] text-[var(--ios-gray-600)] font-bold whitespace-nowrap">27 Ags 2025</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <button onclick="location.href='spm-menu.html'" class="btn-compact btn-green">
+                        <button aria-label="SPM" onclick="location.href='spm-menu.html'" class="btn-compact bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] hover:bg-[rgba(52,199,89,0.2)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
                             <i class="fa-solid fa-notes-medical"></i> SPM
                         </button>
-                        <button class="btn-compact btn-gray">
+                        <button aria-label="Detail" class="btn-compact bg-transparent text-[var(--ios-gray-600)] border border-[var(--ios-gray-200)] hover:bg-[var(--ios-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-gray-400)] focus:ring-offset-2">
                             <i class="fa-regular fa-eye"></i> Detail
                         </button>
                     </div>
@@ -404,7 +404,7 @@
         <!-- Pagination -->
         <div class="flex justify-center gap-2 mt-6">
             <button class="page-btn page-btn-outline"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
-            <button class="page-btn page-btn-active">1</button>
+            <button class="page-btn page-btn-active bg-[var(--ios-blue)] shadow-[rgba(0,122,255,0.3)] border-transparent">1</button>
             <button class="page-btn page-btn-outline"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
         </div>
     </div>
