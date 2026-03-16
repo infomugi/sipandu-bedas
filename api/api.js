@@ -87,13 +87,15 @@ app.post('/api/auth/login', async (req, res) => {
 // POST /api/auth/register
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role, created_by } = req.body;
+        // 🛡️ Sentinel: Removed 'role' from req.body to prevent mass assignment privilege escalation.
+        // Users should never be able to register as 'admin'.
+        const { nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, created_by } = req.body;
         if (!nama_lengkap || !nik || !password || !no_hp) return err(res, 'Field wajib tidak lengkap', 400);
         const { rows } = await pool.query(
             `INSERT INTO users (nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role, created_by)
              VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id, nama_lengkap, nik, role`,
             [nama_lengkap, nik, email, no_hp, password, rw, rt,
-             desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG', role || 'kader', created_by]
+             desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG', 'kader', created_by]
         );
         ok(res, rows[0], 201);
     } catch (e) {
