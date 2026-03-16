@@ -1351,18 +1351,4 @@ app.put('/api/users/:id/toggle-active', isAdmin, async (req, res) => {
 // ============================================================
 app.listen(PORT, () => {
     console.log(`🚀 Server Sipandu Bedas berjalan di http://localhost:${PORT}`);
-    console.log('📌 Endpoint tersedia:');
-    console.log('   AUTH      → POST /api/auth/login|register|forgot-password');
-    console.log('   DASHBOARD → GET  /api/dashboard');
-    console.log('   KELUARGA  → CRUD /api/keluarga');
-    console.log('   ANGGOTA   → CRUD /api/anggota');
-    console.log('   KUNJUNGAN → CRUD /api/kunjungan');
-    console.log('   SPM       → CRUD /api/spm/{kesehatan|pendidikan|perumahan|pu|sosial|trantibum}');
-    console.log('   PENGAJUAN → CRUD /api/pengajuan');
-    console.log('   LAPORAN   → GET  /api/laporan/{dashboard|gizi|bumil-kek}');
-    console.log('   PROFIL    → GET/PUT /api/profil/:id');
-    console.log('   ASSESMENT → GET/POST /api/assesment');
-    console.log('   PESAN     → GET/POST /api/pesan');
-    console.log('   NOTIFIKASI→ GET/PUT /api/notifikasi');
-    console.log('   VIEWS     → GET  /api/view/keluarga-lengkap');
 });
