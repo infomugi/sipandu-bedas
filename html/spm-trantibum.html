@@ -34,7 +34,7 @@
 
             <div class="form-group" style="margin-top:0;">
                 <label class="form-label">Kategori Laporan</label>
-                <select class="form-input">
+                <select class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                     <option>Kebakaran</option>
                     <option>KDRT / Asusila / Trafficking</option>
                     <option>Bencana Alam</option>
@@ -45,7 +45,7 @@
 
             <div class="form-group">
                 <label class="form-label">Detail Kejadian</label>
-                <textarea class="form-input" style="height:6rem;resize:none;" placeholder="Jelaskan apa yang terjadi, lokasi, dan waktu kejadian..."></textarea>
+                <textarea class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="height:6rem;resize:none;" placeholder="Jelaskan apa yang terjadi, lokasi, dan waktu kejadian..."></textarea>
             </div>
 
             <!-- Geolocation Map -->
@@ -60,8 +60,8 @@
                     </button>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:0.75rem;">
-                    <input type="text" id="lat" class="form-input" style="font-size:0.7rem;padding:0.5rem;" placeholder="Latitude" readonly>
-                    <input type="text" id="lng" class="form-input" style="font-size:0.7rem;padding:0.5rem;" placeholder="Longitude" readonly>
+                    <input type="text" id="lat" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="font-size:0.7rem;padding:0.5rem;" placeholder="Latitude" readonly>
+                    <input type="text" id="lng" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="font-size:0.7rem;padding:0.5rem;" placeholder="Longitude" readonly>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
             <div id="formIdentitas">
                 <div class="form-group" style="margin-top:0;">
                     <label class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-input" placeholder="Masukkan nama lengkap">
+                    <input type="text" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan nama lengkap">
                 </div>
                 <div class="form-group">
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
@@ -91,19 +91,19 @@
                             <div class="toggle-switch" id="nikToggleTrantibum" onclick="toggleNikInput('Trantibum')"></div>
                         </div>
                     </div>
-                    <input type="number" id="nikInputTrantibum" class="form-input" placeholder="16 digit NIK" style="transition:all 0.3s;">
+                    <input type="number" id="nikInputTrantibum" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="16 digit NIK" style="transition:all 0.3s;">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nomor Kontak (Bisa Dihubungi)</label>
-                    <input type="tel" class="form-input" placeholder="08xxxxxxxxxx">
+                    <input type="tel" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="08xxxxxxxxxx">
                 </div>
 
             <div class="form-group" style="margin-top:1.5rem;">
                 <label class="form-label" style="color:#059669;font-weight:700;">Catatan Tambahan Kader</label>
-                <textarea class="form-input" style="height:4rem;resize:none;" placeholder="Catatan internal jika ada..."></textarea>
+                <textarea class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="height:4rem;resize:none;" placeholder="Catatan internal jika ada..."></textarea>
             </div>
 
-            <button onclick="location.href='spm-menu.html'" class="btn-primary btn-accent-rose" style="margin-top:2rem;width:100%;padding:0.9375rem 1.5rem;border-radius:0.875rem;border:none;font-weight:700;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:'Plus Jakarta Sans',sans-serif;">
+            <button onclick="location.href='spm-menu.html'" class=" bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 btn-accent-rose" style="margin-top:2rem;width:100%;padding:0.9375rem 1.5rem;border-radius:0.875rem;border:none;font-weight:700;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:'Plus Jakarta Sans',sans-serif;">
                 <i class="fa-solid fa-bullhorn"></i> Kirim Pengaduan Trantibum
             </button>
         </main>

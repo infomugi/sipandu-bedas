@@ -79,34 +79,7 @@
             border: 1px solid #d1fae5;
             transition: all 0.2s;
         }
-        .toggle-switch {
-            width: 44px;
-            height: 24px;
-            background-color: #e4e4e7;
-            border-radius: 12px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background-color: white;
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .toggle-switch.active {
-            background-color: #10b981;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
-        }
-        .toggle-switch.active::after {
-            left: 23px;
-        }
+        /* Removing custom toggle-switch as we will use iOS toggle from styles.css */
         .btn-logout-card {
             display: flex;
             align-items: center;
@@ -193,7 +166,7 @@
 
             <!-- Action Cards Group 2 (Settings) -->
             <div class="menu-card">
-                <div class="menu-item">
+                <div class="menu-item flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-regular fa-bell"></i></div>
                         <div>
@@ -201,7 +174,14 @@
                             <p class="text-[10px] text-slate-400 font-medium">Dapatkan update terbaru</p>
                         </div>
                     </div>
-                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    <button
+                        role="switch"
+                        aria-checked="true"
+                        onclick="const isChecked = this.getAttribute('aria-checked') === 'true'; this.setAttribute('aria-checked', !isChecked); this.children[0].classList.toggle('translate-x-5'); this.classList.toggle('bg-green-500'); this.classList.toggle('bg-gray-300');"
+                        class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ios-blue)] focus-visible:ring-offset-2"
+                    >
+                        <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-5"></span>
+                    </button>
                 </div>
                 <div class="menu-item cursor-pointer">
                     <div class="flex items-center gap-4">
@@ -226,15 +206,11 @@
             </div>
 
             <!-- Logout Button -->
-            <button onclick="location.href='login.html'" class="btn-logout-card">
-                <div class="flex items-center gap-4">
-                    <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                    <div>
-                        <p class="text-[14px] font-bold text-rose-600">Keluar Aplikasi</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right text-rose-200 text-[10px]"></i>
-            </button>
+            <div class="mt-4 flex justify-center w-full">
+                <button onclick="location.href='login.html'" class="w-full text-red-500 font-semibold py-3 px-6 rounded-full bg-red-500/10 hover:bg-red-500/20 active:bg-red-500/30 transition-all">
+                    Keluar Aplikasi
+                </button>
+            </div>
             
             <p class="text-center text-[10px] text-slate-400 font-bold tracking-widest uppercase py-8">Sipandu Bedas v1.2.4</p>
         </div>

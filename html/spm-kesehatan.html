@@ -30,14 +30,14 @@
             <!-- Target Info / Sasaran Selection -->
             <div class="info-box info-box-indigo" style="margin-bottom:1.5rem;">
                 <h3 style="font-size:0.8125rem;font-weight:700;color:#312e81;margin-bottom:0.5rem;">Pilih Sasaran Kesehatan</h3>
-                <select class="form-input" id="sasaranSelect" onchange="toggleSasaranFields()" style="margin-bottom:0.5rem;background:white;">
+                <select class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" id="sasaranSelect" onchange="toggleSasaranFields()" style="margin-bottom:0.5rem;background:white;">
                     <option value="" disabled selected>-- Pilih Layanan Sasaran --</option>
                     <option value="balita">Bayi & Balita (0-59 Bulan)</option>
                     <option value="bumil">Ibu Hamil & Nifas</option>
                     <option value="pus">Pasangan Usia Subur (PUS)</option>
                     <option value="lansia">Lansia</option>
                 </select>
-                <select class="form-input" style="background:white;">
+                <select class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="background:white;">
                     <option>Atang (Istri, Pr, 32 Thn)</option>
                 </select>
                 <div class="form-group" style="margin-top:0.75rem;">
@@ -48,7 +48,7 @@
                             <div class="toggle-switch" id="nikToggleKes" onclick="toggleNikInput('Kes')"></div>
                         </div>
                     </div>
-                    <input type="number" id="nikInputKes" class="form-input" placeholder="16 digit NIK" style="background:white;border-color:#e0e7ff;transition:all 0.3s;">
+                    <input type="number" id="nikInputKes" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="16 digit NIK" style="background:white;border-color:#e0e7ff;transition:all 0.3s;">
                 </div>
             </div>
 
@@ -61,16 +61,16 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                         <div class="form-group" style="margin-top:0;">
                             <label class="form-label">Berat Badan (Kg)</label>
-                            <input type="number" step="0.1" class="form-input" placeholder="0.0">
+                            <input type="number" step="0.1" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="0.0">
                         </div>
                         <div class="form-group" style="margin-top:0;">
                             <label class="form-label">Tinggi Badan (Cm)</label>
-                            <input type="number" step="0.1" class="form-input" placeholder="0.0">
+                            <input type="number" step="0.1" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="0.0">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Status Garis Pita KMS</label>
-                        <select class="form-input">
+                        <select class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                             <option>Hijau (Naik Normal)</option>
                             <option>Kuning (Tiga Kali Tidak Naik / BGM)</option>
                             <option>Merah (Gizi Buruk)</option>
@@ -84,7 +84,7 @@
                     </h3>
                     <div class="form-group" style="margin-top:0;">
                         <label class="form-label">Jenis Imunisasi Diberikan</label>
-                        <select class="form-input">
+                        <select class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                             <option>Tidak Ada</option>
                             <option>BCG</option>
                             <option>DPT-HB-Hib 1</option>
@@ -113,16 +113,16 @@
                     </h3>
                     <div class="form-group" style="margin-top:0;">
                         <label class="form-label">Usia Kehamilan (Minggu)</label>
-                        <input type="number" class="form-input" placeholder="Cth: 20">
+                        <input type="number" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Cth: 20">
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                         <div class="form-group">
                             <label class="form-label">Tekanan Darah</label>
-                            <input type="text" class="form-input" placeholder="120/80">
+                            <input type="text" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="120/80">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Lingkar Lengan (Cm)</label>
-                            <input type="number" step="0.1" class="form-input" placeholder="24.5">
+                            <input type="number" step="0.1" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="24.5">
                         </div>
                     </div>
                     <p style="font-size:0.75rem;color:#e11d48;font-weight:600;font-style:italic;margin-top:0.75rem;">*LiLA &lt; 23.5 cm → indikasi KEK</p>
@@ -136,7 +136,7 @@
                 </h3>
                 <div class="form-group" style="margin-top:0;">
                     <label class="form-label">Hasil / Tindak Lanjut</label>
-                    <textarea class="form-input" style="height:5rem;resize:none;" placeholder="Catatan kader..."></textarea>
+                    <textarea class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="height:5rem;resize:none;" placeholder="Catatan kader..."></textarea>
                 </div>
                 <!-- Toggle Bantuan -->
                 <div style="margin-top:1rem;display:flex;align-items:center;justify-content:space-between;background:white;padding:0.875rem;border-radius:0.875rem;border:1px solid #dbeafe;">
@@ -159,8 +159,8 @@
                         </button>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:0.75rem;">
-                        <input type="text" id="lat" class="form-input" style="font-size:0.7rem;padding:0.5rem;" placeholder="Latitude" readonly>
-                        <input type="text" id="lng" class="form-input" style="font-size:0.7rem;padding:0.5rem;" placeholder="Longitude" readonly>
+                        <input type="text" id="lat" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="font-size:0.7rem;padding:0.5rem;" placeholder="Latitude" readonly>
+                        <input type="text" id="lng" class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="font-size:0.7rem;padding:0.5rem;" placeholder="Longitude" readonly>
                     </div>
                 </div>
             </div>
@@ -170,11 +170,11 @@
                     <i class="fa-solid fa-note-sticky" style="color:#059669;margin-right:0.375rem;font-size:0.75rem;"></i> Keterangan / Catatan Tambahan
                 </h3>
                 <div class="form-group" style="margin-top:0;">
-                    <textarea class="form-input" style="height:4rem;resize:none;" placeholder="Keterangan tambahan jika ada..."></textarea>
+                    <textarea class=" w-full px-6 py-4 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="height:4rem;resize:none;" placeholder="Keterangan tambahan jika ada..."></textarea>
                 </div>
             </div>
 
-            <button onclick="location.href='spm-menu.html'" class="btn-primary btn-accent-indigo" style="margin-top:2rem;width:100%;padding:0.9375rem 1.5rem;border-radius:0.875rem;border:none;font-weight:700;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:'Plus Jakarta Sans',sans-serif;">
+            <button onclick="location.href='spm-menu.html'" class=" bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 btn-accent-indigo" style="margin-top:2rem;width:100%;padding:0.9375rem 1.5rem;border-radius:0.875rem;border:none;font-weight:700;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:'Plus Jakarta Sans',sans-serif;">
                 <i class="fa-solid fa-floppy-disk"></i> Simpan Pelayanan
             </button>
         </main>
