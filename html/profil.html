@@ -158,8 +158,8 @@
 
         <div class="profile-card-container">
             <!-- Action Cards Group 1 -->
-            <div class="menu-card">
-                <div class="menu-item cursor-pointer">
+            <div class="ios-card divide-y divide-gray-100 p-0 overflow-hidden mb-6">
+                <button class="ios-list-item w-full text-left bg-white/50 border-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center gap-4">
                         <div class="icon-box"><i class="fa-regular fa-id-card"></i></div>
                         <div>
@@ -168,8 +168,8 @@
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
-                <div class="menu-item cursor-pointer" onclick="location.href='forgot-password.html'">
+                </button>
+                <button onclick="location.href='forgot-password.html'" class="ios-list-item w-full text-left bg-white/50 border-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center gap-4">
                         <div class="icon-box bg-blue-50 text-blue-600 border-blue-100"><i class="fa-solid fa-shield-halved"></i></div>
                         <div>
@@ -178,8 +178,8 @@
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
-                <div class="menu-item cursor-pointer">
+                </button>
+                <button class="ios-list-item w-full text-left bg-white/50 border-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center gap-4">
                         <div class="icon-box bg-amber-50 text-amber-600 border-amber-100"><i class="fa-regular fa-hospital"></i></div>
                         <div>
@@ -188,12 +188,12 @@
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
+                </button>
             </div>
 
             <!-- Action Cards Group 2 (Settings) -->
-            <div class="menu-card">
-                <div class="menu-item">
+            <div class="ios-card divide-y divide-gray-100 p-0 overflow-hidden mb-6">
+                <div class="ios-list-item w-full text-left bg-white/50 border-0">
                     <div class="flex items-center gap-4">
                         <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-regular fa-bell"></i></div>
                         <div>
@@ -201,9 +201,16 @@
                             <p class="text-[10px] text-slate-400 font-medium">Dapatkan update terbaru</p>
                         </div>
                     </div>
-                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    <button
+                        role="switch"
+                        aria-checked="true"
+                        onclick="this.classList.toggle('bg-green-500'); this.classList.toggle('bg-gray-300'); this.setAttribute('aria-checked', this.getAttribute('aria-checked') === 'true' ? 'false' : 'true'); this.querySelector('span').classList.toggle('translate-x-5'); this.querySelector('span').classList.toggle('translate-x-0')"
+                        class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-green-500 focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2"
+                      >
+                        <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-5" ></span>
+                    </button>
                 </div>
-                <div class="menu-item cursor-pointer">
+                <button class="ios-list-item w-full text-left bg-white/50 border-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center gap-4">
                         <div class="icon-box bg-slate-100 text-slate-600 border-slate-200"><i class="fa-solid fa-circle-question"></i></div>
                         <div>
@@ -212,8 +219,8 @@
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
-                <div class="menu-item cursor-pointer">
+                </button>
+                <button class="ios-list-item w-full text-left bg-white/50 border-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center gap-4">
                         <div class="icon-box bg-purple-50 text-purple-600 border-purple-100"><i class="fa-solid fa-language"></i></div>
                         <div>
@@ -222,18 +229,18 @@
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
+                </button>
             </div>
 
             <!-- Logout Button -->
-            <button onclick="location.href='login.html'" class="btn-logout-card">
+            <button onclick="location.href='login.html'" class="ios-btn-destructive w-full flex items-center justify-between mb-8 focus:outline-none focus:ring-2 focus:ring-[var(--ios-red)] focus:ring-offset-2 !rounded-2xl">
                 <div class="flex items-center gap-4">
-                    <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                    <div class="icon-box bg-transparent text-current border-0 shadow-none"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                     <div>
-                        <p class="text-[14px] font-bold text-rose-600">Keluar Aplikasi</p>
+                        <p class="text-[14px] font-bold">Keluar Aplikasi</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-rose-200 text-[10px]"></i>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>
             
             <p class="text-center text-[10px] text-slate-400 font-bold tracking-widest uppercase py-8">Sipandu Bedas v1.2.4</p>
