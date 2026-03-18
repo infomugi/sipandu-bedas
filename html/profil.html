@@ -130,113 +130,128 @@
 
 <div class="app-container">
 
-    <div class="view-content">
-        <!-- Header -->
-        <div class="profile-header-dark">
-            <div class="flex justify-between items-center absolute top-12 left-5 right-5">
-                <button onclick="history.back()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md">
-                    <i class="fa-solid fa-chevron-left text-white"></i>
-                </button>
-                <h1 class="text-lg font-bold">Account</h1>
-                <button class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md relative">
-                    <i class="fa-regular fa-bell text-white"></i>
-                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-[#064e3b]"></span>
-                </button>
+    <div class="view-content pb-24">
+        <!-- Header (iOS Navigation Bar) -->
+        <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-2xl font-semibold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                        Profil
+                    </h1>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors text-[#007AFF] relative">
+                            <span class="sr-only">Notifikasi</span>
+                            <i class="fa-regular fa-bell text-xl"></i>
+                            <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-[#FF3B30] rounded-full border-2 border-white"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="mt-8">
-                <div class="w-24 h-24 rounded-full mx-auto relative mb-4">
-                    <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-full h-full object-cover rounded-full border-4 border-white/10 shadow-xl">
-                    <button class="absolute bottom-1 right-1 w-8 h-8 bg-white text-slate-800 rounded-full flex items-center justify-center shadow-lg border-2 border-slate-900 transition-transform active:scale-95">
+        </nav>
+
+        <div class="px-5 pt-8 animate-[iosFadeIn_0.3s_ease-out]">
+            <!-- Profile Info -->
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-24 h-24 rounded-full relative mb-4 shadow-lg shadow-black/10">
+                    <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-full h-full object-cover rounded-full border-2 border-white">
+                    <button class="absolute bottom-0 right-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center shadow-md border border-gray-200 transition-transform active:scale-95 hover:bg-gray-200">
                         <i class="fa-solid fa-camera text-xs"></i>
                     </button>
                 </div>
-                <h2 class="text-xl font-bold tracking-tight">Angga Sura Sendana</h2>
-                <p class="text-sm text-emerald-100/60 font-medium">angga.surasendana@gmail.com</p>
-            </div>
-        </div>
-
-        <div class="profile-card-container">
-            <!-- Action Cards Group 1 -->
-            <div class="menu-card">
-                <div class="menu-item cursor-pointer">
-                    <div class="flex items-center gap-4">
-                        <div class="icon-box"><i class="fa-regular fa-id-card"></i></div>
-                        <div>
-                            <p class="text-[14px] font-bold text-slate-800">Informasi Pribadi</p>
-                            <p class="text-[10px] text-slate-400 font-medium">Nama, Email, dan Alamat</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
-                <div class="menu-item cursor-pointer" onclick="location.href='forgot-password.html'">
-                    <div class="flex items-center gap-4">
-                        <div class="icon-box bg-blue-50 text-blue-600 border-blue-100"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div>
-                            <p class="text-[14px] font-bold text-slate-800">Keamanan & Privasi</p>
-                            <p class="text-[10px] text-slate-400 font-medium">Kata sandi dan autentikasi</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
-                <div class="menu-item cursor-pointer">
-                    <div class="flex items-center gap-4">
-                        <div class="icon-box bg-amber-50 text-amber-600 border-amber-100"><i class="fa-regular fa-hospital"></i></div>
-                        <div>
-                            <p class="text-[14px] font-bold text-slate-800">Penugasan Posyandu</p>
-                            <p class="text-[10px] text-slate-400 font-medium">Wilayah kerja kader</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
-                </div>
+                <h2 class="text-xl font-semibold text-gray-900">Angga Sura Sendana</h2>
+                <p class="text-sm text-gray-500 mt-1">angga.surasendana@gmail.com</p>
             </div>
 
-            <!-- Action Cards Group 2 (Settings) -->
-            <div class="menu-card">
-                <div class="menu-item">
-                    <div class="flex items-center gap-4">
-                        <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-regular fa-bell"></i></div>
+            <!-- Action Cards Group 1 (iOS List) -->
+            <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
+                <div class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer border-b border-gray-100 last:border-0 active:bg-gray-100" tabindex="0">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#007AFF]/10 text-[#007AFF] flex items-center justify-center">
+                            <i class="fa-regular fa-id-card"></i>
+                        </div>
                         <div>
-                            <p class="text-[14px] font-bold text-slate-800">Notifikasi Push</p>
-                            <p class="text-[10px] text-slate-400 font-medium">Dapatkan update terbaru</p>
+                            <h4 class="font-medium text-gray-900 text-sm">Informasi Pribadi</h4>
+                            <p class="text-xs text-gray-500">Nama, Email, dan Alamat</p>
                         </div>
                     </div>
-                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    <span class="text-gray-300 text-xl">›</span>
                 </div>
-                <div class="menu-item cursor-pointer">
-                    <div class="flex items-center gap-4">
-                        <div class="icon-box bg-slate-100 text-slate-600 border-slate-200"><i class="fa-solid fa-circle-question"></i></div>
+                <div class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer border-b border-gray-100 last:border-0 active:bg-gray-100" onclick="location.href='forgot-password.html'" tabindex="0">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#5856D6]/10 text-[#5856D6] flex items-center justify-center">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
                         <div>
-                            <p class="text-[14px] font-bold text-slate-800">Pusat Bantuan</p>
-                            <p class="text-[10px] text-slate-400 font-medium">FAQ dan layanan dukungan</p>
+                            <h4 class="font-medium text-gray-900 text-sm">Keamanan & Privasi</h4>
+                            <p class="text-xs text-gray-500">Kata sandi dan autentikasi</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
+                    <span class="text-gray-300 text-xl">›</span>
                 </div>
-                <div class="menu-item cursor-pointer">
-                    <div class="flex items-center gap-4">
-                        <div class="icon-box bg-purple-50 text-purple-600 border-purple-100"><i class="fa-solid fa-language"></i></div>
+                <div class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer border-b border-gray-100 last:border-0 active:bg-gray-100" tabindex="0">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#FF9500]/10 text-[#FF9500] flex items-center justify-center">
+                            <i class="fa-regular fa-hospital"></i>
+                        </div>
                         <div>
-                            <p class="text-[14px] font-bold text-slate-800">Bahasa</p>
-                            <p class="text-[10px] text-slate-400 font-medium">Bahasa Indonesia</p>
+                            <h4 class="font-medium text-gray-900 text-sm">Penugasan Posyandu</h4>
+                            <p class="text-xs text-gray-500">Wilayah kerja kader</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
+                    <span class="text-gray-300 text-xl">›</span>
+                </div>
+            </div>
+
+            <!-- Action Cards Group 2 (Settings - iOS List) -->
+            <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
+                <div class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#FF3B30]/10 text-[#FF3B30] flex items-center justify-center">
+                            <i class="fa-regular fa-bell"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900 text-sm">Notifikasi Push</h4>
+                            <p class="text-xs text-gray-500">Dapatkan update terbaru</p>
+                        </div>
+                    </div>
+                    <!-- iOS Toggle Switch -->
+                    <button role="switch" aria-checked="true" onclick="this.setAttribute('aria-checked', this.getAttribute('aria-checked') === 'true' ? 'false' : 'true')" class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-[#34C759] focus:ring-2 focus:ring-[#007AFF]/20 outline-none [&[aria-checked=false]]:bg-gray-300 group">
+                        <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-5 group-[&[aria-checked=false]]:translate-x-0" />
+                    </button>
+                </div>
+                <div class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer border-b border-gray-100 last:border-0 active:bg-gray-100" tabindex="0">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900 text-sm">Pusat Bantuan</h4>
+                            <p class="text-xs text-gray-500">FAQ dan layanan dukungan</p>
+                        </div>
+                    </div>
+                    <span class="text-gray-300 text-xl">›</span>
+                </div>
+                <div class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors cursor-pointer border-b border-gray-100 last:border-0 active:bg-gray-100" tabindex="0">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#AF52DE]/10 text-[#AF52DE] flex items-center justify-center">
+                            <i class="fa-solid fa-language"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900 text-sm">Bahasa</h4>
+                            <p class="text-xs text-gray-500">Bahasa Indonesia</p>
+                        </div>
+                    </div>
+                    <span class="text-gray-300 text-xl">›</span>
                 </div>
             </div>
 
             <!-- Logout Button -->
-            <button onclick="location.href='login.html'" class="btn-logout-card">
-                <div class="flex items-center gap-4">
-                    <div class="icon-box bg-rose-50 text-rose-500 border-rose-100"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                    <div>
-                        <p class="text-[14px] font-bold text-rose-600">Keluar Aplikasi</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right text-rose-200 text-[10px]"></i>
+            <button onclick="location.href='login.html'" class="w-full flex items-center justify-center gap-2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-sm border border-gray-100 p-4 transition-all duration-200 active:scale-95 text-[#FF3B30] hover:bg-[#FF3B30]/5 focus:ring-2 focus:ring-[#FF3B30]/20 outline-none">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span class="font-semibold">Keluar Aplikasi</span>
             </button>
             
-            <p class="text-center text-[10px] text-slate-400 font-bold tracking-widest uppercase py-8">Sipandu Bedas v1.2.4</p>
+            <p class="text-center text-xs text-gray-400 font-medium py-8">Sipandu Bedas v1.2.4</p>
         </div>
 
     </div>

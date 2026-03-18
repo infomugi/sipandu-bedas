@@ -284,16 +284,25 @@
         <!-- Search Section -->
         <div class="search-wrapper">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" class="search-input focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2" aria-label="Cari NIK atau Nama" placeholder="Cari NIK atau Nama...">
+            <input type="text" class="search-input focus-ring" aria-label="Cari NIK atau Nama" placeholder="Cari NIK atau Nama...">
+        </div>
+
+        <!-- iOS Segmented Control -->
+        <div class="flex justify-center mb-4">
+            <div class="bg-gray-100 p-1 rounded-xl inline-flex w-full">
+                <button class="flex-1 px-4 py-2 rounded-lg font-medium text-[13px] transition-all bg-white text-gray-900 shadow-sm focus-ring">Semua</button>
+                <button class="flex-1 px-4 py-2 rounded-lg font-medium text-[13px] transition-all text-gray-600 hover:text-gray-900 focus-ring">Belum SPM</button>
+                <button class="flex-1 px-4 py-2 rounded-lg font-medium text-[13px] transition-all text-gray-600 hover:text-gray-900 focus-ring">Sudah SPM</button>
+            </div>
         </div>
 
         <!-- Section Title & Filter -->
         <div class="flex justify-between items-center mb-3 px-1">
             <div>
-                <h2 class="text-[14px] font-bold text-[var(--ios-gray-900)]">Semua Keluarga</h2>
+                <h2 class="text-[14px] font-bold text-[var(--ios-gray-900)]">Daftar Warga</h2>
                 <p class="text-[10px] text-[var(--ios-gray-500)]">Menampilkan data terbaru</p>
             </div>
-            <button class="text-[var(--ios-green)] bg-[rgba(52,199,89,0.1)] border border-[rgba(52,199,89,0.2)] px-2.5 py-1.5 rounded-[0.6rem] text-[10px] font-bold hover:bg-[rgba(52,199,89,0.2)] transition-colors flex items-center gap-1.5 shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
+            <button class="text-[var(--ios-blue)] bg-[rgba(0,122,255,0.1)] px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-[rgba(0,122,255,0.2)] transition-colors flex items-center gap-1.5 shrink-0 focus-ring active:scale-95">
                 <i class="fa-solid fa-arrow-up-wide-short"></i> Filter
             </button>
         </div>
@@ -323,10 +332,10 @@
                         <span class="text-[10px] text-[var(--ios-gray-600)] font-bold whitespace-nowrap">25 Ags 2025</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <button aria-label="SPM" onclick="location.href='spm-menu.html'" class="btn-compact bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] hover:bg-[rgba(52,199,89,0.2)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
+                        <button aria-label="SPM" onclick="location.href='spm-menu.html'" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-1.5 px-3 text-[11px] rounded-full shadow-sm shadow-blue-500/30 transition-all duration-200 active:scale-95 flex items-center gap-1 focus-ring">
                             <i class="fa-solid fa-notes-medical"></i> SPM
                         </button>
-                        <button aria-label="Detail" class="btn-compact bg-transparent text-[var(--ios-gray-600)] border border-[var(--ios-gray-200)] hover:bg-[var(--ios-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-gray-400)] focus:ring-offset-2">
+                        <button aria-label="Detail" class="bg-transparent text-[#007AFF] font-semibold py-1.5 px-3 text-[11px] rounded-full border border-[#007AFF]/30 hover:bg-[#007AFF]/5 active:bg-[#007AFF]/10 transition-all flex items-center gap-1 focus-ring">
                             <i class="fa-regular fa-eye"></i> Detail
                         </button>
                     </div>
@@ -356,10 +365,10 @@
                         <span class="text-[10px] text-[var(--ios-gray-600)] font-bold whitespace-nowrap">26 Ags 2025</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <button aria-label="Hadir" onclick="location.href='tambah-kunjungan.html'" class="btn-compact bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] hover:bg-[rgba(52,199,89,0.2)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
+                        <button aria-label="Hadir" onclick="location.href='tambah-kunjungan.html'" class="bg-[#34C759] hover:bg-green-600 active:bg-green-700 text-white font-semibold py-1.5 px-3 text-[11px] rounded-full shadow-sm shadow-green-500/30 transition-all duration-200 active:scale-95 flex items-center gap-1 focus-ring">
                             <i class="fa-solid fa-hand-holding-hand"></i> Hadir
                         </button>
-                        <button aria-label="Detail" class="btn-compact bg-transparent text-[var(--ios-gray-600)] border border-[var(--ios-gray-200)] hover:bg-[var(--ios-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-gray-400)] focus:ring-offset-2">
+                        <button aria-label="Detail" class="bg-transparent text-[#007AFF] font-semibold py-1.5 px-3 text-[11px] rounded-full border border-[#007AFF]/30 hover:bg-[#007AFF]/5 active:bg-[#007AFF]/10 transition-all flex items-center gap-1 focus-ring">
                             <i class="fa-regular fa-eye"></i> Detail
                         </button>
                     </div>
@@ -389,10 +398,10 @@
                         <span class="text-[10px] text-[var(--ios-gray-600)] font-bold whitespace-nowrap">27 Ags 2025</span>
                     </div>
                     <div class="flex gap-1.5">
-                        <button aria-label="SPM" onclick="location.href='spm-menu.html'" class="btn-compact bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] hover:bg-[rgba(52,199,89,0.2)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-green)] focus:ring-offset-2">
+                        <button aria-label="SPM" onclick="location.href='spm-menu.html'" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-1.5 px-3 text-[11px] rounded-full shadow-sm shadow-blue-500/30 transition-all duration-200 active:scale-95 flex items-center gap-1 focus-ring">
                             <i class="fa-solid fa-notes-medical"></i> SPM
                         </button>
-                        <button aria-label="Detail" class="btn-compact bg-transparent text-[var(--ios-gray-600)] border border-[var(--ios-gray-200)] hover:bg-[var(--ios-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-gray-400)] focus:ring-offset-2">
+                        <button aria-label="Detail" class="bg-transparent text-[#007AFF] font-semibold py-1.5 px-3 text-[11px] rounded-full border border-[#007AFF]/30 hover:bg-[#007AFF]/5 active:bg-[#007AFF]/10 transition-all flex items-center gap-1 focus-ring">
                             <i class="fa-regular fa-eye"></i> Detail
                         </button>
                     </div>
@@ -411,23 +420,23 @@
 
     <!-- Bottom Nav -->
     <nav class="bottom-nav z-50">
-        <button onclick="location.href='index.html'" class="nav-item">
+        <button onclick="location.href='index.html'" class="nav-item focus-ring rounded-lg">
             <i class="fa-solid fa-house text-[18px]"></i>
             <span class="text-[10px] font-medium leading-[1]">Beranda</span>
         </button>
-        <button class="nav-item active">
+        <button class="nav-item active focus-ring rounded-lg">
             <i class="fa-solid fa-users text-[18px]"></i>
             <span class="text-[10px] font-medium leading-[1]">Keluarga</span>
         </button>
-        <button onclick="location.href='riwayat-pengajuan.html'" class="nav-item">
+        <button onclick="location.href='riwayat-pengajuan.html'" class="nav-item focus-ring rounded-lg">
             <i class="fa-solid fa-clock-rotate-left text-[18px]"></i>
             <span class="text-[10px] font-medium leading-[1]">Riwayat</span>
         </button>
-        <button onclick="location.href='laporan.html'" class="nav-item">
+        <button onclick="location.href='laporan.html'" class="nav-item focus-ring rounded-lg">
             <i class="fa-solid fa-chart-pie text-[18px]"></i>
             <span class="text-[10px] font-medium leading-[1]">Laporan</span>
         </button>
-        <button onclick="location.href='profil.html'" class="nav-item">
+        <button onclick="location.href='profil.html'" class="nav-item focus-ring rounded-lg">
             <i class="fa-solid fa-circle-user text-[18px]"></i>
             <span class="text-[10px] font-medium leading-[1]">Profil</span>
         </button>
