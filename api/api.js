@@ -1324,7 +1324,8 @@ app.put('/api/notifikasi/:id/read', async (req, res) => {
 // ============================================================
 
 // GET /api/view/keluarga-lengkap?rt=
-app.get('/api/view/keluarga-lengkap', async (req, res) => {
+// 🛡️ Sentinel: Enforce admin authorization to prevent authorization bypass
+app.get('/api/view/keluarga-lengkap', isAdmin, async (req, res) => {
     try {
         const { rt } = req.query;
         const p = rt ? [rt] : [];
