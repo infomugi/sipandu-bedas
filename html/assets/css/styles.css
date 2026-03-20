@@ -1254,3 +1254,22 @@ body {
   border-color: var(--ios-blue);
   box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
 }
+
+/* ===== NEW IOS 17 UI TRANSFORMATION ===== */
+
+/* Form Input Focus Rings (Accessibility) */
+.ios-focus-ring:focus {
+  outline: none;
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+  --tw-ring-color: rgba(0, 122, 255, 0.2);
+  --tw-ring-offset-width: 2px;
+}
+
+/* Ensure focus states with Tailwind */
+*:focus-visible {
+  outline: none;
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: rgba(0, 122, 255, 0.5);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
