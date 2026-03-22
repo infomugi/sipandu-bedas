@@ -31,7 +31,14 @@ pool.connect()
 
 // ─── Helper ───────────────────────────────────────────────────
 const ok  = (res, data, code = 200) => res.status(code).json({ success: true,  data });
-const err = (res, msg,  code = 500) => res.status(code).json({ success: false, message: msg });
+const err = (res, msg,  code = 500) => {
+    if (code >= 500) {
+        // 🛡️ Sentinel: Log internal error but do not leak details to the client
+        console.error('Internal Server Error:', msg);
+        return res.status(code).json({ success: false, message: 'Internal Server Error' });
+    }
+    return res.status(code).json({ success: false, message: msg });
+};
 
 // 🛡️ Sentinel: Add authentication middleware for admin endpoints
 const isAdmin = async (req, res, next) => {
