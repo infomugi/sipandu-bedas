@@ -4,64 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sipandu Bedas - Tambah Data Keluarga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        :root {
+            /* iOS System Colors */
+            --ios-blue: #007AFF;
+            --ios-green: #34C759;
+            --ios-red: #FF3B30;
+            --ios-orange: #FF9500;
+            --ios-yellow: #FFCC00;
+            --ios-purple: #AF52DE;
+            --ios-indigo: #5856D6;
+            --ios-teal: #5AC8FA;
+
+            /* Grayscale */
+            --ios-gray-100: #F2F2F7;
+            --ios-gray-200: #E5E5EA;
+            --ios-gray-300: #D1D1D6;
+            --ios-gray-400: #C7C7CC;
+            --ios-gray-500: #AEAEB2;
+            --ios-gray-600: #8E8E93;
+            --ios-gray-700: #636366;
+            --ios-gray-800: #3A3A3C;
+            --ios-gray-900: #1C1C1E;
+        }
+
+        body {
+            background-color: var(--ios-gray-100, #F2F2F7);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .view-content {
+            background: transparent;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 90px;
+        }
+
+        @keyframes iosFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
-<body class="antialiased" style="color:#334155;">
+<body class="antialiased text-slate-800">
 
 <div class="app-container">
 
-    <!-- Header -->
-    <header class="header-white-nav">
-        <button onclick="location.href='pendaftaran.html'" class="btn-back" aria-label="Kembali">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <div>
-            <h2 class="page-title">Tambah Keluarga</h2>
-            <p class="page-subtitle">Form pendaftaran data keluarga baru</p>
+    <!-- iOS Navigation Bar -->
+    <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center space-x-4">
+                <button onclick="location.href='pendaftaran.html'" class="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors" aria-label="Kembali">
+                    <i class="fa-solid fa-arrow-left text-[var(--ios-blue)] text-xl"></i>
+                </button>
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900">
+                        Tambah Keluarga
+                    </h1>
+                    <p class="text-xs text-gray-500">Form pendaftaran data keluarga baru</p>
+                </div>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <div class="view-content" style="padding:1.25rem;padding-bottom:2rem;">
+    <div class="view-content px-5 pt-6 pb-8 space-y-6">
         
-        <div class="form-group" style="margin-top:0;">
-            <label class="form-label">Nomor Kartu Keluarga (KK)</label>
-            <input type="text" class="form-input" placeholder="Masukkan No. KK">
+        <!-- iOS Card Container for main form -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+            <div class="form-group" style="margin-top:0;">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Nomor Kartu Keluarga (KK)</label>
+                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan No. KK">
+            </div>
         </div>
 
-        <!-- Section: Anggota Keluarga -->
-        <div class="card-section" style="margin-top:1.5rem;">
-            <h3 style="font-size:0.8125rem;font-weight:700;color:#1e293b;margin-bottom:1rem;padding-bottom:0.625rem;border-bottom:1px solid #e2e8f0;">
-                <i class="fa-solid fa-user" style="color:#6366f1;margin-right:0.375rem;font-size:0.75rem;"></i> Informasi Anggota Keluarga
+        <!-- Section: Anggota Keluarga (iOS Card) -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+            <h3 class="font-semibold text-gray-900 border-b border-gray-100 pb-3 flex items-center">
+                <i class="fa-solid fa-user text-[var(--ios-blue)] mr-2"></i> Informasi Anggota Keluarga
             </h3>
             
             <div class="form-group" style="margin-top:0;">
-                <label class="form-label">NIK</label>
-                <input type="text" class="form-input" placeholder="Masukkan NIK">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">NIK</label>
+                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan NIK">
             </div>
             <div class="form-group">
-                <label class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-input" placeholder="Masukkan nama lengkap">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Nama Lengkap</label>
+                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan nama lengkap">
             </div>
             
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                 <div class="form-group">
-                    <label class="form-label">Jenis Kelamin</label>
-                    <select class="form-input">
-                        <option>Laki-laki</option>
-                        <option>Perempuan</option>
-                    </select>
+                    <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Jenis Kelamin</label>
+                    <div class="bg-gray-100 p-1 rounded-xl inline-flex w-full" id="gender-segment">
+                        <button type="button" class="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all bg-white text-gray-900 shadow-sm" onclick="setGender('L')">L</button>
+                        <button type="button" class="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-500 hover:text-gray-900" onclick="setGender('P')">P</button>
+                        <input type="hidden" id="jenis_kelamin" name="jenis_kelamin" value="L">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Tanggal Lahir</label>
-                    <input type="date" class="form-input">
+                    <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Tanggal Lahir</label>
+                    <input type="date" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Status dalam Keluarga</label>
-                <select class="form-input">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Status dalam Keluarga</label>
+                <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                     <option>Kepala Keluarga</option>
                     <option>Istri</option>
                     <option>Anak</option>
@@ -70,15 +121,15 @@
             </div>
         </div>
 
-        <!-- Section: Data Sosial Ekonomi -->
-        <div class="card-section" style="margin-top:1rem;">
-            <h3 style="font-size:0.8125rem;font-weight:700;color:#1e293b;margin-bottom:1rem;padding-bottom:0.625rem;border-bottom:1px solid #e2e8f0;">
-                <i class="fa-solid fa-chart-line" style="color:#059669;margin-right:0.375rem;font-size:0.75rem;"></i> Data Sosial Ekonomi
+        <!-- Section: Data Sosial Ekonomi (iOS Card) -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+            <h3 class="font-semibold text-gray-900 border-b border-gray-100 pb-3 flex items-center">
+                <i class="fa-solid fa-chart-line text-[var(--ios-green)] mr-2"></i> Data Sosial Ekonomi
             </h3>
             
             <div class="form-group" style="margin-top:0;">
-                <label class="form-label">Status Kesejahteraan</label>
-                <select class="form-input">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Status Kesejahteraan</label>
+                <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                     <option>Pra-Sejahtera (Sangat Miskin)</option>
                     <option>Keluarga Sejahtera I (Miskin)</option>
                     <option>Keluarga Sejahtera II (Menengah)</option>
@@ -86,60 +137,220 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label">Status Asuransi Kesehatan</label>
-                <select class="form-input">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Status Asuransi Kesehatan</label>
+                <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
                     <option>BPJS Kesehatan (PBI / Gratis)</option>
                     <option>BPJS Mandiri</option>
                     <option>Asuransi Swasta</option>
                     <option>Tidak Memiliki</option>
                 </select>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                <div class="form-group">
-                    <label class="form-label">Pekerjaan</label>
-                    <input type="text" class="form-input" placeholder="Cth: Buruh Tani">
+            <div class="form-group">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Pekerjaan</label>
+                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Cth: Buruh Tani">
+            </div>
+
+            <div class="form-group mt-4">
+                <div class="flex justify-between text-sm text-gray-500 mb-2 px-2 font-medium">
+                    <span>&lt; Rp 1 Jt</span>
+                    <span>Estimasi Pendapatan</span>
+                    <span>&gt; Rp 5 Jt</span>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Estimasi Pendapatan</label>
-                    <select class="form-input">
-                        <option>&lt; Rp 1 Juta</option>
-                        <option>Rp 1 - 3 Juta</option>
-                        <option>&gt; Rp 3 Juta</option>
-                    </select>
+                <div class="space-y-2">
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="50"
+                        id="pendapatan-slider"
+                        oninput="updatePendapatan()"
+                        class="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer
+                            [&::-webkit-slider-thumb]:appearance-none
+                            [&::-webkit-slider-thumb]:w-6
+                            [&::-webkit-slider-thumb]:h-6
+                            [&::-webkit-slider-thumb]:rounded-full
+                            [&::-webkit-slider-thumb]:bg-white
+                            [&::-webkit-slider-thumb]:shadow-lg
+                            [&::-webkit-slider-thumb]:shadow-black/20
+                            [&::-webkit-slider-thumb]:border
+                            [&::-webkit-slider-thumb]:border-gray-200
+                            [&::-webkit-slider-thumb]:hover:scale-110
+                            [&::-webkit-slider-thumb]:transition-transform"
+                    />
+                    <div class="text-center font-semibold text-gray-900" id="pendapatan-value">
+                        Rp 1 Juta - Rp 3 Juta
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-4 border-t border-gray-100 pt-4">
+                <div class="flex items-center justify-between px-2">
+                    <div>
+                        <span class="text-base font-medium text-gray-900 block">Bantuan Sosial</span>
+                        <span class="text-xs text-gray-500">Keluarga ini menerima PKH/BPNT</span>
+                    </div>
+                    <button
+                        type="button"
+                        role="switch"
+                        aria-checked="false"
+                        id="bantuan-toggle"
+                        onclick="toggleBantuan()"
+                        class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-gray-300"
+                    >
+                        <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-0" id="bantuan-toggle-thumb"></span>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Section: Alamat -->
-        <div class="form-group" style="margin-top:1.5rem;">
-            <label class="form-label">Alamat Lengkap</label>
-            <textarea class="form-input" style="height:5rem;resize:none;" placeholder="Masukkan alamat lengkap"></textarea>
+        <!-- Section: Alamat (iOS Card) -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+            <div class="form-group" style="margin-top:0;">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Alamat Lengkap</label>
+            <textarea class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="height:5rem;resize:none;" placeholder="Masukkan alamat lengkap"></textarea>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
             <div class="form-group">
-                <label class="form-label">RT</label>
-                <input type="text" class="form-input" value="11">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">RT</label>
+                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" value="11">
             </div>
             <div class="form-group">
-                <label class="form-label">RW</label>
-                <input type="text" class="form-input" value="3">
+                <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">RW</label>
+                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" value="3">
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label">Kecamatan</label>
-            <select class="form-input"><option>BALEENDAH</option></select>
+            <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Kecamatan</label>
+            <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all"><option>BALEENDAH</option></select>
         </div>
         <div class="form-group">
-            <label class="form-label">Desa</label>
-            <select class="form-input"><option>RANCAMANYAR</option></select>
+            <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Desa</label>
+            <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all"><option>RANCAMANYAR</option></select>
         </div>
 
-        <button onclick="location.href='pendaftaran.html'" class="btn-primary" style="margin-top:2rem;">
+        </div>
+
+        <button type="button" onclick="confirmSave()" class="w-full bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 mt-8">
             <i class="fa-solid fa-floppy-disk"></i> Simpan Keluarga
         </button>
     </div>
 
 </div>
+
+<!-- iOS Alert / Modal -->
+<div id="ios-alert" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl max-w-[320px] w-full p-6 animate-[iosFadeIn_0.2s_ease-out] text-center border border-white/20">
+
+        <!-- Loading State (hidden by default) -->
+        <div id="ios-loading" class="hidden flex-col items-center justify-center py-4">
+            <div class="relative w-12 h-12 mb-4">
+                <div class="absolute inset-0 rounded-full border-4 border-gray-200"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-[#007AFF] border-t-transparent animate-spin"></div>
+            </div>
+            <p class="text-gray-600 font-medium">Menyimpan Data...</p>
+        </div>
+
+        <!-- Confirmation State -->
+        <div id="ios-confirm">
+            <h3 class="text-xl font-semibold mb-2 text-gray-900 tracking-tight">Simpan Data</h3>
+            <p class="text-[15px] text-gray-600 mb-6 leading-snug">Apakah Anda yakin data keluarga yang dimasukkan sudah benar?</p>
+            <div class="flex flex-col space-y-3">
+                <button
+                    onclick="processSave()"
+                    class="w-full py-3.5 rounded-2xl bg-[#007AFF] text-white font-semibold text-[17px] active:scale-95 transition-transform"
+                >
+                    Ya, Simpan
+                </button>
+                <button
+                    onclick="closeAlert()"
+                    class="w-full py-3.5 rounded-2xl bg-gray-100 text-[#007AFF] font-semibold text-[17px] active:bg-gray-200 transition-colors"
+                >
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Segmented Control for Gender
+    function setGender(val) {
+        document.getElementById('jenis_kelamin').value = val;
+        const btns = document.getElementById('gender-segment').querySelectorAll('button');
+        btns.forEach(btn => {
+            if (btn.innerText === val) {
+                btn.className = "flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all bg-white text-gray-900 shadow-sm";
+            } else {
+                btn.className = "flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-500 hover:text-gray-900";
+            }
+        });
+    }
+
+    // Slider for Estimasi Pendapatan
+    function updatePendapatan() {
+        const val = parseInt(document.getElementById('pendapatan-slider').value);
+        const textLabel = document.getElementById('pendapatan-value');
+        if (val < 33) {
+            textLabel.innerText = "< Rp 1 Juta";
+        } else if (val < 66) {
+            textLabel.innerText = "Rp 1 Juta - Rp 3 Juta";
+        } else {
+            textLabel.innerText = "> Rp 3 Juta";
+        }
+    }
+
+    // Toggle for Bantuan Sosial
+    function toggleBantuan() {
+        const toggleBtn = document.getElementById('bantuan-toggle');
+        const thumb = document.getElementById('bantuan-toggle-thumb');
+        const isChecked = toggleBtn.getAttribute('aria-checked') === 'true';
+
+        if (isChecked) {
+            toggleBtn.setAttribute('aria-checked', 'false');
+            toggleBtn.classList.remove('bg-green-500');
+            toggleBtn.classList.add('bg-gray-300');
+            thumb.classList.remove('translate-x-5');
+            thumb.classList.add('translate-x-0');
+        } else {
+            toggleBtn.setAttribute('aria-checked', 'true');
+            toggleBtn.classList.remove('bg-gray-300');
+            toggleBtn.classList.add('bg-green-500');
+            thumb.classList.remove('translate-x-0');
+            thumb.classList.add('translate-x-5');
+        }
+    }
+
+    // Alert / Modal logic
+    const alertModal = document.getElementById('ios-alert');
+    const confirmView = document.getElementById('ios-confirm');
+    const loadingView = document.getElementById('ios-loading');
+
+    function confirmSave() {
+        alertModal.classList.remove('hidden');
+        // Small delay to allow display:block to apply before animating opacity
+        setTimeout(() => {
+            alertModal.classList.remove('opacity-0');
+        }, 10);
+    }
+
+    function closeAlert() {
+        alertModal.classList.add('opacity-0');
+        setTimeout(() => {
+            alertModal.classList.add('hidden');
+        }, 200);
+    }
+
+    function processSave() {
+        confirmView.classList.add('hidden');
+        loadingView.classList.remove('hidden');
+        loadingView.classList.add('flex');
+
+        // Simulate backend request
+        setTimeout(() => {
+            location.href = 'pendaftaran.html';
+        }, 1500);
+    }
+</script>
 
 </body>
 </html>
