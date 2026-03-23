@@ -216,43 +216,49 @@ body {
 
 /* Base Colored Header for SPM Services */
 .header-colored {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 50;
   padding: 3.5rem 1.25rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--ios-gray-900);
 }
 
 .header-colored .page-title {
-  color: white;
+  color: var(--ios-gray-900);
+  background: linear-gradient(to right, var(--ios-gray-900), var(--ios-gray-600));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .header-colored .page-subtitle {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--ios-gray-500);
 }
 
 /* SPM Specific Header Colors (Matching Menu Branding) */
-.bg-header-emerald { background-color: #059669; } /* Pendidikan */
-.bg-header-rose { background-color: #e11d48; }    /* Kesehatan */
-.bg-header-blue { background-color: #2563eb; }    /* PU */
-.bg-header-amber { background-color: #d97706; }   /* Perumahan */
-.bg-header-slate { background-color: #475569; }   /* Trantibum */
-.bg-header-purple { background-color: #7c3aed; }  /* Sosial */
+ /* Pendidikan */
+    /* Kesehatan */
+    /* PU */
+   /* Perumahan */
+   /* Trantibum */
+  /* Sosial */
 
 /* Back Button */
 .btn-back {
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 0.75rem;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
-  color: #475569;
+  background: transparent;
+  color: var(--ios-blue);
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -265,16 +271,14 @@ body {
 .btn-back-light {
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 0.75rem;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: transparent;
+  color: var(--ios-blue);
   border: none;
   cursor: pointer;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   transition: all 0.2s ease;
 }
 .btn-back-light:active {
@@ -301,16 +305,21 @@ body {
 
 .form-input {
   width: 100%;
-  background-color: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 0.875rem;
-  padding: 0.875rem 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--ios-gray-200);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #1e293b;
-  transition: all 0.25s ease;
+  color: var(--ios-gray-900);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.form-input:focus {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+  background-color: #ffffff;
 }
 .form-input:focus {
   border-color: #10b981;
@@ -325,16 +334,21 @@ body {
 /* Auth form input variant */
 .form-input-auth {
   width: 100%;
-  background-color: #f1f5f9;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 0.875rem;
-  padding: 0.9375rem 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--ios-gray-200);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
   font-size: 0.875rem;
-  font-weight: 600;
-  color: #1e293b;
-  transition: all 0.25s ease;
+  font-weight: 500;
+  color: var(--ios-gray-900);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.form-input-auth:focus {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+  background-color: #ffffff;
 }
 .form-input-auth:focus {
   border-color: #10b981;
@@ -348,21 +362,25 @@ body {
 
 /* ===== CARDS ===== */
 .card {
-  background: white;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  border: 1px solid #f1f5f9;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 4px 12px rgba(0, 0, 0, 0.02);
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-section {
-  background: #f8fafc;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Auth Card (Login/Register/Forgot forms) */
@@ -383,23 +401,24 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  background-color: var(--ios-blue);
   color: white;
-  font-weight: 700;
-  font-size: 0.875rem;
-  padding: 0.9375rem 1.5rem;
-  border-radius: 0.875rem;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
   border: none;
   cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
-  font-family: "Plus Jakarta Sans", sans-serif;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(0, 122, 255, 0.3);
+  font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
 }
 .btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  background-color: #0051B3;
 }
 .btn-primary:active {
-  transform: scale(0.97);
+  background-color: #004099;
+  transform: scale(0.95);
 }
 
 .btn-dark {
@@ -624,12 +643,14 @@ body {
 
 /* ===== FAMILY CARD ===== */
 .family-card {
-  background: white;
-  border-radius: 1rem;
-  border: 1px solid #f1f5f9;
-  padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ===== BOTTOM NAVIGATION ===== */
@@ -743,10 +764,14 @@ body {
 
 /* ===== INFO BOX ===== */
 .info-box {
-  border-radius: 1rem;
-  padding: 1rem;
-  border-width: 1px;
-  border-style: solid;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .info-box-emerald {
   background: #ecfdf5;
@@ -874,28 +899,30 @@ body {
 
 /* ===== TOGGLE SWITCH ===== */
 .toggle-switch {
-  width: 2.75rem;
-  height: 1.5rem;
-  background: #cbd5e1;
-  border-radius: 1rem;
+  width: 3rem;
+  height: 1.75rem;
+  background-color: var(--ios-gray-300);
+  border-radius: 9999px;
   position: relative;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  padding: 0;
 }
 .toggle-switch.active {
-  background: #10b981;
+  background-color: var(--ios-green);
 }
 .toggle-switch::after {
   content: "";
   position: absolute;
-  width: 1.125rem;
-  height: 1.125rem;
-  background: white;
-  border-radius: 50%;
-  top: 0.1875rem;
-  left: 0.1875rem;
-  transition: transform 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: white;
+  border-radius: 9999px;
+  top: 0.125rem;
+  left: 0.125rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .toggle-switch.active::after {
   transform: translateX(1.25rem);
@@ -1253,4 +1280,14 @@ body {
   outline: none;
   border-color: var(--ios-blue);
   box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.ios-toggle {
+  background-color: var(--ios-gray-300);
+}
+.ios-toggle.active {
+  background-color: var(--ios-green);
+}
+.ios-toggle.active .ios-toggle-thumb {
+  transform: translateX(1.25rem);
 }
