@@ -7,3 +7,7 @@
 **Vulnerability:** The `/api/auth/register` endpoint allowed mass assignment by accepting the `role` field directly from the user request payload. A malicious actor could easily provide `"role": "admin"` during registration and grant themselves immediate administrative access.
 **Learning:** Destructuring request bodies without explicit field picking/omitting can lead to privilege escalation if sensitive columns (like role, permissions, status) are included in the SQL `INSERT` or `UPDATE` statements.
 **Prevention:** Never blindly pass user-controlled input into database models. Always filter or strictly define which fields can be updated by the client. For roles and status, hardcode defaults during initial insertion.
+## 2024-05-24 - [CRITICAL] Fix hardcoded database credentials
+**Vulnerability:** The application fell back to hardcoded database credentials (e.g. `postgres`, `postgress`) if environment variables were not set.
+**Learning:** Hardcoded credentials are a major security risk and should never be used, even as fallback defaults.
+**Prevention:** Implement a fail-fast pattern that immediately aborts startup (`process.exit(1)`) if required configuration like database credentials are not present. Ensure an `.env.example` file is provided to guide developers without providing sensitive default values.
