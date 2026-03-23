@@ -244,18 +244,23 @@ app.delete('/api/keluarga/:id', async (req, res) => {
 app.get('/api/keluarga/:keluarga_id/anggota', async (req, res) => {
     try {
         const { rows } = await pool.query(
-            `SELECT *, 
-             EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir))  AS umur_tahun,
-             EXTRACT(MONTH FROM AGE(CURRENT_DATE, tanggal_lahir)) AS umur_bulan_mod,
-             (EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir)) * 12 + 
-              EXTRACT(MONTH FROM AGE(CURRENT_DATE, tanggal_lahir))) AS umur_bulan_total,
+            `-- ⚡ Bolt Optimization: Compute AGE() exactly once inside a subquery, then reference its aliases
+             -- in the outer query to prevent duplicate computations across SELECT and CASE clauses.
+             SELECT *,
+             (umur_tahun * 12 + umur_bulan_mod) AS umur_bulan_total,
              CASE
-               WHEN (EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir)) * 12 + EXTRACT(MONTH FROM AGE(CURRENT_DATE, tanggal_lahir))) BETWEEN 0 AND 59 THEN 'balita'
-               WHEN jenis_kelamin = 'P' AND EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir)) BETWEEN 15 AND 49 THEN 'pus'
-               WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir)) >= 60 THEN 'lansia'
+               WHEN (umur_tahun * 12 + umur_bulan_mod) BETWEEN 0 AND 59 THEN 'balita'
+               WHEN jenis_kelamin = 'P' AND umur_tahun BETWEEN 15 AND 49 THEN 'pus'
+               WHEN umur_tahun >= 60 THEN 'lansia'
                ELSE 'umum'
              END AS kategori_posyandu
-             FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga`,
+             FROM (
+               SELECT *,
+               EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir))  AS umur_tahun,
+               EXTRACT(MONTH FROM AGE(CURRENT_DATE, tanggal_lahir)) AS umur_bulan_mod
+               FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL
+             ) subquery
+             ORDER BY status_keluarga`,
             [req.params.keluarga_id]
         );
         ok(res, rows);
