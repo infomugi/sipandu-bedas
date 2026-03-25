@@ -243,10 +243,10 @@ app.delete('/api/keluarga/:id', async (req, res) => {
 // GET /api/keluarga/:keluarga_id/anggota
 app.get('/api/keluarga/:keluarga_id/anggota', async (req, res) => {
     try {
+        // ⚡ Bolt Optimization: Compute expensive AGE() and EXTRACT() functions exactly once
+        // inside a subquery, then reference their aliases in the outer query to prevent duplicate computations.
         const { rows } = await pool.query(
-            `-- ⚡ Bolt Optimization: Computed expensive AGE() and EXTRACT() functions once in a subquery
-             -- to prevent redundant calculations across SELECT and CASE clauses.
-             SELECT *,
+            `SELECT *,
              (umur_tahun * 12 + umur_bulan_mod) AS umur_bulan_total,
              CASE
                WHEN (umur_tahun * 12 + umur_bulan_mod) BETWEEN 0 AND 59 THEN 'balita'
@@ -255,12 +255,12 @@ app.get('/api/keluarga/:keluarga_id/anggota', async (req, res) => {
                ELSE 'umum'
              END AS kategori_posyandu
              FROM (
-               SELECT *,
-               EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir)) AS umur_tahun,
-               EXTRACT(MONTH FROM AGE(CURRENT_DATE, tanggal_lahir)) AS umur_bulan_mod
-               FROM anggota_keluarga
-               WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL
-             ) ak
+                 SELECT *,
+                 EXTRACT(YEAR FROM AGE(CURRENT_DATE, tanggal_lahir))  AS umur_tahun,
+                 EXTRACT(MONTH FROM AGE(CURRENT_DATE, tanggal_lahir)) AS umur_bulan_mod
+                 FROM anggota_keluarga
+                 WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL
+             ) sub
              ORDER BY status_keluarga`,
             [req.params.keluarga_id]
         );

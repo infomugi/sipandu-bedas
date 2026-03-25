@@ -1254,3 +1254,222 @@ body {
   border-color: var(--ios-blue);
   box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
 }
+
+/* ===== NEW iOS COMPONENTS (ADDED FROM PROMPT) ===== */
+
+/* List Items */
+.ios-list-container {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.ios-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+.ios-list-item:last-child {
+  border-bottom: none;
+}
+.ios-list-item:hover {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+/* Loading States */
+.ios-spinner {
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+}
+.ios-spinner-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--ios-gray-200);
+}
+.ios-spinner-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--ios-blue);
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Form Elements */
+.ios-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  border: 1px solid var(--ios-gray-200);
+  outline: none;
+  transition: all 0.2s ease;
+}
+.ios-input:focus {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+/* iOS Alert/Modal base classes are partially there, adding specific */
+.ios-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+.ios-alert-card {
+  background-color: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 24rem;
+  width: 100%;
+  padding: 1.5rem;
+  animation: iosFadeIn 0.2s ease-out;
+}
+
+
+/* Additional base iOS 17 components missing from previous edits */
+.ios-nav-bar {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.ios-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ios-btn-primary {
+  background-color: var(--ios-blue);
+  color: white;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px -3px rgba(0, 122, 255, 0.3);
+  transition: all 0.2s;
+  text-align: center;
+  display: block;
+}
+.ios-btn-primary:hover {
+  background-color: #0051B3;
+}
+.ios-btn-primary:active {
+  background-color: #004099;
+  transform: scale(0.95);
+}
+
+.ios-btn-secondary {
+  background-color: transparent;
+  color: var(--ios-blue);
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  transition: all 0.2s;
+  text-align: center;
+  display: block;
+}
+.ios-btn-secondary:hover {
+  background-color: rgba(0, 122, 255, 0.05);
+}
+.ios-btn-secondary:active {
+  background-color: rgba(0, 122, 255, 0.1);
+}
+
+.ios-btn-destructive {
+  background-color: rgba(255, 59, 48, 0.1);
+  color: var(--ios-red);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  transition: all 0.2s;
+  text-align: center;
+  display: block;
+}
+.ios-btn-destructive:hover {
+  background-color: rgba(255, 59, 48, 0.2);
+}
+.ios-btn-destructive:active {
+  background-color: rgba(255, 59, 48, 0.3);
+}
+
+.ios-segmented-control {
+  background: var(--ios-gray-100);
+  padding: 4px;
+  border-radius: 12px;
+  display: inline-flex;
+}
+.ios-segment-btn {
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--ios-gray-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+.ios-segment-btn.active {
+  background: white;
+  color: var(--ios-gray-900);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.ios-segment-btn:not(.active):hover {
+  color: var(--ios-gray-900);
+}
+
+.ios-slider {
+  width: 100%;
+  height: 0.375rem;
+  background-color: var(--ios-gray-200);
+  border-radius: 9999px;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.ios-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--ios-gray-200);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ios-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
