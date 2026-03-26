@@ -16,65 +16,7 @@
         body {
             background-color: var(--ios-gray-100, #F2F2F7);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        .header-premium {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 4rem 1.5rem 1rem 1.5rem;
-            color: var(--ios-gray-900, #1C1C1E);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .pro-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .stat-badge {
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            text-align: left;
-            transition: transform 0.2s, background-color 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 100%;
-        }
-        .menu-btn:active {
-            transform: scale(0.97);
-            background-color: var(--ios-gray-100, #F2F2F7);
-        }
-        .menu-btn-icon {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.15rem;
-            flex-shrink: 0;
+            color: var(--ios-gray-900);
         }
         .view-content {
             background: transparent;
@@ -84,11 +26,11 @@
         }
     </style>
 </head>
-<body class="antialiased text-slate-800">
+<body class="antialiased">
 
 <div class="app-container">
 
-    <!-- Header Section (iOS Navigation Bar) -->
+    <!-- 6. iOS Navigation Bar -->
     <nav class="ios-nav-bar">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -109,13 +51,13 @@
         </div>
     </nav>
 
-    <div class="view-content mt-4">
-        <!-- iOS Info Banner -->
-        <section class="px-5 mb-6">
-            <div class="ios-card flex items-center justify-between p-4">
+    <div class="view-content mt-4 space-y-6">
+        <!-- 1. iOS Card -->
+        <section class="px-5">
+            <div class="ios-card flex items-center justify-between">
                 <div>
                     <p class="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mb-1">Posyandu RW 11</p>
-                    <p class="text-sm font-semibold text-gray-900 leading-tight">Kelurahan Rancamanyar</p>
+                    <p class="text-sm font-semibold leading-tight">Kelurahan Rancamanyar</p>
                 </div>
                 <div class="text-right">
                     <p class="text-[10px] text-gray-500 font-medium mb-1">Status Kader</p>
@@ -124,8 +66,8 @@
             </div>
         </section>
 
-        <!-- Banner Section -->
-        <section class="px-5 mb-6">
+        <!-- Banner Section (Using iOS Card base) -->
+        <section class="px-5">
             <div class="ios-card p-0 overflow-hidden relative aspect-[21/9]">
                 <img src="sipandu_bedas_dashboard_banner_mockup_1773292728208.png" alt="Banner" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -137,83 +79,70 @@
         </section>
 
         <!-- Stats Section -->
-        <section class="px-5 mb-6">
+        <section class="px-5">
             <div class="grid grid-cols-2 gap-4">
-                <div class="ios-card p-6 transition-transform hover:scale-[0.98]">
-                    <div class="w-12 h-12 rounded-full bg-[rgba(0,122,255,0.1)] flex items-center justify-center text-[var(--ios-blue)] mb-3">
+                <div class="ios-card transition-transform hover:scale-[0.98]">
+                    <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-[var(--ios-blue)] mb-3">
                         <i class="fa-solid fa-users text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-3xl font-bold text-gray-900 mb-1">42</p>
+                        <p class="text-3xl font-bold mb-1">42</p>
                         <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Keluarga</p>
                     </div>
                 </div>
-                <div class="ios-card p-6 transition-transform hover:scale-[0.98]">
-                    <div class="w-12 h-12 rounded-full bg-[rgba(52,199,89,0.1)] flex items-center justify-center text-[var(--ios-green)] mb-3">
+                <div class="ios-card transition-transform hover:scale-[0.98]">
+                    <div class="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center text-[var(--ios-green)] mb-3">
                         <i class="fa-solid fa-clipboard-check text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-3xl font-bold text-gray-900 mb-1">18</p>
+                        <p class="text-3xl font-bold mb-1">18</p>
                         <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Layanan</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Menu Grid (iOS List Items) -->
-        <section class="px-5 mb-8">
+        <!-- 9. iOS List Items -->
+        <section class="px-5">
             <div class="flex items-center justify-between mb-2 px-1">
                 <h3 class="text-[13px] font-semibold text-gray-500 uppercase tracking-wider">Layanan Utama</h3>
                 <span class="text-[13px] font-medium text-[var(--ios-blue)]">Lihat Semua</span>
             </div>
             <div class="ios-list-container">
-                <button onclick="location.href='pendaftaran.html'" class="w-full text-left ios-list-item cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
+                <button onclick="location.href='pendaftaran.html'" class="ios-list-item focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-[var(--ios-green)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-user-plus"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 text-[15px]">Pendaftaran Keluarga</h4>
+                            <h4 class="font-medium text-[15px]">Pendaftaran Keluarga</h4>
                             <p class="text-[13px] text-gray-500">Input data warga & KK baru</p>
                         </div>
                     </div>
                     <span class="text-gray-400">›</span>
                 </button>
 
-                <button onclick="location.href='spm-menu.html'" class="w-full text-left ios-list-item cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
+                <button onclick="location.href='spm-menu.html'" class="ios-list-item focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-[var(--ios-blue)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-list-check"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 text-[15px]">6 Layanan SPM</h4>
+                            <h4 class="font-medium text-[15px]">6 Layanan SPM</h4>
                             <p class="text-[13px] text-gray-500">Pendidikan, Kesehatan, Sosial, dll</p>
                         </div>
                     </div>
                     <span class="text-gray-400">›</span>
                 </button>
 
-                <button onclick="location.href='verifikasi-desa.html'" class="w-full text-left ios-list-item cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
+                <button onclick="location.href='verifikasi-desa.html'" class="ios-list-item focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-[var(--ios-orange)] flex items-center justify-center text-white">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 text-[15px]">Verifikasi Data</h4>
+                            <h4 class="font-medium text-[15px]">Verifikasi Data</h4>
                             <p class="text-[13px] text-gray-500">Cek validasi data lapangan</p>
-                        </div>
-                    </div>
-                    <span class="text-gray-400">›</span>
-                </button>
-
-                <button onclick="location.href='laporan.html'" class="w-full text-left ios-list-item cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-inset">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-[var(--ios-red)] flex items-center justify-center text-white">
-                            <i class="fa-solid fa-chart-pie"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-gray-900 text-[15px]">Laporan & Statistik</h4>
-                            <p class="text-[13px] text-gray-500">Rekapitulasi pencapaian target</p>
                         </div>
                     </div>
                     <span class="text-gray-400">›</span>
@@ -221,40 +150,40 @@
             </div>
         </section>
 
-        <!-- iOS Interactive Components Demo Section -->
-        <section class="px-5 mb-8 space-y-4">
+        <!-- Demo iOS Components Section -->
+        <section class="px-5 space-y-4">
             <h3 class="text-[13px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Komponen Interaktif iOS</h3>
 
-            <!-- Segmented Control -->
-            <div class="ios-card p-4">
+            <!-- 5. Segmented Control -->
+            <div class="ios-card">
                 <p class="text-sm font-semibold mb-3">Tampilan Data</p>
-                <div class="ios-segmented-control w-full flex justify-between" id="data-segment">
-                    <button class="ios-segment-btn active flex-1" data-value="harian">Harian</button>
-                    <button class="ios-segment-btn flex-1" data-value="mingguan">Mingguan</button>
-                    <button class="ios-segment-btn flex-1" data-value="bulanan">Bulanan</button>
+                <div class="ios-segmented-control" id="data-segment">
+                    <button class="ios-segment-btn active" data-value="harian">Harian</button>
+                    <button class="ios-segment-btn" data-value="mingguan">Mingguan</button>
+                    <button class="ios-segment-btn" data-value="bulanan">Bulanan</button>
                 </div>
             </div>
 
-            <!-- Toggle Switch -->
-            <div class="ios-card p-4 flex items-center justify-between">
+            <!-- 2. Toggle Switch -->
+            <div class="ios-toggle-container ios-card">
                 <div>
-                    <p class="text-[15px] font-medium text-gray-900">Notifikasi Push</p>
-                    <p class="text-[13px] text-gray-500">Terima info pengajuan baru</p>
+                    <span class="text-[15px] font-medium block">Notifikasi Push</span>
+                    <span class="text-[13px] text-gray-500">Terima info pengajuan baru</span>
                 </div>
                 <button
                     id="notif-toggle"
                     role="switch"
                     aria-checked="true"
-                    class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-[var(--ios-green)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2"
+                    class="ios-toggle"
                 >
-                    <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-5"></span>
+                    <span class="ios-toggle-thumb"></span>
                 </button>
             </div>
 
-            <!-- Slider -->
-            <div class="ios-card p-4">
+            <!-- 4. Slider -->
+            <div class="ios-card">
                 <div class="flex justify-between text-sm text-gray-500 mb-2">
-                    <span class="font-medium text-gray-900">Target Harian</span>
+                    <span class="font-medium">Target Harian</span>
                     <span id="slider-val-text" class="font-medium text-[var(--ios-blue)]">50%</span>
                 </div>
                 <input
@@ -263,12 +192,31 @@
                     min="0"
                     max="100"
                     value="50"
-                    class="ios-slider w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2"
+                    class="ios-slider"
                 />
             </div>
 
-            <!-- Buttons -->
-            <div class="space-y-3">
+            <!-- 8. Form Elements (Input) -->
+            <div class="ios-card">
+                <div class="ios-input-container">
+                    <label class="ios-label">Cari Data</label>
+                    <input type="text" placeholder="Masukkan NIK atau Nama" class="ios-input" />
+                </div>
+            </div>
+
+            <!-- 10. Loading State -->
+            <div class="ios-card flex flex-col items-center justify-center p-8">
+                <p class="text-sm font-semibold mb-4">Memuat Data...</p>
+                <div class="ios-spinner-container">
+                    <div class="ios-spinner">
+                        <div class="ios-spinner-track"></div>
+                        <div class="ios-spinner-head"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Buttons -->
+            <div class="space-y-3 pb-8">
                 <button class="w-full ios-btn-primary">
                     Simpan Perubahan
                 </button>
@@ -308,9 +256,8 @@
 
 </div>
 
-
-<!-- iOS Modal Alert -->
-<div id="ios-alert" class="ios-alert-overlay hidden" aria-hidden="true" role="dialog" aria-modal="true">
+<!-- 7. iOS Alert/Modal -->
+<div id="ios-alert" class="ios-alert-overlay" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="ios-alert-card text-center">
         <h3 class="text-lg font-semibold mb-2">Hapus Data</h3>
         <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
@@ -327,50 +274,31 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Toggle Switch Logic
+    // 2. Toggle Switch Logic
     const toggleBtn = document.getElementById('notif-toggle');
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
             const isChecked = toggleBtn.getAttribute('aria-checked') === 'true';
-            // Toggle state
             toggleBtn.setAttribute('aria-checked', !isChecked);
-
-            // Visual changes
-            const thumb = toggleBtn.querySelector('span');
-            if (!isChecked) {
-                // Turning ON
-                toggleBtn.classList.remove('bg-gray-300');
-                toggleBtn.classList.add('bg-[var(--ios-green)]');
-                thumb.classList.remove('translate-x-0');
-                thumb.classList.add('translate-x-5');
-            } else {
-                // Turning OFF
-                toggleBtn.classList.remove('bg-[var(--ios-green)]');
-                toggleBtn.classList.add('bg-gray-300');
-                thumb.classList.remove('translate-x-5');
-                thumb.classList.add('translate-x-0');
-            }
 
             // Haptic simulation
             if (navigator.vibrate) navigator.vibrate(50);
         });
     }
 
-    // 2. Segmented Control Logic
+    // 5. Segmented Control Logic
     const segmentContainer = document.getElementById('data-segment');
     if (segmentContainer) {
         const buttons = segmentContainer.querySelectorAll('.ios-segment-btn');
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active from all
                 buttons.forEach(b => b.classList.remove('active'));
-                // Add active to clicked
                 btn.classList.add('active');
             });
         });
     }
 
-    // 3. Slider Logic
+    // 4. Slider Logic
     const slider = document.getElementById('target-slider');
     const sliderText = document.getElementById('slider-val-text');
     if (slider && sliderText) {
@@ -379,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Alert/Modal Logic
+    // 7. Alert/Modal Logic
     const btnShowAlert = document.getElementById('btn-show-alert');
     const alertModal = document.getElementById('ios-alert');
     const btnCancel = document.getElementById('btn-alert-cancel');
@@ -387,21 +315,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnShowAlert && alertModal) {
         btnShowAlert.addEventListener('click', () => {
-            alertModal.classList.remove('hidden');
+            alertModal.classList.add('open');
             alertModal.setAttribute('aria-hidden', 'false');
         });
     }
 
     const closeModal = () => {
         if (alertModal) {
-            alertModal.classList.add('hidden');
+            alertModal.classList.remove('open');
             alertModal.setAttribute('aria-hidden', 'true');
         }
     };
 
     if (btnCancel) btnCancel.addEventListener('click', closeModal);
     if (btnDelete) btnDelete.addEventListener('click', () => {
-        // Perform delete action here
         closeModal();
     });
 });
