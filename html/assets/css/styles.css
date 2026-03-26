@@ -1345,29 +1345,11 @@ body {
   padding: 1.5rem;
   animation: iosFadeIn 0.2s ease-out;
 }
-
-
-/* Additional base iOS 17 components missing from previous edits */
-.ios-nav-bar {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.ios-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 1.25rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+/* ===== FIXED IOS COMPONENTS ====== */
 
 .ios-btn-primary {
+  display: block;
+  text-align: center;
   background-color: var(--ios-blue);
   color: white;
   font-weight: 600;
@@ -1375,18 +1357,19 @@ body {
   border-radius: 9999px;
   box-shadow: 0 10px 15px -3px rgba(0, 122, 255, 0.3);
   transition: all 0.2s;
-  text-align: center;
-  display: block;
+  cursor: pointer;
 }
 .ios-btn-primary:hover {
-  background-color: #0051B3;
+  background-color: #0051B3; /* Match prompt spec */
 }
 .ios-btn-primary:active {
-  background-color: #004099;
+  background-color: #004099; /* Match prompt spec */
   transform: scale(0.95);
 }
 
 .ios-btn-secondary {
+  display: block;
+  text-align: center;
   background-color: transparent;
   color: var(--ios-blue);
   font-weight: 600;
@@ -1394,60 +1377,90 @@ body {
   border-radius: 9999px;
   border: 1px solid rgba(0, 122, 255, 0.3);
   transition: all 0.2s;
-  text-align: center;
-  display: block;
+  cursor: pointer;
 }
 .ios-btn-secondary:hover {
   background-color: rgba(0, 122, 255, 0.05);
 }
 .ios-btn-secondary:active {
   background-color: rgba(0, 122, 255, 0.1);
+  transform: scale(0.95);
 }
 
 .ios-btn-destructive {
+  display: block;
+  text-align: center;
   background-color: rgba(255, 59, 48, 0.1);
   color: var(--ios-red);
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   transition: all 0.2s;
-  text-align: center;
-  display: block;
+  cursor: pointer;
 }
 .ios-btn-destructive:hover {
   background-color: rgba(255, 59, 48, 0.2);
 }
 .ios-btn-destructive:active {
   background-color: rgba(255, 59, 48, 0.3);
+  transform: scale(0.95);
 }
 
-.ios-segmented-control {
-  background: var(--ios-gray-100);
-  padding: 4px;
-  border-radius: 12px;
-  display: inline-flex;
+/* ===== COMPLETE IOS 17 COMPONENT LIBRARY ===== */
+
+/* 1. iOS Cards & Containers */
+.ios-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
 }
-.ios-segment-btn {
-  padding: 8px 24px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  color: var(--ios-gray-600);
-  background: transparent;
-  border: none;
+
+/* 2. iOS Toggle Switch (UISwitch) */
+.ios-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 0.75rem;
+}
+.ios-toggle {
+  position: relative;
+  width: 3rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background-color: var(--ios-gray-300);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  text-align: center;
+  border: none;
+  outline: none;
 }
-.ios-segment-btn.active {
-  background: white;
-  color: var(--ios-gray-900);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+.ios-toggle[aria-checked="true"] {
+  background-color: var(--ios-green);
 }
-.ios-segment-btn:not(.active):hover {
-  color: var(--ios-gray-900);
+.ios-toggle-thumb {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ios-toggle[aria-checked="true"] .ios-toggle-thumb {
+  transform: translateX(1.25rem);
+}
+.ios-toggle:focus-visible {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--ios-blue);
 }
 
+/* 4. iOS Slider (UISlider) */
 .ios-slider {
   width: 100%;
   height: 0.375rem;
@@ -1456,8 +1469,8 @@ body {
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
+  outline: none;
 }
-
 .ios-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -1469,7 +1482,239 @@ body {
   border: 1px solid var(--ios-gray-200);
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .ios-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
+}
+
+/* 5. iOS Segmented Control */
+.ios-segmented-control {
+  background-color: var(--ios-gray-100);
+  padding: 4px;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  width: 100%;
+}
+.ios-segment-btn {
+  flex: 1;
+  padding: 8px 24px;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--ios-gray-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+.ios-segment-btn.active {
+  background-color: white;
+  color: var(--ios-gray-900);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.ios-segment-btn:not(.active):hover {
+  color: var(--ios-gray-900);
+}
+
+/* 6. iOS Navigation Bar */
+.ios-nav-bar {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* 7. iOS Alert/Modal */
+.ios-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.ios-alert-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ios-alert-card {
+  background-color: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 24rem;
+  width: 100%;
+  padding: 1.5rem;
+  transform: scale(0.95);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ios-alert-overlay.open .ios-alert-card {
+  transform: scale(1);
+}
+
+/* 8. iOS Form Elements */
+.ios-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ios-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ios-gray-700);
+  margin-left: 1rem;
+}
+.ios-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  border: 1px solid var(--ios-gray-200);
+  outline: none;
+  transition: all 0.2s ease;
+}
+.ios-input:focus {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+/* 9. iOS List Items */
+.ios-list-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--ios-gray-100);
+}
+.ios-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  cursor: pointer;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.ios-list-item:last-child {
+  border-bottom: none;
+}
+.ios-list-item:hover {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+.ios-list-item:active {
+  background-color: rgba(229, 231, 235, 0.5);
+}
+
+/* 10. iOS Loading States */
+.ios-spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.ios-spinner {
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+}
+.ios-spinner-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--ios-gray-200);
+}
+.ios-spinner-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--ios-blue);
+  border-top-color: transparent;
+  animation: iosSpin 1s linear infinite;
+}
+
+@keyframes iosSpin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ===== BUTTONS OVERRIDE ====== */
+
+.ios-btn-primary {
+  display: block;
+  text-align: center;
+  background-color: var(--ios-blue);
+  color: white;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px -3px rgba(0, 122, 255, 0.3);
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.ios-btn-primary:hover {
+  background-color: #0051B3;
+}
+.ios-btn-primary:active {
+  background-color: #004099;
+  transform: scale(0.95);
+}
+
+.ios-btn-secondary {
+  display: block;
+  text-align: center;
+  background-color: transparent;
+  color: var(--ios-blue);
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.ios-btn-secondary:hover {
+  background-color: rgba(0, 122, 255, 0.05);
+}
+.ios-btn-secondary:active {
+  background-color: rgba(0, 122, 255, 0.1);
+  transform: scale(0.95);
+}
+
+.ios-btn-destructive {
+  display: block;
+  text-align: center;
+  background-color: rgba(255, 59, 48, 0.1);
+  color: var(--ios-red);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.ios-btn-destructive:hover {
+  background-color: rgba(255, 59, 48, 0.2);
+}
+.ios-btn-destructive:active {
+  background-color: rgba(255, 59, 48, 0.3);
+  transform: scale(0.95);
 }
