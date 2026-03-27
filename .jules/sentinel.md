@@ -7,3 +7,8 @@
 **Vulnerability:** The `/api/auth/register` endpoint allowed mass assignment by accepting the `role` field directly from the user request payload. A malicious actor could easily provide `"role": "admin"` during registration and grant themselves immediate administrative access.
 **Learning:** Destructuring request bodies without explicit field picking/omitting can lead to privilege escalation if sensitive columns (like role, permissions, status) are included in the SQL `INSERT` or `UPDATE` statements.
 **Prevention:** Never blindly pass user-controlled input into database models. Always filter or strictly define which fields can be updated by the client. For roles and status, hardcode defaults during initial insertion.
+
+## 2024-05-18 - Missing Authorization on Admin View Endpoint
+**Vulnerability:** The `/api/view/keluarga-lengkap` endpoint, intended for administrators as indicated by the "VIEWS & REKAP (ADMIN)" comment block, was missing the `isAdmin` middleware. This allowed any user (or unauthenticated user depending on other route configurations) to access comprehensive family data.
+**Learning:** Placing endpoints under a comment block labeled "ADMIN" does not enforce authorization. Authorization logic (`isAdmin` middleware) must be explicitly applied to every single sensitive endpoint definition.
+**Prevention:** Always verify that every administrative endpoint explicitly includes the necessary authorization middleware in its route definition. Automated route scanning or testing can help identify endpoints missing standard middlewares.
