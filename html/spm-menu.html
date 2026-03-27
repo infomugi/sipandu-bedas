@@ -17,95 +17,98 @@
 
 <div class="app-container">
 
-    <!-- Header Section -->
-    <header class="header-premium-nav">
-        <div class="flex items-center gap-3">
-            <button onclick="history.back()" class="btn-back-light">
-                <i class="fa-solid fa-chevron-left text-white"></i>
-            </button>
-            <div>
-                <h1 class="text-sm font-bold tracking-tight text-white">6 Standar Pelayanan Minimal</h1>
-                <p class="text-[10px] text-emerald-400 font-bold opacity-80 uppercase tracking-widest">Pilih Jenis Layanan</p>
+    <!-- Header Section (iOS Navigation Bar) -->
+    <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <button aria-label="Back" onclick="history.back()" class="p-2 -ml-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors">
+                    <i class="fa-solid fa-chevron-left text-[#007AFF] text-lg"></i>
+                </button>
+                <div class="flex flex-col items-center">
+                    <h1 class="text-base font-semibold text-gray-900 leading-tight">Layanan SPM</h1>
+                    <p class="text-[10px] text-gray-500 font-medium">Pilih Jenis Layanan</p>
+                </div>
+                <div class="w-8"></div> <!-- Spacer for center alignment -->
             </div>
         </div>
+    </nav>
 
-        <div class="info-pill">
-            <div class="w-10 h-10 rounded-full border-2 border-emerald-500/30 p-0.5">
+    <div class="view-content px-5 pt-6 pb-32">
+
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-4 flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full border-2 border-[#007AFF]/30 p-0.5 flex-shrink-0">
                 <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-full h-full object-cover rounded-full">
             </div>
             <div>
-                <p class="text-[10px] text-white/40 font-bold uppercase tracking-wider">Keluarga Target</p>
-                <p class="text-xs font-bold text-white">Atang Oktaviana</p>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Keluarga Target</p>
+                <p class="text-sm font-bold text-gray-900">Atang Oktaviana</p>
             </div>
         </div>
-    </header>
 
-    <div class="view-content px-5 pt-8 pb-32">
-        
         <div class="grid grid-cols-1 gap-4">
             <!-- SPM Pendidikan -->
-            <button onclick="location.href='spm-pendidikan.html'" class="pro-card">
-                <div class="spm-icon-box bg-emerald-50 text-emerald-600">
+            <button onclick="location.href='spm-pendidikan.html'" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-5 flex items-center gap-4 text-left transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 bg-emerald-50 text-emerald-600 transition-transform">
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800">Pendidikan</h3>
-                    <p class="text-[10px] text-slate-400 font-medium leading-relaxed mt-0.5">Layanan bantuan pendidikan & perlengkapan sekolah</p>
+                    <h3 class="text-[15px] font-semibold text-gray-900">Pendidikan</h3>
+                    <p class="text-[12px] text-gray-500 mt-0.5 leading-snug">Layanan bantuan pendidikan & perlengkapan sekolah</p>
                 </div>
             </button>
 
             <!-- SPM Kesehatan -->
-            <button onclick="location.href='spm-kesehatan.html'" class="pro-card">
-                <div class="spm-icon-box bg-rose-50 text-rose-600">
+            <button onclick="location.href='spm-kesehatan.html'" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-5 flex items-center gap-4 text-left transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 bg-rose-50 text-rose-600 transition-transform">
                     <i class="fa-solid fa-stethoscope"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800">Kesehatan</h3>
-                    <p class="text-[10px] text-slate-400 font-medium leading-relaxed mt-0.5">Layanan kesehatan dasar bagi keluarga tidak mampu</p>
+                    <h3 class="text-[15px] font-semibold text-gray-900">Kesehatan</h3>
+                    <p class="text-[12px] text-gray-500 mt-0.5 leading-snug">Layanan kesehatan dasar bagi keluarga tidak mampu</p>
                 </div>
             </button>
 
             <!-- SPM Pekerjaan Umum -->
-            <button onclick="location.href='spm-pu.html'" class="pro-card">
-                <div class="spm-icon-box bg-blue-50 text-blue-600">
+            <button onclick="location.href='spm-pu.html'" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-5 flex items-center gap-4 text-left transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 bg-blue-50 text-blue-600 transition-transform">
                     <i class="fa-solid fa-faucet-drip"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800">Pekerjaan Umum</h3>
-                    <p class="text-[10px] text-slate-400 font-medium leading-relaxed mt-0.5">Akses air minum & pengolahan air limbah domestik</p>
+                    <h3 class="text-[15px] font-semibold text-gray-900">Pekerjaan Umum</h3>
+                    <p class="text-[12px] text-gray-500 mt-0.5 leading-snug">Akses air minum & pengolahan air limbah domestik</p>
                 </div>
             </button>
 
             <!-- SPM Perumahan -->
-            <button onclick="location.href='spm-perumahan.html'" class="pro-card">
-                <div class="spm-icon-box bg-amber-50 text-amber-600">
+            <button onclick="location.href='spm-perumahan.html'" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-5 flex items-center gap-4 text-left transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 bg-amber-50 text-amber-600 transition-transform">
                     <i class="fa-solid fa-house-chimney-crack"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800">Perumahan Rakyat</h3>
-                    <p class="text-[10px] text-slate-400 font-medium leading-relaxed mt-0.5">Bantuan renovasi rumah tidak layak huni (Rutilahu)</p>
+                    <h3 class="text-[15px] font-semibold text-gray-900">Perumahan Rakyat</h3>
+                    <p class="text-[12px] text-gray-500 mt-0.5 leading-snug">Bantuan renovasi rumah tidak layak huni (Rutilahu)</p>
                 </div>
             </button>
 
             <!-- SPM Trantibumlinmas -->
-            <button onclick="location.href='spm-trantibum.html'" class="pro-card">
-                <div class="spm-icon-box bg-slate-50 text-slate-600">
+            <button onclick="location.href='spm-trantibum.html'" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-5 flex items-center gap-4 text-left transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 bg-slate-50 text-slate-600 transition-transform">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800">Trantibumlinmas</h3>
-                    <p class="text-[10px] text-slate-400 font-medium leading-relaxed mt-0.5">Perlindungan masyarakat dari gangguan ketertiban</p>
+                    <h3 class="text-[15px] font-semibold text-gray-900">Trantibumlinmas</h3>
+                    <p class="text-[12px] text-gray-500 mt-0.5 leading-snug">Perlindungan masyarakat dari gangguan ketertiban</p>
                 </div>
             </button>
 
             <!-- SPM Sosial -->
-            <button onclick="location.href='spm-sosial.html'" class="pro-card">
-                <div class="spm-icon-box bg-purple-50 text-purple-600">
+            <button onclick="location.href='spm-sosial.html'" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-5 flex items-center gap-4 text-left transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:ring-offset-2">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 bg-purple-50 text-purple-600 transition-transform">
                     <i class="fa-solid fa-hands-holding-child"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-800">Sosial</h3>
-                    <p class="text-[10px] text-slate-400 font-medium leading-relaxed mt-0.5">Bantuan bagi disabilitas, lansia, & anak terlantar</p>
+                    <h3 class="text-[15px] font-semibold text-gray-900">Sosial</h3>
+                    <p class="text-[12px] text-gray-500 mt-0.5 leading-snug">Bantuan bagi disabilitas, lansia, & anak terlantar</p>
                 </div>
             </button>
         </div>
