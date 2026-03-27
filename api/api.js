@@ -17,17 +17,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Database Connection ──────────────────────────────────────
+// 🛡️ Sentinel: Implement fail-fast security pattern for DB connectivity
+// Required environment variables must be present to prevent insecure defaults.
+const requiredEnvVars = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+    console.error(`🚨 FATAL ERROR: Missing required database environment variables: ${missingEnvVars.join(', ')}`);
+    process.exit(1);
+}
+
 const pool = new Pool({
-    host:     process.env.DB_HOST     || 'localhost',
-    port:     process.env.DB_PORT     || 5433,
-    user:     process.env.DB_USER     || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgress',
-    database: process.env.DB_NAME     || 'dpmd_sipandu_bedas',
+    host:     process.env.DB_HOST,
+    port:     process.env.DB_PORT,
+    user:     process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 pool.connect()
     .then(c => { console.log('✅ Koneksi PostgreSQL berhasil'); c.release(); })
-    .catch(e => console.error('❌ Koneksi DB gagal:', e.message));
+    .catch(e => {
+        console.error('❌ Koneksi DB gagal:', e.message);
+        process.exit(1);
+    });
 
 // ─── Helper ───────────────────────────────────────────────────
 const ok  = (res, data, code = 200) => res.status(code).json({ success: true,  data });
