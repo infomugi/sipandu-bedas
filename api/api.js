@@ -158,15 +158,16 @@ app.get('/api/dashboard', async (req, res) => {
 app.get('/api/keluarga', async (req, res) => {
     try {
         const { kader_id, search } = req.query;
-        // ⚡ Bolt Optimization: Replaced multiple LEFT JOINs with correlated subqueries
-        // to prevent Cartesian product explosion (M members * V visits per family).
-        // This reduces time complexity from O(N * M * V) to O(N) and eliminates the need for GROUP BY.
+        // ⚡ Bolt Optimization: Replaced correlated subqueries in the SELECT clause with LEFT JOIN LATERAL
+        // to allow better query planner optimization while preventing Cartesian product explosions
+        // and eliminating the need for GROUP BY.
         let query = `
             SELECT k.*, a.nama_lengkap AS nama_kepala_keluarga, a.nik AS nik_kepala_keluarga,
-                   (SELECT COUNT(id) FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL) AS jumlah_anggota,
-                   (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id = k.id AND deleted_at IS NULL) AS kunjungan_terakhir
+                   ak_count.jumlah_anggota, kp_max.kunjungan_terakhir
             FROM keluarga k
             LEFT JOIN anggota_keluarga a  ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga' AND a.deleted_at IS NULL
+            LEFT JOIN LATERAL (SELECT COUNT(id) AS jumlah_anggota FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL) ak_count ON true
+            LEFT JOIN LATERAL (SELECT MAX(tgl_kunjungan) AS kunjungan_terakhir FROM kunjungan_posyandu WHERE keluarga_id = k.id AND deleted_at IS NULL) kp_max ON true
             WHERE k.is_aktif = 1 AND k.deleted_at IS NULL`;
         const params = [];
         if (kader_id) { params.push(kader_id); query += ` AND k.kader_id = $${params.length}`; }
