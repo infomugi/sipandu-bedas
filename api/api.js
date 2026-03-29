@@ -163,10 +163,15 @@ app.get('/api/keluarga', async (req, res) => {
         // This reduces time complexity from O(N * M * V) to O(N) and eliminates the need for GROUP BY.
         let query = `
             SELECT k.*, a.nama_lengkap AS nama_kepala_keluarga, a.nik AS nik_kepala_keluarga,
-                   (SELECT COUNT(id) FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL) AS jumlah_anggota,
-                   (SELECT MAX(tgl_kunjungan) FROM kunjungan_posyandu WHERE keluarga_id = k.id AND deleted_at IS NULL) AS kunjungan_terakhir
+                   ak.jumlah_anggota, kp.kunjungan_terakhir
             FROM keluarga k
             LEFT JOIN anggota_keluarga a  ON a.keluarga_id = k.id AND a.status_keluarga = 'kepala_keluarga' AND a.deleted_at IS NULL
+            LEFT JOIN LATERAL (
+                SELECT COUNT(id) AS jumlah_anggota FROM anggota_keluarga WHERE keluarga_id = k.id AND deleted_at IS NULL
+            ) ak ON true
+            LEFT JOIN LATERAL (
+                SELECT MAX(tgl_kunjungan) AS kunjungan_terakhir FROM kunjungan_posyandu WHERE keluarga_id = k.id AND deleted_at IS NULL
+            ) kp ON true
             WHERE k.is_aktif = 1 AND k.deleted_at IS NULL`;
         const params = [];
         if (kader_id) { params.push(kader_id); query += ` AND k.kader_id = $${params.length}`; }
