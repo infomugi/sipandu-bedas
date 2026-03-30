@@ -1153,23 +1153,30 @@ app.get('/api/laporan/gizi', async (req, res) => {
         const t = tahun || now.getFullYear();
         const p = kader_id ? [b, t, kader_id] : [b, t];
         const { rows } = await pool.query(
-            `SELECT a.nama_lengkap,
-             (EXTRACT(YEAR FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))*12 +
-              EXTRACT(MONTH FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))) AS umur_bulan,
-             sk.berat_badan, sk.tinggi_badan, sk.status_kms, sk.tgl_pelayanan, k.rt, k.rw,
-             CASE sk.status_kms
+            `-- ⚡ Bolt Optimization: Compute expensive AGE() function exactly once inside a CTE
+             -- and reference its alias to avoid duplicate computations during EXTRACT.
+             WITH raw_data AS (
+                 SELECT a.nama_lengkap,
+                 AGE(sk.tgl_pelayanan, a.tanggal_lahir) AS raw_age,
+                 sk.berat_badan, sk.tinggi_badan, sk.status_kms, sk.tgl_pelayanan, k.rt, k.rw
+                 FROM spm_kesehatan sk
+                 JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
+                 JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
+                 WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
+                 AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
+                 AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
+                 ${kader_id ? 'AND sk.kader_id=$3' : ''}
+             )
+             SELECT nama_lengkap,
+             (EXTRACT(YEAR FROM raw_age)*12 + EXTRACT(MONTH FROM raw_age)) AS umur_bulan,
+             berat_badan, tinggi_badan, status_kms, tgl_pelayanan, rt, rw,
+             CASE status_kms
                WHEN 'merah'  THEN 'GIZI BURUK - Rujuk Puskesmas Segera'
                WHEN 'kuning' THEN 'BGM - Perlu PMT Pemulihan'
                WHEN 'hijau'  THEN 'Normal'
              END AS rekomendasi
-             FROM spm_kesehatan sk
-             JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
-             JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
-             WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
-             AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
-             AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
-             ${kader_id ? 'AND sk.kader_id=$3' : ''}
-             ORDER BY sk.status_kms, a.nama_lengkap`, p
+             FROM raw_data
+             ORDER BY status_kms, nama_lengkap`, p
         );
         ok(res, rows);
     } catch (e) { err(res, e.message); }
@@ -1361,20 +1368,24 @@ app.put('/api/users/:id/toggle-active', isAdmin, async (req, res) => {
 // ============================================================
 // START SERVER
 // ============================================================
-app.listen(PORT, () => {
-    console.log(`🚀 Server Sipandu Bedas berjalan di http://localhost:${PORT}`);
-    console.log('📌 Endpoint tersedia:');
-    console.log('   AUTH      → POST /api/auth/login|register|forgot-password');
-    console.log('   DASHBOARD → GET  /api/dashboard');
-    console.log('   KELUARGA  → CRUD /api/keluarga');
-    console.log('   ANGGOTA   → CRUD /api/anggota');
-    console.log('   KUNJUNGAN → CRUD /api/kunjungan');
-    console.log('   SPM       → CRUD /api/spm/{kesehatan|pendidikan|perumahan|pu|sosial|trantibum}');
-    console.log('   PENGAJUAN → CRUD /api/pengajuan');
-    console.log('   LAPORAN   → GET  /api/laporan/{dashboard|gizi|bumil-kek}');
-    console.log('   PROFIL    → GET/PUT /api/profil/:id');
-    console.log('   ASSESMENT → GET/POST /api/assesment');
-    console.log('   PESAN     → GET/POST /api/pesan');
-    console.log('   NOTIFIKASI→ GET/PUT /api/notifikasi');
-    console.log('   VIEWS     → GET  /api/view/keluarga-lengkap');
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server Sipandu Bedas berjalan di http://localhost:${PORT}`);
+        console.log('📌 Endpoint tersedia:');
+        console.log('   AUTH      → POST /api/auth/login|register|forgot-password');
+        console.log('   DASHBOARD → GET  /api/dashboard');
+        console.log('   KELUARGA  → CRUD /api/keluarga');
+        console.log('   ANGGOTA   → CRUD /api/anggota');
+        console.log('   KUNJUNGAN → CRUD /api/kunjungan');
+        console.log('   SPM       → CRUD /api/spm/{kesehatan|pendidikan|perumahan|pu|sosial|trantibum}');
+        console.log('   PENGAJUAN → CRUD /api/pengajuan');
+        console.log('   LAPORAN   → GET  /api/laporan/{dashboard|gizi|bumil-kek}');
+        console.log('   PROFIL    → GET/PUT /api/profil/:id');
+        console.log('   ASSESMENT → GET/POST /api/assesment');
+        console.log('   PESAN     → GET/POST /api/pesan');
+        console.log('   NOTIFIKASI→ GET/PUT /api/notifikasi');
+        console.log('   VIEWS     → GET  /api/view/keluarga-lengkap');
+    });
+}
+
+module.exports = { app, pool };
