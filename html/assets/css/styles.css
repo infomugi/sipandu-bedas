@@ -1473,3 +1473,4 @@ body {
 .ios-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
+/* iOS 17 styles included for review */

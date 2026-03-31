@@ -94,7 +94,7 @@
 
     <!-- ==================== SCREEN: DASHBOARD ==================== -->
     <div id="screen-dashboard" class="view-screen pb-24">
-        <header class="px-6 pt-12 pb-4 flex justify-between items-center bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50">
+        <header class="px-6 pt-12 pb-4 flex justify-between items-center ios-nav-bar">
             <div class="flex items-center gap-3">
                 <img src="https://i.pravatar.cc/150?img=47" alt="Profile" class="w-10 h-10 rounded-full border-2 border-[var(--ios-green)] object-cover">
                 <div>
@@ -165,7 +165,7 @@
 
     <!-- ==================== SCREEN: MENU 6 SPM ==================== -->
     <div id="screen-spm-menu" class="view-screen view-hidden bg-slate-50">
-        <header class="bg-white/90 backdrop-blur-xl pt-12 pb-4 px-5 flex items-center gap-4 sticky top-0 z-50 border-b border-gray-200/50">
+        <header class="ios-nav-bar pt-12 pb-4 px-5 flex items-center gap-4">
             <button onclick="navTo('dashboard', true)" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
@@ -245,7 +245,7 @@
             <label class="form-label">3. Surat Pernyataan Tidak Mampu (RT)</label>
             <div class="upload-area"><i class="fa-solid fa-file-signature text-blue-400 text-xl mb-1"></i><p class="text-xs font-bold text-slate-600">Ambil Foto / Pilih File</p></div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="ios-btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-paper-plane"></i> Ajukan ke Pemerintah Desa
             </button>
         </main>
@@ -285,7 +285,7 @@
                 <option>Perlu Kunjungan Rumah (Pustu)</option>
             </select>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="ios-btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-save"></i> Simpan Rekapitulasi
             </button>
         </main>
@@ -317,7 +317,7 @@
             <label class="form-label">1. Surat Permohonan Kepala Dusun/RT</label>
             <div class="upload-area"><i class="fa-solid fa-envelope-open-text text-orange-400 text-xl mb-1"></i><p class="text-xs font-bold text-slate-600">Ambil Foto / Pilih File</p></div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="ios-btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-map-location-dot"></i> Ajukan Kunjungan Lapangan
             </button>
         </main>
@@ -367,7 +367,7 @@
                 <div class="upload-area py-4"><i class="fa-solid fa-camera text-slate-400 mb-1"></i><p class="text-[9px] font-bold">Tampak Belakang</p></div>
             </div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="ios-btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-paper-plane"></i> Ajukan ke Pemerintah Desa
             </button>
         </main>
@@ -412,9 +412,9 @@
                     role="switch"
                     id="anonimToggleBtn"
                     aria-checked="false"
-                    class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-gray-300"
+                    class="ios-toggle bg-[var(--ios-gray-300)]"
                 >
-                    <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-0" id="anonimToggleThumb"></span>
+                    <span class="ios-toggle-thumb translate-x-0" id="anonimToggleThumb"></span>
                 </button>
                 <input type="checkbox" id="anonimToggle" class="hidden" />
             </div>
@@ -425,7 +425,7 @@
                 <div class="upload-area py-3 mt-2"><i class="fa-solid fa-id-card text-rose-400 mb-1"></i><p class="text-[10px] font-bold text-slate-600">Upload KTP Identitas</p></div>
             </div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="ios-btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-bullhorn"></i> Kirim Pengaduan Trantibum
             </button>
         </main>
@@ -464,7 +464,7 @@
             <label class="form-label">2. Surat Pernyataan Pemerintah Desa</label>
             <div class="upload-area py-3"><i class="fa-solid fa-file-contract text-pink-400 text-xl mb-1"></i><p class="text-[10px] text-slate-500">Keterangan tindak lanjut ke supra desa</p></div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="ios-btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-house-chimney-user"></i> Ajukan Rencana Tindak Lanjut
             </button>
         </main>
@@ -513,15 +513,15 @@
             anonimToggle.checked = newState;
 
             if(newState) {
-                anonimToggleBtn.classList.remove('bg-gray-300');
-                anonimToggleBtn.classList.add('bg-green-500');
+                anonimToggleBtn.classList.remove('bg-[var(--ios-gray-300)]');
+                anonimToggleBtn.classList.add('bg-[var(--ios-green)]');
                 anonimToggleThumb.classList.remove('translate-x-0');
                 anonimToggleThumb.classList.add('translate-x-5');
                 formIdentitas.style.opacity = '0.3';
                 formIdentitas.style.pointerEvents = 'none';
             } else {
-                anonimToggleBtn.classList.remove('bg-green-500');
-                anonimToggleBtn.classList.add('bg-gray-300');
+                anonimToggleBtn.classList.remove('bg-[var(--ios-green)]');
+                anonimToggleBtn.classList.add('bg-[var(--ios-gray-300)]');
                 anonimToggleThumb.classList.remove('translate-x-5');
                 anonimToggleThumb.classList.add('translate-x-0');
                 formIdentitas.style.opacity = '1';

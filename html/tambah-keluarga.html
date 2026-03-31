@@ -54,7 +54,7 @@
 <div class="app-container">
 
     <!-- iOS Navigation Bar -->
-    <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50">
+    <nav class="ios-nav-bar">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center space-x-4">
                 <button onclick="location.href='pendaftaran.html'" class="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors" aria-label="Kembali">
@@ -73,46 +73,46 @@
     <div class="view-content px-5 pt-6 pb-8 space-y-6">
         
         <!-- iOS Card Container for main form -->
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+        <div class="ios-card p-6 space-y-4">
             <div class="form-group" style="margin-top:0;">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Nomor Kartu Keluarga (KK)</label>
-                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan No. KK">
+                <input type="text" class="ios-input" placeholder="Masukkan No. KK">
             </div>
         </div>
 
         <!-- Section: Anggota Keluarga (iOS Card) -->
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+        <div class="ios-card p-6 space-y-4">
             <h3 class="font-semibold text-gray-900 border-b border-gray-100 pb-3 flex items-center">
                 <i class="fa-solid fa-user text-[var(--ios-blue)] mr-2"></i> Informasi Anggota Keluarga
             </h3>
             
             <div class="form-group" style="margin-top:0;">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">NIK</label>
-                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan NIK">
+                <input type="text" class="ios-input" placeholder="Masukkan NIK">
             </div>
             <div class="form-group">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Nama Lengkap</label>
-                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Masukkan nama lengkap">
+                <input type="text" class="ios-input" placeholder="Masukkan nama lengkap">
             </div>
             
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                 <div class="form-group">
                     <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Jenis Kelamin</label>
-                    <div class="bg-gray-100 p-1 rounded-xl inline-flex w-full" id="gender-segment">
-                        <button type="button" class="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all bg-white text-gray-900 shadow-sm" onclick="setGender('L')">L</button>
-                        <button type="button" class="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-500 hover:text-gray-900" onclick="setGender('P')">P</button>
+                    <div class="ios-segmented-control w-full" id="gender-segment">
+                        <button type="button" class="flex-1 ios-segment-btn active" onclick="setGender('L')">L</button>
+                        <button type="button" class="flex-1 ios-segment-btn" onclick="setGender('P')">P</button>
                         <input type="hidden" id="jenis_kelamin" name="jenis_kelamin" value="L">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Tanggal Lahir</label>
-                    <input type="date" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
+                    <input type="date" class="ios-input">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Status dalam Keluarga</label>
-                <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
+                <select class="ios-input">
                     <option>Kepala Keluarga</option>
                     <option>Istri</option>
                     <option>Anak</option>
@@ -122,14 +122,14 @@
         </div>
 
         <!-- Section: Data Sosial Ekonomi (iOS Card) -->
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+        <div class="ios-card p-6 space-y-4">
             <h3 class="font-semibold text-gray-900 border-b border-gray-100 pb-3 flex items-center">
                 <i class="fa-solid fa-chart-line text-[var(--ios-green)] mr-2"></i> Data Sosial Ekonomi
             </h3>
             
             <div class="form-group" style="margin-top:0;">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Status Kesejahteraan</label>
-                <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
+                <select class="ios-input">
                     <option>Pra-Sejahtera (Sangat Miskin)</option>
                     <option>Keluarga Sejahtera I (Miskin)</option>
                     <option>Keluarga Sejahtera II (Menengah)</option>
@@ -138,7 +138,7 @@
             </div>
             <div class="form-group">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Status Asuransi Kesehatan</label>
-                <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all">
+                <select class="ios-input">
                     <option>BPJS Kesehatan (PBI / Gratis)</option>
                     <option>BPJS Mandiri</option>
                     <option>Asuransi Swasta</option>
@@ -147,7 +147,7 @@
             </div>
             <div class="form-group">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Pekerjaan</label>
-                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" placeholder="Cth: Buruh Tani">
+                <input type="text" class="ios-input" placeholder="Cth: Buruh Tani">
             </div>
 
             <div class="form-group mt-4">
@@ -164,18 +164,7 @@
                         value="50"
                         id="pendapatan-slider"
                         oninput="updatePendapatan()"
-                        class="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer
-                            [&::-webkit-slider-thumb]:appearance-none
-                            [&::-webkit-slider-thumb]:w-6
-                            [&::-webkit-slider-thumb]:h-6
-                            [&::-webkit-slider-thumb]:rounded-full
-                            [&::-webkit-slider-thumb]:bg-white
-                            [&::-webkit-slider-thumb]:shadow-lg
-                            [&::-webkit-slider-thumb]:shadow-black/20
-                            [&::-webkit-slider-thumb]:border
-                            [&::-webkit-slider-thumb]:border-gray-200
-                            [&::-webkit-slider-thumb]:hover:scale-110
-                            [&::-webkit-slider-thumb]:transition-transform"
+                        class="ios-slider"
                     />
                     <div class="text-center font-semibold text-gray-900" id="pendapatan-value">
                         Rp 1 Juta - Rp 3 Juta
@@ -195,42 +184,42 @@
                         aria-checked="false"
                         id="bantuan-toggle"
                         onclick="toggleBantuan()"
-                        class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-gray-300"
+                        class="ios-toggle bg-[var(--ios-gray-300)]"
                     >
-                        <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-0" id="bantuan-toggle-thumb"></span>
+                        <span class="ios-toggle-thumb translate-x-0" id="bantuan-toggle-thumb"></span>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Section: Alamat (iOS Card) -->
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
+        <div class="ios-card p-6 space-y-4">
             <div class="form-group" style="margin-top:0;">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Alamat Lengkap</label>
-            <textarea class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" style="height:5rem;resize:none;" placeholder="Masukkan alamat lengkap"></textarea>
+            <textarea class="ios-input" style="height:5rem;resize:none;" placeholder="Masukkan alamat lengkap"></textarea>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
             <div class="form-group">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">RT</label>
-                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" value="11">
+                <input type="text" class="ios-input" value="11">
             </div>
             <div class="form-group">
                 <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">RW</label>
-                <input type="text" class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all" value="3">
+                <input type="text" class="ios-input" value="3">
             </div>
         </div>
         <div class="form-group">
             <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Kecamatan</label>
-            <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all"><option>BALEENDAH</option></select>
+            <select class="ios-input"><option>BALEENDAH</option></select>
         </div>
         <div class="form-group">
             <label class="text-sm font-medium text-gray-700 ml-2 block mb-1">Desa</label>
-            <select class="w-full px-4 py-3 bg-white/80 rounded-2xl border border-gray-200 focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 outline-none transition-all"><option>RANCAMANYAR</option></select>
+            <select class="ios-input"><option>RANCAMANYAR</option></select>
         </div>
 
         </div>
 
-        <button type="button" onclick="confirmSave()" class="w-full bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 mt-8">
+        <button type="button" onclick="confirmSave()" class="w-full ios-btn-primary flex items-center justify-center gap-2 mt-8">
             <i class="fa-solid fa-floppy-disk"></i> Simpan Keluarga
         </button>
     </div>
@@ -238,8 +227,8 @@
 </div>
 
 <!-- iOS Alert / Modal -->
-<div id="ios-alert" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl max-w-[320px] w-full p-6 animate-[iosFadeIn_0.2s_ease-out] text-center border border-white/20">
+<div id="ios-alert" class="ios-alert-overlay hidden opacity-0 transition-opacity duration-200">
+    <div class="ios-alert-card text-center">
 
         <!-- Loading State (hidden by default) -->
         <div id="ios-loading" class="hidden flex-col items-center justify-center py-4">
@@ -257,13 +246,13 @@
             <div class="flex flex-col space-y-3">
                 <button
                     onclick="processSave()"
-                    class="w-full py-3.5 rounded-2xl bg-[#007AFF] text-white font-semibold text-[17px] active:scale-95 transition-transform"
+                    class="w-full py-3.5 rounded-2xl ios-btn-primary text-[17px] active:scale-95 transition-transform"
                 >
                     Ya, Simpan
                 </button>
                 <button
                     onclick="closeAlert()"
-                    class="w-full py-3.5 rounded-2xl bg-gray-100 text-[#007AFF] font-semibold text-[17px] active:bg-gray-200 transition-colors"
+                    class="ios-btn-secondary"
                 >
                     Batal
                 </button>
@@ -279,9 +268,9 @@
         const btns = document.getElementById('gender-segment').querySelectorAll('button');
         btns.forEach(btn => {
             if (btn.innerText === val) {
-                btn.className = "flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all bg-white text-gray-900 shadow-sm";
+                btn.className = "flex-1 ios-segment-btn active";
             } else {
-                btn.className = "flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-all text-gray-500 hover:text-gray-900";
+                btn.className = "flex-1 ios-segment-btn";
             }
         });
     }
@@ -307,14 +296,14 @@
 
         if (isChecked) {
             toggleBtn.setAttribute('aria-checked', 'false');
-            toggleBtn.classList.remove('bg-green-500');
-            toggleBtn.classList.add('bg-gray-300');
+            toggleBtn.classList.remove('bg-[var(--ios-green)]');
+            toggleBtn.classList.add('bg-[var(--ios-gray-300)]');
             thumb.classList.remove('translate-x-5');
             thumb.classList.add('translate-x-0');
         } else {
             toggleBtn.setAttribute('aria-checked', 'true');
-            toggleBtn.classList.remove('bg-gray-300');
-            toggleBtn.classList.add('bg-green-500');
+            toggleBtn.classList.remove('bg-[var(--ios-gray-300)]');
+            toggleBtn.classList.add('bg-[var(--ios-green)]');
             thumb.classList.remove('translate-x-0');
             thumb.classList.add('translate-x-5');
         }
