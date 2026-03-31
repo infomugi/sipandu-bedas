@@ -58,7 +58,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center space-x-4">
                 <button onclick="location.href='pendaftaran.html'" class="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors" aria-label="Kembali">
-                    <i class="fa-solid fa-arrow-left text-[var(--ios-blue)] text-xl"></i>
+                    <i class="fa-solid fa-arrow-left text-ios-blue text-xl"></i>
                 </button>
                 <div>
                     <h1 class="text-xl font-semibold text-gray-900">
@@ -83,7 +83,7 @@
         <!-- Section: Anggota Keluarga (iOS Card) -->
         <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
             <h3 class="font-semibold text-gray-900 border-b border-gray-100 pb-3 flex items-center">
-                <i class="fa-solid fa-user text-[var(--ios-blue)] mr-2"></i> Informasi Anggota Keluarga
+                <i class="fa-solid fa-user text-ios-blue mr-2"></i> Informasi Anggota Keluarga
             </h3>
             
             <div class="form-group" style="margin-top:0;">
@@ -124,7 +124,7 @@
         <!-- Section: Data Sosial Ekonomi (iOS Card) -->
         <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 border border-white/20 p-6 space-y-4">
             <h3 class="font-semibold text-gray-900 border-b border-gray-100 pb-3 flex items-center">
-                <i class="fa-solid fa-chart-line text-[var(--ios-green)] mr-2"></i> Data Sosial Ekonomi
+                <i class="fa-solid fa-chart-line text-ios-green mr-2"></i> Data Sosial Ekonomi
             </h3>
             
             <div class="form-group" style="margin-top:0;">
@@ -230,7 +230,7 @@
 
         </div>
 
-        <button type="button" onclick="confirmSave()" class="w-full bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 mt-8">
+        <button type="button" onclick="confirmSave()" class="w-full bg-ios-primary hover:bg-ios-primary-hover active:bg-ios-primary-active text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-ios-blue transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 mt-8">
             <i class="fa-solid fa-floppy-disk"></i> Simpan Keluarga
         </button>
     </div>
@@ -253,17 +253,17 @@
         <!-- Confirmation State -->
         <div id="ios-confirm">
             <h3 class="text-xl font-semibold mb-2 text-gray-900 tracking-tight">Simpan Data</h3>
-            <p class="text-[15px] text-gray-600 mb-6 leading-snug">Apakah Anda yakin data keluarga yang dimasukkan sudah benar?</p>
+            <p class="text-15px text-gray-600 mb-6 leading-snug">Apakah Anda yakin data keluarga yang dimasukkan sudah benar?</p>
             <div class="flex flex-col space-y-3">
                 <button
                     onclick="processSave()"
-                    class="w-full py-3.5 rounded-2xl bg-[#007AFF] text-white font-semibold text-[17px] active:scale-95 transition-transform"
+                    class="w-full py-3.5 rounded-2xl bg-ios-primary text-white font-semibold text-17px active:scale-95 transition-transform"
                 >
                     Ya, Simpan
                 </button>
                 <button
                     onclick="closeAlert()"
-                    class="w-full py-3.5 rounded-2xl bg-gray-100 text-[#007AFF] font-semibold text-[17px] active:bg-gray-200 transition-colors"
+                    class="w-full py-3.5 rounded-2xl bg-gray-100 text-ios-blue font-semibold text-17px active:bg-gray-200 transition-colors"
                 >
                     Batal
                 </button>

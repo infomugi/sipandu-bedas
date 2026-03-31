@@ -300,8 +300,8 @@
                     <i class="fa-solid fa-chevron-left text-white text-sm"></i>
                 </button>
                 <div>
-                    <h1 class="text-[17px] font-bold text-white leading-tight">Tambah Kunjungan</h1>
-                    <p class="text-[10px] text-emerald-100/90 font-medium mt-0.5">
+                    <h1 class="text-17px font-bold text-white leading-tight">Tambah Kunjungan</h1>
+                    <p class="text-10px text-emerald-100/90 font-medium mt-0.5">
                         <i class="fa-regular fa-id-card mr-1 opacity-70"></i>KK 3204320432030594
                     </p>
                 </div>
@@ -351,8 +351,8 @@
                             <i class="fa-solid fa-file-circle-check text-emerald-500 text-base"></i>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-[13px] font-700 text-slate-700 font-bold truncate">1756250103189.jpg</p>
-                            <p class="text-[10px] text-emerald-600 font-semibold mt-0.5"><i class="fa-solid fa-check-circle mr-1"></i>Berhasil diunggah</p>
+                            <p class="text-13px font-700 text-slate-700 font-bold truncate">1756250103189.jpg</p>
+                            <p class="text-10px text-emerald-600 font-semibold mt-0.5"><i class="fa-solid fa-check-circle mr-1"></i>Berhasil diunggah</p>
                         </div>
                         <i class="fa-solid fa-pen text-slate-300 text-xs ml-1"></i>
                     </div>
@@ -365,8 +365,8 @@
                             <i class="fa-solid fa-camera text-slate-400 text-base"></i>
                         </div>
                         <div>
-                            <p class="text-[13px] font-bold text-slate-500">Ambil Foto / Pilih File</p>
-                            <p class="text-[10px] text-slate-400 font-medium mt-0.5">JPG, PNG — maks. 5 MB</p>
+                            <p class="text-13px font-bold text-slate-500">Ambil Foto / Pilih File</p>
+                            <p class="text-10px text-slate-400 font-medium mt-0.5">JPG, PNG — maks. 5 MB</p>
                         </div>
                     </div>
                 </div>
@@ -380,7 +380,7 @@
                 <div class="flex justify-between items-center w-full">
                     <span class="section-title">Lokasi Kunjungan (GPS)</span>
                     <button type="button" id="btnLocate" onclick="getLocation()" class="btn-locate">
-                        <i class="fa-solid fa-location-crosshairs text-[11px]"></i> Deteksi
+                        <i class="fa-solid fa-location-crosshairs text-11px"></i> Deteksi
                     </button>
                 </div>
             </div>
@@ -404,7 +404,7 @@
                     <div id="map-placeholder" class="text-center text-slate-400 p-4">
                         <i class="fa-solid fa-map-location-dot text-3xl mb-2 block opacity-40"></i>
                         <p class="text-xs font-semibold">Peta akan muncul di sini</p>
-                        <p class="text-[10px] mt-1 opacity-70">Ketuk "Deteksi" untuk mulai</p>
+                        <p class="text-10px mt-1 opacity-70">Ketuk "Deteksi" untuk mulai</p>
                     </div>
                     <div id="map" style="display:none; width:100%; height:100%;"></div>
                 </div>
@@ -494,7 +494,7 @@
         }
         const btn = document.getElementById('btnLocate');
         const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[11px]"></i> Mencari...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-11px"></i> Mencari...';
         btn.disabled = true;
 
         navigator.geolocation.getCurrentPosition(
@@ -504,7 +504,7 @@
                 updateCoordinates(lat, lng);
                 initMap(lat, lng);
 
-                btn.innerHTML = '<i class="fa-solid fa-check text-[11px]"></i> Terdapat!';
+                btn.innerHTML = '<i class="fa-solid fa-check text-11px"></i> Terdapat!';
                 btn.style.background = '#d1fae5';
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
@@ -514,7 +514,7 @@
             },
             function(error) {
                 const msgs = {1:'Izin lokasi ditolak.', 2:'Lokasi tidak tersedia.', 3:'Waktu habis.'};
-                btn.innerHTML = '<i class="fa-solid fa-xmark text-[11px]"></i> Gagal';
+                btn.innerHTML = '<i class="fa-solid fa-xmark text-11px"></i> Gagal';
                 btn.style.color = '#ef4444';
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
