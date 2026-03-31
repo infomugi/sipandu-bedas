@@ -245,9 +245,9 @@
                     id="notif-toggle"
                     role="switch"
                     aria-checked="true"
-                    class="relative w-12 h-7 rounded-full transition-colors duration-300 bg-[var(--ios-green)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2"
+                    class="ios-toggle bg-[var(--ios-green)] focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2"
                 >
-                    <span class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 translate-x-5"></span>
+                    <span class="ios-toggle-thumb translate-x-5"></span>
                 </button>
             </div>
 
@@ -315,10 +315,10 @@
         <h3 class="text-lg font-semibold mb-2">Hapus Data</h3>
         <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
         <div class="flex space-x-3">
-            <button id="btn-alert-cancel" class="flex-1 py-3 rounded-full border border-gray-200 font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2">
+            <button id="btn-alert-cancel" class="ios-btn-secondary flex-1">
                 Batal
             </button>
-            <button id="btn-alert-delete" class="flex-1 py-3 rounded-full bg-[var(--ios-red)] text-white font-medium hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--ios-red)] focus:ring-offset-2">
+            <button id="btn-alert-delete" class="ios-btn-destructive flex-1">
                 Hapus
             </button>
         </div>
@@ -339,14 +339,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const thumb = toggleBtn.querySelector('span');
             if (!isChecked) {
                 // Turning ON
-                toggleBtn.classList.remove('bg-gray-300');
+                toggleBtn.classList.remove('bg-[var(--ios-gray-300)]');
                 toggleBtn.classList.add('bg-[var(--ios-green)]');
                 thumb.classList.remove('translate-x-0');
                 thumb.classList.add('translate-x-5');
             } else {
                 // Turning OFF
                 toggleBtn.classList.remove('bg-[var(--ios-green)]');
-                toggleBtn.classList.add('bg-gray-300');
+                toggleBtn.classList.add('bg-[var(--ios-gray-300)]');
                 thumb.classList.remove('translate-x-5');
                 thumb.classList.add('translate-x-0');
             }
