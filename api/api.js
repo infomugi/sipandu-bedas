@@ -7,9 +7,61 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const crypto = require('node:crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ─── Password Hashing Helpers ─────────────────────────────────
+// 🛡️ Sentinel: Secure password hashing using PBKDF2 (SHA-512, 100k iterations)
+const hashPassword = (password) => {
+    return new Promise((resolve, reject) => {
+        const salt = crypto.randomBytes(16).toString('hex');
+        crypto.pbkdf2(String(password), salt, 100000, 64, 'sha512', (err, derivedKey) => {
+            if (err) return reject(err);
+            resolve(`$pbkdf2$${salt}$${derivedKey.toString('hex')}`);
+        });
+    });
+};
+
+const comparePassword = (password, storedHash) => {
+    return new Promise((resolve, reject) => {
+        if (!storedHash) return resolve({ isValid: false, needsUpgrade: false });
+
+        // 🛡️ Sentinel: Handle legacy plaintext passwords for seamless migration
+        if (!storedHash.startsWith('$pbkdf2$')) {
+            // Warning: This is a fallback for legacy plaintext passwords.
+            // It will be removed once all passwords are migrated.
+            const isValid = (String(password) === storedHash);
+            return resolve({ isValid, needsUpgrade: isValid });
+        }
+
+        const parts = storedHash.split('$');
+        if (parts.length !== 4) return resolve({ isValid: false, needsUpgrade: false });
+
+        const salt = parts[2];
+        const originalHash = parts[3];
+
+        crypto.pbkdf2(String(password), salt, 100000, 64, 'sha512', (err, derivedKey) => {
+            if (err) return reject(err);
+            const newHash = derivedKey.toString('hex');
+
+            try {
+                // Timing safe comparison using hex encoding for buffers
+                const buf1 = Buffer.from(newHash, 'hex');
+                const buf2 = Buffer.from(originalHash, 'hex');
+                if (buf1.length !== buf2.length) return resolve({ isValid: false, needsUpgrade: false });
+
+                resolve({
+                    isValid: crypto.timingSafeEqual(buf1, buf2),
+                    needsUpgrade: false
+                });
+            } catch (e) {
+                resolve({ isValid: false, needsUpgrade: false });
+            }
+        });
+    });
+};
 
 // ─── Middleware ───────────────────────────────────────────────
 app.use(cors());
@@ -74,8 +126,16 @@ app.post('/api/auth/login', async (req, res) => {
         );
         if (rows.length === 0) return err(res, 'NIK tidak ditemukan', 401);
         if (!rows[0].is_active) return err(res, 'Akun tidak aktif', 403);
-        // NOTE: Di produksi gunakan bcrypt.compare(password, rows[0].password)
-        if (password !== rows[0].password) return err(res, 'Password salah', 401); // 🛡️ Sentinel: Fix authentication bypass
+
+        // 🛡️ Sentinel: Secure password comparison using PBKDF2 hash
+        const { isValid, needsUpgrade } = await comparePassword(password, rows[0].password);
+        if (!isValid) return err(res, 'Password salah', 401);
+
+        // 🛡️ Sentinel: Seamlessly upgrade legacy plaintext passwords upon login
+        if (needsUpgrade) {
+            const upgradedHash = await hashPassword(password);
+            await pool.query('UPDATE users SET password = $1 WHERE id = $2', [upgradedHash, rows[0].id]);
+        }
 
         const user = { ...rows[0] };
         delete user.password; // 🛡️ Sentinel: Don't leak password
@@ -91,10 +151,14 @@ app.post('/api/auth/register', async (req, res) => {
         // Users should never be able to register as 'admin'.
         const { nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, created_by } = req.body;
         if (!nama_lengkap || !nik || !password || !no_hp) return err(res, 'Field wajib tidak lengkap', 400);
+
+        // 🛡️ Sentinel: Hash password before saving to database
+        const hashedPassword = await hashPassword(password);
+
         const { rows } = await pool.query(
             `INSERT INTO users (nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role, created_by)
              VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id, nama_lengkap, nik, role`,
-            [nama_lengkap, nik, email, no_hp, password, rw, rt,
+            [nama_lengkap, nik, email, no_hp, hashedPassword, rw, rt,
              desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG', 'kader', created_by]
         );
         ok(res, rows[0], 201);
@@ -1230,10 +1294,16 @@ app.put('/api/profil/:id/password', async (req, res) => {
     try {
         const { password_lama, password_baru, updated_by } = req.body;
         if (!password_lama || !password_baru) return err(res, 'Password lama dan baru wajib diisi', 400);
-        // NOTE: Di produksi gunakan bcrypt.compare dan bcrypt.hash
-        const { rows } = await pool.query('SELECT id FROM users WHERE id=$1 AND password=$2 AND deleted_at IS NULL', [req.params.id, password_lama]);
+
+        // 🛡️ Sentinel: Verify old password and hash new password
+        const { rows } = await pool.query('SELECT password FROM users WHERE id=$1 AND deleted_at IS NULL', [req.params.id]);
         if (!rows.length) return err(res, 'Password lama tidak cocok', 401);
-        await pool.query('UPDATE users SET password=$1, updated_by=$2 WHERE id=$3', [password_baru, updated_by, req.params.id]);
+
+        const { isValid } = await comparePassword(password_lama, rows[0].password);
+        if (!isValid) return err(res, 'Password lama tidak cocok', 401);
+
+        const hashedNewPassword = await hashPassword(password_baru);
+        await pool.query('UPDATE users SET password=$1, updated_by=$2 WHERE id=$3', [hashedNewPassword, updated_by, req.params.id]);
         ok(res, { message: 'Password berhasil diperbarui' });
     } catch (e) { err(res, e.message); }
 });
