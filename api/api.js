@@ -1152,24 +1152,32 @@ app.get('/api/laporan/gizi', async (req, res) => {
         const b = bulan || (now.getMonth() + 1);
         const t = tahun || now.getFullYear();
         const p = kader_id ? [b, t, kader_id] : [b, t];
+
+        // ⚡ Bolt Optimization: Compute AGE() function exactly once inside a subquery,
+        // then reference its alias in the outer query to prevent duplicate computations.
+        // Expected impact: Minor reduction in CPU usage during large data aggregations.
         const { rows } = await pool.query(
-            `SELECT a.nama_lengkap,
-             (EXTRACT(YEAR FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))*12 +
-              EXTRACT(MONTH FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))) AS umur_bulan,
-             sk.berat_badan, sk.tinggi_badan, sk.status_kms, sk.tgl_pelayanan, k.rt, k.rw,
-             CASE sk.status_kms
+            `SELECT sub.nama_lengkap,
+             (EXTRACT(YEAR FROM sub.umur_interval)*12 +
+              EXTRACT(MONTH FROM sub.umur_interval)) AS umur_bulan,
+             sub.berat_badan, sub.tinggi_badan, sub.status_kms, sub.tgl_pelayanan, sub.rt, sub.rw,
+             CASE sub.status_kms
                WHEN 'merah'  THEN 'GIZI BURUK - Rujuk Puskesmas Segera'
                WHEN 'kuning' THEN 'BGM - Perlu PMT Pemulihan'
                WHEN 'hijau'  THEN 'Normal'
              END AS rekomendasi
-             FROM spm_kesehatan sk
-             JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
-             JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
-             WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
-             AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
-             AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
-             ${kader_id ? 'AND sk.kader_id=$3' : ''}
-             ORDER BY sk.status_kms, a.nama_lengkap`, p
+             FROM (
+                 SELECT a.nama_lengkap, sk.berat_badan, sk.tinggi_badan, sk.status_kms, sk.tgl_pelayanan, k.rt, k.rw,
+                 AGE(sk.tgl_pelayanan, a.tanggal_lahir) AS umur_interval
+                 FROM spm_kesehatan sk
+                 JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
+                 JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
+                 WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
+                 AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
+                 AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
+                 ${kader_id ? 'AND sk.kader_id=$3' : ''}
+             ) sub
+             ORDER BY sub.status_kms, sub.nama_lengkap`, p
         );
         ok(res, rows);
     } catch (e) { err(res, e.message); }
