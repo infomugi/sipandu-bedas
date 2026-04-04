@@ -33,6 +33,11 @@ pool.connect()
 const ok  = (res, data, code = 200) => res.status(code).json({ success: true,  data });
 const err = (res, msg,  code = 500) => res.status(code).json({ success: false, message: msg });
 
+// ⚡ Bolt Optimization: Role-check caching to prevent DB hits on every admin request
+const adminCache = new Map();
+const CACHE_TTL_MS = 5 * 60 * 1000;
+const CACHE_MAX_ITEMS = 1000;
+
 // 🛡️ Sentinel: Add authentication middleware for admin endpoints
 const isAdmin = async (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -46,9 +51,28 @@ const isAdmin = async (req, res, next) => {
     // Extract the user ID from the mock token.
     // ⚠️ Security Note: This is insecure for production and must be replaced with true token validation.
     const userId = authHeader.split('mock-token-')[1];
+
+    // Check cache first
+    const cached = adminCache.get(userId);
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
+        if (!cached.isAdmin) {
+            return err(res, 'Forbidden: Admin access required', 403);
+        }
+        return next();
+    }
+
     try {
         const { rows } = await pool.query('SELECT role FROM users WHERE id = $1 AND is_active = 1 AND deleted_at IS NULL', [userId]);
-        if (rows.length === 0 || rows[0].role !== 'admin') {
+        const isUserAdmin = rows.length > 0 && rows[0].role === 'admin';
+
+        // Evict oldest if full
+        if (adminCache.size >= CACHE_MAX_ITEMS) {
+            adminCache.delete(adminCache.keys().next().value);
+        }
+
+        adminCache.set(userId, { isAdmin: isUserAdmin, timestamp: Date.now() });
+
+        if (!isUserAdmin) {
             return err(res, 'Forbidden: Admin access required', 403);
         }
         next();
@@ -1221,6 +1245,7 @@ app.put('/api/profil/:id', async (req, res) => {
             [nama_lengkap, email, no_hp, rw, rt, desa, kecamatan, kabupaten, foto_profil, updated_by, req.params.id]
         );
         if (!result.rowCount) return err(res, 'User tidak ditemukan', 404);
+        adminCache.delete(req.params.id); // ⚡ Bolt Optimization: Invalidate role cache
         ok(res, { message: 'Profil diperbarui' });
     } catch (e) { err(res, e.message); }
 });
@@ -1234,6 +1259,7 @@ app.put('/api/profil/:id/password', async (req, res) => {
         const { rows } = await pool.query('SELECT id FROM users WHERE id=$1 AND password=$2 AND deleted_at IS NULL', [req.params.id, password_lama]);
         if (!rows.length) return err(res, 'Password lama tidak cocok', 401);
         await pool.query('UPDATE users SET password=$1, updated_by=$2 WHERE id=$3', [password_baru, updated_by, req.params.id]);
+        adminCache.delete(req.params.id); // ⚡ Bolt Optimization: Invalidate role cache
         ok(res, { message: 'Password berhasil diperbarui' });
     } catch (e) { err(res, e.message); }
 });
@@ -1354,6 +1380,7 @@ app.put('/api/users/:id/toggle-active', isAdmin, async (req, res) => {
         const { updated_by } = req.body;
         const result = await pool.query('UPDATE users SET is_active = CASE WHEN is_active=1 THEN 0 ELSE 1 END, updated_by=$1 WHERE id=$2 AND deleted_at IS NULL RETURNING is_active', [updated_by, req.params.id]);
         if (!result.rowCount) return err(res, 'User tidak ditemukan', 404);
+        adminCache.delete(req.params.id); // ⚡ Bolt Optimization: Invalidate role cache
         ok(res, { is_active: result.rows[0].is_active });
     } catch (e) { err(res, e.message); }
 });
