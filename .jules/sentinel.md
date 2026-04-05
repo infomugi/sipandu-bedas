@@ -7,3 +7,7 @@
 **Vulnerability:** The `/api/auth/register` endpoint allowed mass assignment by accepting the `role` field directly from the user request payload. A malicious actor could easily provide `"role": "admin"` during registration and grant themselves immediate administrative access.
 **Learning:** Destructuring request bodies without explicit field picking/omitting can lead to privilege escalation if sensitive columns (like role, permissions, status) are included in the SQL `INSERT` or `UPDATE` statements.
 **Prevention:** Never blindly pass user-controlled input into database models. Always filter or strictly define which fields can be updated by the client. For roles and status, hardcode defaults during initial insertion.
+## 2026-04-05 - [Missing Password Hashing and Plaintext Comparison]
+**Vulnerability:** The API was handling and comparing user passwords in raw plaintext in authentication (`/api/auth/login`) and profile update (`/api/profil/:id/password`) endpoints. It was also storing them directly in plaintext during registration (`/api/auth/register`).
+**Learning:** Legacy and newly written NodeJS backends occasionally skip essential cryptographic functions during MVP phases, leading to catastrophic storage of raw passwords.
+**Prevention:** Always implement a secure password hashing mechanism (like `bcrypt` or `crypto.pbkdf2`) with a `salt`. Introduce a backward-compatible `comparePassword` method that returns `{ isValid, needsUpgrade }` to seamlessly migrate users from legacy plaintext to secure hashes upon their next login.
