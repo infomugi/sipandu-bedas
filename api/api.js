@@ -1153,9 +1153,11 @@ app.get('/api/laporan/gizi', async (req, res) => {
         const t = tahun || now.getFullYear();
         const p = kader_id ? [b, t, kader_id] : [b, t];
         const { rows } = await pool.query(
-            `SELECT a.nama_lengkap,
-             (EXTRACT(YEAR FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))*12 +
-              EXTRACT(MONTH FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))) AS umur_bulan,
+            `-- ⚡ Bolt Optimization: Use LEFT JOIN LATERAL to compute AGE() exactly once, preventing duplicate
+             -- function evaluation overhead in the SELECT clause when extracting YEAR and MONTH separately.
+             SELECT a.nama_lengkap,
+             (EXTRACT(YEAR FROM age_calc.raw_age)*12 +
+              EXTRACT(MONTH FROM age_calc.raw_age)) AS umur_bulan,
              sk.berat_badan, sk.tinggi_badan, sk.status_kms, sk.tgl_pelayanan, k.rt, k.rw,
              CASE sk.status_kms
                WHEN 'merah'  THEN 'GIZI BURUK - Rujuk Puskesmas Segera'
@@ -1165,6 +1167,9 @@ app.get('/api/laporan/gizi', async (req, res) => {
              FROM spm_kesehatan sk
              JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
              JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
+             LEFT JOIN LATERAL (
+                SELECT AGE(sk.tgl_pelayanan, a.tanggal_lahir) AS raw_age
+             ) age_calc ON true
              WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
              AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
              AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
