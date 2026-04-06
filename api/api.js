@@ -7,6 +7,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const crypto = require('node:crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +33,31 @@ pool.connect()
 // ─── Helper ───────────────────────────────────────────────────
 const ok  = (res, data, code = 200) => res.status(code).json({ success: true,  data });
 const err = (res, msg,  code = 500) => res.status(code).json({ success: false, message: msg });
+
+const hashPassword = async (password) => {
+    return new Promise((resolve, reject) => {
+        const salt = crypto.randomBytes(16).toString('hex');
+        crypto.pbkdf2(String(password), salt, 100000, 64, 'sha512', (err, derivedKey) => {
+            if (err) return reject(err);
+            resolve(`$pbkdf2$${salt}$${derivedKey.toString('hex')}`);
+        });
+    });
+};
+
+const comparePassword = async (password, hash) => {
+    return new Promise((resolve, reject) => {
+        const strPass = String(password);
+        if (!hash || !hash.startsWith('$pbkdf2$')) {
+            return resolve({ isValid: strPass === hash, needsUpgrade: true });
+        }
+        const parts = hash.split('$');
+        if (parts.length !== 4) return resolve({ isValid: false, needsUpgrade: false });
+        crypto.pbkdf2(strPass, parts[2], 100000, 64, 'sha512', (err, derivedKey) => {
+            if (err) return reject(err);
+            resolve({ isValid: derivedKey.toString('hex') === parts[3], needsUpgrade: false });
+        });
+    });
+};
 
 // 🛡️ Sentinel: Add authentication middleware for admin endpoints
 const isAdmin = async (req, res, next) => {
@@ -74,8 +100,15 @@ app.post('/api/auth/login', async (req, res) => {
         );
         if (rows.length === 0) return err(res, 'NIK tidak ditemukan', 401);
         if (!rows[0].is_active) return err(res, 'Akun tidak aktif', 403);
-        // NOTE: Di produksi gunakan bcrypt.compare(password, rows[0].password)
-        if (password !== rows[0].password) return err(res, 'Password salah', 401); // 🛡️ Sentinel: Fix authentication bypass
+
+        const { isValid, needsUpgrade } = await comparePassword(password, rows[0].password);
+        if (!isValid) return err(res, 'Password salah', 401);
+
+        // 🛡️ Sentinel: Migrate legacy plaintext password
+        if (needsUpgrade) {
+            const newHash = await hashPassword(password);
+            await pool.query('UPDATE users SET password = $1 WHERE id = $2', [newHash, rows[0].id]);
+        }
 
         const user = { ...rows[0] };
         delete user.password; // 🛡️ Sentinel: Don't leak password
@@ -91,10 +124,14 @@ app.post('/api/auth/register', async (req, res) => {
         // Users should never be able to register as 'admin'.
         const { nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, created_by } = req.body;
         if (!nama_lengkap || !nik || !password || !no_hp) return err(res, 'Field wajib tidak lengkap', 400);
+
+        // 🛡️ Sentinel: Hash password securely
+        const hashedPassword = await hashPassword(password);
+
         const { rows } = await pool.query(
             `INSERT INTO users (nama_lengkap, nik, email, no_hp, password, rw, rt, desa, kecamatan, kabupaten, role, created_by)
              VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id, nama_lengkap, nik, role`,
-            [nama_lengkap, nik, email, no_hp, password, rw, rt,
+            [nama_lengkap, nik, email, no_hp, hashedPassword, rw, rt,
              desa || 'RANCAMANYAR', kecamatan || 'BALEENDAH', kabupaten || 'BANDUNG', 'kader', created_by]
         );
         ok(res, rows[0], 201);
@@ -1230,10 +1267,15 @@ app.put('/api/profil/:id/password', async (req, res) => {
     try {
         const { password_lama, password_baru, updated_by } = req.body;
         if (!password_lama || !password_baru) return err(res, 'Password lama dan baru wajib diisi', 400);
-        // NOTE: Di produksi gunakan bcrypt.compare dan bcrypt.hash
-        const { rows } = await pool.query('SELECT id FROM users WHERE id=$1 AND password=$2 AND deleted_at IS NULL', [req.params.id, password_lama]);
-        if (!rows.length) return err(res, 'Password lama tidak cocok', 401);
-        await pool.query('UPDATE users SET password=$1, updated_by=$2 WHERE id=$3', [password_baru, updated_by, req.params.id]);
+
+        const { rows } = await pool.query('SELECT id, password FROM users WHERE id=$1 AND deleted_at IS NULL', [req.params.id]);
+        if (!rows.length) return err(res, 'User tidak ditemukan', 404);
+
+        const { isValid } = await comparePassword(password_lama, rows[0].password);
+        if (!isValid) return err(res, 'Password lama tidak cocok', 401);
+
+        const hashedBaru = await hashPassword(password_baru);
+        await pool.query('UPDATE users SET password=$1, updated_by=$2 WHERE id=$3', [hashedBaru, updated_by, req.params.id]);
         ok(res, { message: 'Password berhasil diperbarui' });
     } catch (e) { err(res, e.message); }
 });
