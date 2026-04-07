@@ -183,9 +183,15 @@ app.get('/api/keluarga', async (req, res) => {
 // GET /api/keluarga/:id  (detail + anggota)
 app.get('/api/keluarga/:id', async (req, res) => {
     try {
-        const { rows: kRows } = await pool.query('SELECT * FROM keluarga WHERE id=$1 AND is_aktif=1 AND deleted_at IS NULL', [req.params.id]);
+        // ⚡ Bolt Optimization: Batch sequential queries using Promise.all to fetch family and members concurrently.
+        // This reduces total network round-trip time, making the API response faster.
+        const [kResult, aResult] = await Promise.all([
+            pool.query('SELECT * FROM keluarga WHERE id=$1 AND is_aktif=1 AND deleted_at IS NULL', [req.params.id]),
+            pool.query('SELECT * FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga', [req.params.id])
+        ]);
+        const kRows = kResult.rows;
         if (!kRows.length) return err(res, 'Keluarga tidak ditemukan', 404);
-        const { rows: aRows } = await pool.query('SELECT * FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga', [req.params.id]);
+        const aRows = aResult.rows;
         ok(res, { ...kRows[0], anggota: aRows });
     } catch (e) { err(res, e.message); }
 });
@@ -1152,10 +1158,12 @@ app.get('/api/laporan/gizi', async (req, res) => {
         const b = bulan || (now.getMonth() + 1);
         const t = tahun || now.getFullYear();
         const p = kader_id ? [b, t, kader_id] : [b, t];
+        // ⚡ Bolt Optimization: Use LEFT JOIN LATERAL to calculate AGE once and reference alias
+        // to prevent duplicate evaluation of AGE() function.
         const { rows } = await pool.query(
             `SELECT a.nama_lengkap,
-             (EXTRACT(YEAR FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))*12 +
-              EXTRACT(MONTH FROM AGE(sk.tgl_pelayanan, a.tanggal_lahir))) AS umur_bulan,
+             (EXTRACT(YEAR FROM age_calc.tgl_age)*12 +
+              EXTRACT(MONTH FROM age_calc.tgl_age)) AS umur_bulan,
              sk.berat_badan, sk.tinggi_badan, sk.status_kms, sk.tgl_pelayanan, k.rt, k.rw,
              CASE sk.status_kms
                WHEN 'merah'  THEN 'GIZI BURUK - Rujuk Puskesmas Segera'
@@ -1165,6 +1173,9 @@ app.get('/api/laporan/gizi', async (req, res) => {
              FROM spm_kesehatan sk
              JOIN anggota_keluarga a ON a.id=sk.anggota_id AND a.deleted_at IS NULL
              JOIN keluarga k         ON k.id=sk.keluarga_id AND k.deleted_at IS NULL
+             LEFT JOIN LATERAL (
+                SELECT AGE(sk.tgl_pelayanan, a.tanggal_lahir) AS tgl_age
+             ) age_calc ON true
              WHERE sk.jenis_sasaran='balita' AND sk.deleted_at IS NULL
              AND EXTRACT(MONTH FROM sk.tgl_pelayanan)=$1
              AND EXTRACT(YEAR  FROM sk.tgl_pelayanan)=$2
