@@ -17,12 +17,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Database Connection ──────────────────────────────────────
+const requiredEnvVars = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+    console.error(`❌ FATAL ERROR: Missing required database environment variables: ${missingEnvVars.join(', ')}`);
+    console.error('Server cannot start without database credentials.');
+    process.exit(1);
+}
+
 const pool = new Pool({
-    host:     process.env.DB_HOST     || 'localhost',
-    port:     process.env.DB_PORT     || 5433,
-    user:     process.env.DB_USER     || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgress',
-    database: process.env.DB_NAME     || 'dpmd_sipandu_bedas',
+    host:     process.env.DB_HOST,
+    port:     process.env.DB_PORT,
+    user:     process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 pool.connect()
