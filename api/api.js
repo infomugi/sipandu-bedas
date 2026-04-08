@@ -183,9 +183,15 @@ app.get('/api/keluarga', async (req, res) => {
 // GET /api/keluarga/:id  (detail + anggota)
 app.get('/api/keluarga/:id', async (req, res) => {
     try {
-        const { rows: kRows } = await pool.query('SELECT * FROM keluarga WHERE id=$1 AND is_aktif=1 AND deleted_at IS NULL', [req.params.id]);
+        // ⚡ Bolt Optimization: Batch independent database queries concurrently using Promise.all
+        // to reduce network I/O latency instead of awaiting them sequentially.
+        const [kResult, aResult] = await Promise.all([
+            pool.query('SELECT * FROM keluarga WHERE id=$1 AND is_aktif=1 AND deleted_at IS NULL', [req.params.id]),
+            pool.query('SELECT * FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga', [req.params.id])
+        ]);
+        const kRows = kResult.rows;
+        const aRows = aResult.rows;
         if (!kRows.length) return err(res, 'Keluarga tidak ditemukan', 404);
-        const { rows: aRows } = await pool.query('SELECT * FROM anggota_keluarga WHERE keluarga_id=$1 AND is_aktif=1 AND deleted_at IS NULL ORDER BY status_keluarga', [req.params.id]);
         ok(res, { ...kRows[0], anggota: aRows });
     } catch (e) { err(res, e.message); }
 });
