@@ -62,7 +62,7 @@
         .btn-press:active { transform: scale(0.96); }
 
         /* iOS Cards */
-        .ios-card-glass {
+        .card-glass {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -124,13 +124,13 @@
             <div>
                 <h4 class="text-sm font-bold text-slate-800 mb-3 px-1">Menu Utama Posyandu</h4>
                 <div class="grid grid-cols-2 gap-4">
-                    <button aria-label="Pendaftaran" class="btn-press ios-card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2">
+                    <button aria-label="Pendaftaran" class="btn-press card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2">
                         <div class="w-10 h-10 rounded-xl bg-[rgba(52,199,89,0.1)] text-[var(--ios-green)] flex items-center justify-center text-xl"><i class="fa-solid fa-clipboard-user"></i></div>
                         <div><p class="font-bold text-[var(--ios-gray-900)] text-sm">Pendaftaran</p><p class="text-[10px] text-[var(--ios-gray-500)] mt-0.5">Daftar hadir warga</p></div>
                     </button>
                     
                     <!-- MENU 6 SPM DIARAHKAN KE SINI -->
-                    <button aria-label="6 Layanan SPM" onclick="navTo('spm-menu')" class="btn-press ios-card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2">
+                    <button aria-label="6 Layanan SPM" onclick="navTo('spm-menu')" class="btn-press card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2">
                         <div class="absolute -right-4 -bottom-4 text-[rgba(175,82,222,0.1)] text-6xl"><i class="fa-solid fa-layer-group"></i></div>
                         <div class="w-10 h-10 rounded-xl bg-[rgba(175,82,222,0.1)] text-[var(--ios-purple)] flex items-center justify-center text-xl"><i class="fa-solid fa-notes-medical"></i></div>
                         <div class="relative z-10">
@@ -139,12 +139,12 @@
                         </div>
                     </button>
 
-                    <button aria-label="Assesment" class="btn-press ios-card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2">
+                    <button aria-label="Assesment" class="btn-press card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2">
                         <div class="w-10 h-10 rounded-xl bg-[rgba(255,149,0,0.1)] text-[var(--ios-orange)] flex items-center justify-center text-xl"><i class="fa-solid fa-clipboard-list"></i></div>
                         <div><p class="font-bold text-[var(--ios-gray-900)] text-sm">Assesment</p><p class="text-[10px] text-[var(--ios-gray-500)] mt-0.5">Kesiapan posyandu</p></div>
                     </button>
 
-                    <button aria-label="Laporan" class="btn-press ios-card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--ios-blue)] focus:ring-offset-2">
+                    <button aria-label="Laporan" class="btn-press card-glass p-5 flex flex-col items-start gap-3 transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2">
                         <div class="w-10 h-10 rounded-xl bg-[rgba(0,122,255,0.1)] text-[var(--ios-blue)] flex items-center justify-center text-xl"><i class="fa-solid fa-chart-pie"></i></div>
                         <div><p class="font-bold text-[var(--ios-gray-900)] text-sm">Laporan</p><p class="text-[10px] text-[var(--ios-gray-500)] mt-0.5">Rekapitulasi desa</p></div>
                     </button>
@@ -179,37 +179,37 @@
             <div class="grid grid-cols-2 gap-4">
                 
                 <!-- SPM Pendidikan -->
-                <button onclick="navTo('spm-pendidikan')" class="btn-press ios-card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
+                <button onclick="navTo('spm-pendidikan')" class="btn-press card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
                     <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-graduation-cap"></i></div>
                     <div><p class="font-bold text-slate-800 text-sm">Pendidikan</p><p class="text-[9px] text-slate-400 mt-1">Pembiayaan PAUD, Sekolah</p></div>
                 </button>
 
                 <!-- SPM Kesehatan -->
-                <button onclick="navTo('spm-kesehatan')" class="btn-press ios-card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
+                <button onclick="navTo('spm-kesehatan')" class="btn-press card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
                     <div class="w-14 h-14 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-stethoscope"></i></div>
                     <div><p class="font-bold text-slate-800 text-sm">Kesehatan</p><p class="text-[9px] text-slate-400 mt-1">Layanan Ibu, Balita, Lansia</p></div>
                 </button>
 
                 <!-- SPM Pekerjaan Umum -->
-                <button onclick="navTo('spm-pu')" class="btn-press ios-card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
+                <button onclick="navTo('spm-pu')" class="btn-press card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
                     <div class="w-14 h-14 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-faucet-drip"></i></div>
                     <div><p class="font-bold text-slate-800 text-sm">Pekerjaan Umum</p><p class="text-[9px] text-slate-400 mt-1">Sanitasi, MCK, Air Bersih</p></div>
                 </button>
 
                 <!-- SPM Perumahan -->
-                <button onclick="navTo('spm-perumahan')" class="btn-press ios-card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
+                <button onclick="navTo('spm-perumahan')" class="btn-press card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
                     <div class="w-14 h-14 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-house-chimney-crack"></i></div>
                     <div><p class="font-bold text-slate-800 text-sm">Perumahan</p><p class="text-[9px] text-slate-400 mt-1">Renovasi Rumah (Rutilahu)</p></div>
                 </button>
 
                 <!-- SPM Trantibumlinmas -->
-                <button onclick="navTo('spm-trantibum')" class="btn-press ios-card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
+                <button onclick="navTo('spm-trantibum')" class="btn-press card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
                     <div class="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-shield-halved"></i></div>
                     <div><p class="font-bold text-slate-800 text-sm">Trantibumlinmas</p><p class="text-[9px] text-slate-400 mt-1">Bencana, KDRT, Narkoba</p></div>
                 </button>
 
                 <!-- SPM Sosial -->
-                <button onclick="navTo('spm-sosial')" class="btn-press ios-card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
+                <button onclick="navTo('spm-sosial')" class="btn-press card-glass p-5 flex flex-col items-center text-center gap-3 transition-transform hover:scale-[0.98]">
                     <div class="w-14 h-14 rounded-full bg-pink-50 text-pink-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-hands-holding-child"></i></div>
                     <div><p class="font-bold text-slate-800 text-sm">Sosial</p><p class="text-[9px] text-slate-400 mt-1">Disabilitas, Lansia, Terlantar</p></div>
                 </button>
@@ -245,7 +245,7 @@
             <label class="form-label">3. Surat Pernyataan Tidak Mampu (RT)</label>
             <div class="upload-area"><i class="fa-solid fa-file-signature text-blue-400 text-xl mb-1"></i><p class="text-xs font-bold text-slate-600">Ambil Foto / Pilih File</p></div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-paper-plane"></i> Ajukan ke Pemerintah Desa
             </button>
         </main>
@@ -285,7 +285,7 @@
                 <option>Perlu Kunjungan Rumah (Pustu)</option>
             </select>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-save"></i> Simpan Rekapitulasi
             </button>
         </main>
@@ -317,7 +317,7 @@
             <label class="form-label">1. Surat Permohonan Kepala Dusun/RT</label>
             <div class="upload-area"><i class="fa-solid fa-envelope-open-text text-orange-400 text-xl mb-1"></i><p class="text-xs font-bold text-slate-600">Ambil Foto / Pilih File</p></div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-map-location-dot"></i> Ajukan Kunjungan Lapangan
             </button>
         </main>
@@ -367,7 +367,7 @@
                 <div class="upload-area py-4"><i class="fa-solid fa-camera text-slate-400 mb-1"></i><p class="text-[9px] font-bold">Tampak Belakang</p></div>
             </div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-paper-plane"></i> Ajukan ke Pemerintah Desa
             </button>
         </main>
@@ -425,7 +425,7 @@
                 <div class="upload-area py-3 mt-2"><i class="fa-solid fa-id-card text-rose-400 mb-1"></i><p class="text-[10px] font-bold text-slate-600">Upload KTP Identitas</p></div>
             </div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-bullhorn"></i> Kirim Pengaduan Trantibum
             </button>
         </main>
@@ -464,7 +464,7 @@
             <label class="form-label">2. Surat Pernyataan Pemerintah Desa</label>
             <div class="upload-area py-3"><i class="fa-solid fa-file-contract text-pink-400 text-xl mb-1"></i><p class="text-[10px] text-slate-500">Keterangan tindak lanjut ke supra desa</p></div>
 
-            <button onclick="navTo('spm-menu', true)" class="bg-[#007AFF] hover:bg-[#0051B3] active:bg-[#004099] text-white font-semibold py-4 px-8 rounded-full shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 w-full mt-8 flex items-center justify-center gap-2">
+            <button onclick="navTo('spm-menu', true)" class="btn-primary w-full mt-8 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-house-chimney-user"></i> Ajukan Rencana Tindak Lanjut
             </button>
         </main>
